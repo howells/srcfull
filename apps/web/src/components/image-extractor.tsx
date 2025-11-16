@@ -19,8 +19,46 @@ export function ImageExtractor() {
   // Extract URLs from the last assistant message
   const lastMessage = messages.filter(m => m.role === 'assistant').pop();
   const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g;
-  const extractedUrls = lastMessage?.content.match(urlRegex) || [];
-  const uniqueUrls = [...new Set(extractedUrls)];
+
+  // Helper function to check if URL looks like an image
+  const isLikelyImageUrl = (url: string): boolean => {
+    try {
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname.toLowerCase();
+      // Check for image extensions or common image CDN patterns
+      return (
+        pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|avif|bmp)(\?|$)/i) !== null ||
+        url.includes('/images/') ||
+        url.includes('/img/') ||
+        url.includes('cdn') ||
+        url.includes('cloudinary') ||
+        url.includes('imgix')
+      );
+    } catch {
+      return false;
+    }
+  };
+
+  // Extract URLs from message content
+  const contentUrls = (lastMessage?.content.match(urlRegex) || [])
+    .filter(isLikelyImageUrl);
+
+  // Extract URLs from tool invocations results
+  const toolUrls: string[] = [];
+  if (lastMessage?.toolInvocations) {
+    for (const invocation of lastMessage.toolInvocations) {
+      if (invocation.state === 'result' && invocation.result) {
+        // Convert result to string and extract URLs
+        const resultStr = JSON.stringify(invocation.result);
+        const urls = (resultStr.match(urlRegex) || []).filter(isLikelyImageUrl);
+        toolUrls.push(...urls);
+      }
+    }
+  }
+
+  // Combine all URLs and deduplicate
+  const allUrls = [...contentUrls, ...toolUrls];
+  const uniqueUrls = [...new Set(allUrls)];
 
   return (
     <div className="flex flex-col items-center w-full">

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractImageElements } from '../lib/tools/extract-image-elements';
+import { executeExtractImageElements } from '../lib/tools/extract-image-elements';
 
 describe('extractImageElements', () => {
   it('should extract images from img tags', async () => {
@@ -12,7 +12,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(2);
@@ -42,7 +42,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
@@ -69,7 +69,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data?.length).toBeGreaterThanOrEqual(2);
@@ -95,7 +95,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data?.length).toBeGreaterThanOrEqual(3);
@@ -118,7 +118,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
@@ -126,7 +126,7 @@ describe('extractImageElements', () => {
   });
 
   it('should handle empty HTML', async () => {
-    const result = await extractImageElements.execute({ html: '' });
+    const result = await executeExtractImageElements('');
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(0);
@@ -142,7 +142,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(0);
@@ -158,7 +158,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
@@ -175,7 +175,7 @@ describe('extractImageElements', () => {
         </body>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data?.length).toBeGreaterThan(0);
@@ -198,7 +198,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
@@ -224,7 +224,7 @@ describe('extractImageElements', () => {
       </html>
     `;
 
-    const result = await extractImageElements.execute({ html });
+    const result = await executeExtractImageElements(html);
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);

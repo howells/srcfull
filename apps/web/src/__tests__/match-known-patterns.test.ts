@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { matchKnownPatterns } from '../lib/tools/match-known-patterns';
+import { executeMatchKnownPatterns } from '../lib/tools/match-known-patterns';
 import { loadPatterns } from '../lib/utils/patterns';
 
 describe('matchKnownPatterns', () => {
@@ -11,7 +11,7 @@ describe('matchKnownPatterns', () => {
   describe('Shopify CDN', () => {
     it('should strip version parameter from Shopify URLs', async () => {
       const url = 'https://cdn.shopify.com/s/files/1/0001/2345/products/image.jpg?v=1234';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -20,7 +20,7 @@ describe('matchKnownPatterns', () => {
 
     it('should strip size suffixes from Shopify URLs', async () => {
       const url = 'https://cdn.shopify.com/s/files/1/0001/2345/products/image_large.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -36,7 +36,7 @@ describe('matchKnownPatterns', () => {
       ];
 
       for (const url of urls) {
-        const result = await matchKnownPatterns.execute({ url });
+        const result = await executeMatchKnownPatterns(url);
         expect(result.success).toBe(true);
         expect(result.data).toBe('https://cdn.shopify.com/s/files/1/0001/2345/products/image.jpg');
       }
@@ -46,7 +46,7 @@ describe('matchKnownPatterns', () => {
   describe('Cloudinary CDN', () => {
     it('should strip transformation parameters from Cloudinary URLs', async () => {
       const url = 'https://res.cloudinary.com/demo/image/upload/w_400,h_300,c_fill/sample.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -57,7 +57,7 @@ describe('matchKnownPatterns', () => {
 
     it('should strip quality and format parameters from Cloudinary URLs', async () => {
       const url = 'https://res.cloudinary.com/demo/image/upload/q_80,f_auto/sample.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -67,7 +67,7 @@ describe('matchKnownPatterns', () => {
 
     it('should handle complex Cloudinary transformations', async () => {
       const url = 'https://res.cloudinary.com/demo/image/upload/w_800,h_600,c_fill,q_90,f_webp,dpr_2.0/folder/sample.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -80,7 +80,7 @@ describe('matchKnownPatterns', () => {
   describe('Imgix CDN', () => {
     it('should strip query parameters from imgix URLs', async () => {
       const url = 'https://assets.imgix.net/image.jpg?w=800&h=600&fit=crop&auto=format';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -90,7 +90,7 @@ describe('matchKnownPatterns', () => {
 
     it('should handle imgix URLs with quality and DPR parameters', async () => {
       const url = 'https://assets.imgix.net/image.jpg?q=85&dpr=2&fm=webp';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -101,7 +101,7 @@ describe('matchKnownPatterns', () => {
   describe('Sanity CDN', () => {
     it('should strip query parameters from Sanity URLs', async () => {
       const url = 'https://cdn.sanity.io/images/project/production/abc123-800x600.jpg?w=400';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -110,7 +110,7 @@ describe('matchKnownPatterns', () => {
 
     it('should handle Sanity URLs with dimension suffixes', async () => {
       const url = 'https://cdn.sanity.io/images/project/production/abc123-1920x1080.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       // Note: According to the pattern, Sanity requires dimension suffix in filename
@@ -122,7 +122,7 @@ describe('matchKnownPatterns', () => {
   describe('WordPress uploads', () => {
     it('should strip size suffixes from WordPress upload URLs', async () => {
       const url = 'https://example.com/wp-content/uploads/2024/01/image-800x600.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -137,7 +137,7 @@ describe('matchKnownPatterns', () => {
       ];
 
       for (const url of urls) {
-        const result = await matchKnownPatterns.execute({ url });
+        const result = await executeMatchKnownPatterns(url);
         expect(result.success).toBe(true);
         expect(result.data).toBe('https://example.com/wp-content/uploads/2024/01/photo.jpg');
       }
@@ -147,7 +147,7 @@ describe('matchKnownPatterns', () => {
   describe('Generic patterns', () => {
     it('should strip common resizing parameters as fallback', async () => {
       const url = 'https://example.com/image.jpg?w=800&h=600&quality=90';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -158,7 +158,7 @@ describe('matchKnownPatterns', () => {
 
     it('should strip width and height parameters', async () => {
       const url = 'https://example.com/image.jpg?width=1200&height=800';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBe('https://example.com/image.jpg');
@@ -166,7 +166,7 @@ describe('matchKnownPatterns', () => {
 
     it('should strip resize and size parameters', async () => {
       const url = 'https://example.com/image.jpg?resize=800&size=100';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -177,7 +177,7 @@ describe('matchKnownPatterns', () => {
   describe('Edge cases', () => {
     it('should return null for URLs that do not match any pattern', async () => {
       const url = 'https://example.com/image.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeNull();
@@ -185,7 +185,7 @@ describe('matchKnownPatterns', () => {
 
     it('should handle URLs with no query parameters or suffixes', async () => {
       const url = 'https://cdn.shopify.com/s/files/1/0001/2345/products/clean-image.jpg';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       // URL should match Shopify pattern but have no modifications
@@ -194,7 +194,7 @@ describe('matchKnownPatterns', () => {
 
     it('should preserve non-matching query parameters', async () => {
       const url = 'https://cdn.shopify.com/s/files/1/0001/2345/products/image.jpg?v=1234&custom=value';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -204,7 +204,7 @@ describe('matchKnownPatterns', () => {
 
     it('should handle malformed URLs gracefully', async () => {
       const url = 'not-a-valid-url';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeNull();
@@ -214,7 +214,7 @@ describe('matchKnownPatterns', () => {
   describe('Real-world examples', () => {
     it('should handle kvadrat.dk Shopify images', async () => {
       const url = 'https://cdn.shopify.com/s/files/1/0555/5722/6653/products/fabric-sample_large.jpg?v=1234567890';
-      const result = await matchKnownPatterns.execute({ url });
+      const result = await executeMatchKnownPatterns(url);
 
       expect(result.success).toBe(true);
       expect(result.data).toBeTruthy();
@@ -225,8 +225,8 @@ describe('matchKnownPatterns', () => {
       const cloudinaryUrl = 'https://res.cloudinary.com/demo/image/upload/w_800,h_600/sample.jpg';
       const shopifyUrl = 'https://cdn.shopify.com/s/files/1/0001/2345/products/image_medium.jpg';
 
-      const cloudinaryResult = await matchKnownPatterns.execute({ url: cloudinaryUrl });
-      const shopifyResult = await matchKnownPatterns.execute({ url: shopifyUrl });
+      const cloudinaryResult = await executeMatchKnownPatterns(cloudinaryUrl);
+      const shopifyResult = await executeMatchKnownPatterns(shopifyUrl);
 
       expect(cloudinaryResult.success).toBe(true);
       expect(cloudinaryResult.data).toBeTruthy();
