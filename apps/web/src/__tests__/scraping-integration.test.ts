@@ -1,7 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { scrapeWebpage } from '../lib/tools/scrape-webpage';
-import { extractImageElements } from '../lib/tools/extract-image-elements';
-import { matchKnownPatterns } from '../lib/tools/match-known-patterns';
+import { executeScrapeWebpage } from '../lib/tools/scrape-webpage';
+import { executeExtractImageElements } from '../lib/tools/extract-image-elements';
+import { executeMatchKnownPatterns } from '../lib/tools/match-known-patterns';
+
+// Create wrapper objects with execute methods for compatibility with tests
+const scrapeWebpage = { execute: (params: { url: string }) => executeScrapeWebpage(params.url) };
+const extractImageElements = { execute: (params: { html: string }) => executeExtractImageElements(params.html) };
+const matchKnownPatterns = { execute: (params: { url: string }) => executeMatchKnownPatterns(params.url) };
 
 // Mock ScrapingBee client
 vi.mock('scrapingbee', () => {
@@ -9,6 +14,47 @@ vi.mock('scrapingbee', () => {
     ScrapingBeeClient: class MockScrapingBeeClient {
       async get({ url }: { url: string }) {
         // Return mock HTML based on the URL
+        if (url.includes('kvadrat.dk/en/products/curtains/5539-air-line')) {
+          return {
+            data: Buffer.from(`
+              <html>
+                <head><title>Air Line - Kvadrat</title></head>
+                <body>
+                  <div class="product-gallery">
+                    <img
+                      src="https://kvadrat-imageresizer.azureedge.net/iri/7C7B7A66-66B4-4D48-90380C3A56519248?cachebust=0&width=250&height=250&format=jpg&scale=both&mode=crop&quality=85"
+                      srcset="https://kvadrat-imageresizer.azureedge.net/iri/7C7B7A66-66B4-4D48-90380C3A56519248?cachebust=0&width=250&height=250&format=jpg&scale=both&mode=crop&quality=85 250w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/7C7B7A66-66B4-4D48-90380C3A56519248?cachebust=0&width=500&height=500&format=jpg&scale=both&mode=crop&quality=85 500w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/7C7B7A66-66B4-4D48-90380C3A56519248?cachebust=0&width=1500&height=1500&format=jpg&scale=both&mode=crop&quality=85 1500w"
+                      alt=""
+                      width="900"
+                      height="900"
+                    />
+                    <img
+                      src="https://kvadrat-imageresizer.azureedge.net/iri/47CF8F45-60F6-445E-BE15211C41109A7A?width=250&height=250&format=jpg&scale=both&mode=crop&quality=85"
+                      srcset="https://kvadrat-imageresizer.azureedge.net/iri/47CF8F45-60F6-445E-BE15211C41109A7A?width=250&height=250&format=jpg&scale=both&mode=crop&quality=85 250w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/47CF8F45-60F6-445E-BE15211C41109A7A?width=500&height=500&format=jpg&scale=both&mode=crop&quality=85 500w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/47CF8F45-60F6-445E-BE15211C41109A7A?width=1500&height=1500&format=jpg&scale=both&mode=crop&quality=85 1500w"
+                      alt="Air Line"
+                      width="900"
+                      height="900"
+                    />
+                    <img
+                      src="https://kvadrat-imageresizer.azureedge.net/iri/190B0909-661E-4A19-8DF24ACAE309071F?cachebust=0&width=250&height=250&format=jpg&scale=both&mode=crop&quality=85"
+                      srcset="https://kvadrat-imageresizer.azureedge.net/iri/190B0909-661E-4A19-8DF24ACAE309071F?cachebust=0&width=250&height=250&format=jpg&scale=both&mode=crop&quality=85 250w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/190B0909-661E-4A19-8DF24ACAE309071F?cachebust=0&width=500&height=500&format=jpg&scale=both&mode=crop&quality=85 500w,
+                              https://kvadrat-imageresizer.azureedge.net/iri/190B0909-661E-4A19-8DF24ACAE309071F?cachebust=0&width=1500&height=1500&format=jpg&scale=both&mode=crop&quality=85 1500w"
+                      alt=""
+                      width="900"
+                      height="900"
+                    />
+                  </div>
+                </body>
+              </html>
+            `),
+          };
+        }
+
         if (url.includes('kvadrat.dk')) {
           return {
             data: Buffer.from(`
@@ -310,6 +356,42 @@ describe('Scraping Integration Tests', () => {
       expect(imageWithMetadata!.width).toBe(1200);
       expect(imageWithMetadata!.height).toBe(800);
       expect(imageWithMetadata!.alt).toBeTruthy();
+    });
+
+    it('should extract 3 main images from Kvadrat Air Line curtains product page', async () => {
+      const url = 'https://www.kvadrat.dk/en/products/curtains/5539-air-line';
+
+      const scrapeResult = await scrapeWebpage.execute({ url });
+      expect(scrapeResult.success).toBe(true);
+      expect(scrapeResult.data).toBeTruthy();
+
+      const extractResult = await extractImageElements.execute({ html: scrapeResult.data! });
+      expect(extractResult.success).toBe(true);
+      expect(extractResult.data).toBeTruthy();
+
+      const mainImages = extractResult.data!.filter(img => img.source === 'img');
+      expect(mainImages.length).toBe(3);
+
+      expect(mainImages[0].url).toContain('kvadrat-imageresizer.azureedge.net');
+      expect(mainImages[0].url).toContain('7C7B7A66-66B4-4D48-90380C3A56519248');
+      expect(mainImages[0].width).toBe(900);
+      expect(mainImages[0].height).toBe(900);
+
+      expect(mainImages[1].url).toContain('kvadrat-imageresizer.azureedge.net');
+      expect(mainImages[1].url).toContain('47CF8F45-60F6-445E-BE15211C41109A7A');
+      expect(mainImages[1].alt).toBe('Air Line');
+      expect(mainImages[1].width).toBe(900);
+      expect(mainImages[1].height).toBe(900);
+
+      expect(mainImages[2].url).toContain('kvadrat-imageresizer.azureedge.net');
+      expect(mainImages[2].url).toContain('190B0909-661E-4A19-8DF24ACAE309071F');
+      expect(mainImages[2].width).toBe(900);
+      expect(mainImages[2].height).toBe(900);
+
+      for (const image of mainImages) {
+        expect(image.srcset).toBeDefined();
+        expect(image.srcset!.length).toBeGreaterThan(0);
+      }
     });
   });
 });
