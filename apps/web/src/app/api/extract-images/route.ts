@@ -20,6 +20,14 @@ export async function POST(request: Request) {
       maxSteps: 10,
     });
 
+    // Validate that we got a response
+    if (!result || !result.text) {
+      return Response.json(
+        { error: 'No response from AI model' },
+        { status: 500 }
+      );
+    }
+
     // Parse the response to extract image URLs
     const text = result.text;
 
@@ -27,8 +35,19 @@ export async function POST(request: Request) {
     const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g;
     const urls = text.match(urlRegex) || [];
 
+    // Filter to only include image URLs
+    const imageUrls = urls.filter(url => {
+      try {
+        const urlObj = new URL(url);
+        const pathname = urlObj.pathname.toLowerCase();
+        return pathname.match(/\.(jpg|jpeg|png|gif|webp|svg)$/);
+      } catch {
+        return false;
+      }
+    });
+
     // Deduplicate
-    const uniqueUrls = [...new Set(urls)];
+    const uniqueUrls = [...new Set(imageUrls)];
 
     return Response.json({
       images: uniqueUrls,

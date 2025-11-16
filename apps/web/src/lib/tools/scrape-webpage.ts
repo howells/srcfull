@@ -1,9 +1,9 @@
-import scrapingbee from 'scrapingbee';
+import { ScrapingBeeClient } from 'scrapingbee';
 import { tool } from 'ai';
 import { z } from 'zod';
 import type { ToolResult } from './types';
 
-const client = new scrapingbee.ScrapingBeeClient(
+const client = new ScrapingBeeClient(
   process.env.SCRAPINGBEE_API_KEY!
 );
 
