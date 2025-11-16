@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Header, Item, Trigger } from "@radix-ui/react-accordion";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useContext } from "react";

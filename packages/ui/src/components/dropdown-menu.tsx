@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { Icon } from "./icon";

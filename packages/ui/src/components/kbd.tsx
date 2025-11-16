@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (

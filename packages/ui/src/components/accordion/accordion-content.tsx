@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import { motion } from "motion/react";
 import type { ComponentProps } from "react";

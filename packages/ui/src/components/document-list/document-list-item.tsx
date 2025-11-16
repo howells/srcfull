@@ -1,6 +1,6 @@
  "use client";
 
-import { Button } from "@materia/ui/components/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Item,
   ItemActions,
@@ -8,9 +8,9 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@materia/ui/components/item-list/item-list-item";
-import { Checkbox } from "@materia/ui/components/checkbox";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/item-list/item-list-item";
+import { Checkbox } from "@repo/ui/components/checkbox";
+import { cn } from "@repo/ui/utils/cn";
 import { Download } from "lucide-react";
 import type * as React from "react";
 import { useDocumentListContext } from "./document-list-context";

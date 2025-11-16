@@ -11,7 +11,7 @@ import React, {
 	useState,
 } from "react";
 import { useComposedRefs } from "../lib/compose-refs";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { VisuallyHiddenInput } from "./visually-hidden-input";
 
 const ROOT_NAME = "Editable";

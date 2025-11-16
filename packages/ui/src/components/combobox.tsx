@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@materia/ui/components/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Command,
   CommandEmpty,
@@ -8,14 +8,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@materia/ui/components/command";
-import { Icon } from "@materia/ui/components/icon";
+} from "@repo/ui/components/command";
+import { Icon } from "@repo/ui/components/icon";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@materia/ui/components/popover";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/popover";
+import { cn } from "@repo/ui/utils/cn";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 

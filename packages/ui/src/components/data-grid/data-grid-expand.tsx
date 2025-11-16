@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@materia/ui/components/button";
-import { cn } from "@materia/ui/utils/cn";
+import { Button } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/utils/cn";
 import type { Row } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 

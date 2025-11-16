@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@materia/ui/components/button";
-import { Icon } from "@materia/ui/components/icon";
-import { cn } from "@materia/ui/utils/cn";
+import { Button } from "@repo/ui/components/button";
+import { Icon } from "@repo/ui/components/icon";
+import { cn } from "@repo/ui/utils/cn";
 import { PanelLeftIcon } from "lucide-react";
 import type React from "react";
 import { useSidebar } from "./sidebar-provider";

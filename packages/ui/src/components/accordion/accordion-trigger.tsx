@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import { ChevronDown, Plus } from "lucide-react";
 import { motion } from "motion/react";

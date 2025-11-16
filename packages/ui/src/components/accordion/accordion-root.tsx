@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import type { VariantProps } from "class-variance-authority";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";

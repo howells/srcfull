@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Root as RadioGroupRoot } from "@radix-ui/react-radio-group";
 import type { ReactNode } from "react";
 import { useMemo } from "react";

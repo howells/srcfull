@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
 import type { VariantProps } from "class-variance-authority";
 import { useTabsContext } from "../tabs/tabs-context";

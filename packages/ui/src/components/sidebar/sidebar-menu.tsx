@@ -1,12 +1,12 @@
 "use client";
 
-import { Skeleton } from "@materia/ui/components/skeleton";
+import { Skeleton } from "@repo/ui/components/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@materia/ui/components/tooltip";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/tooltip";
+import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import React, { useMemo } from "react";

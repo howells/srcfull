@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import type * as React from "react";
 
 export type BadgeDotProps = React.HTMLAttributes<HTMLSpanElement>;

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import type * as React from "react";
 

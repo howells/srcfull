@@ -1,8 +1,8 @@
 "use client";
 
-import { ScrollArea } from "@materia/ui/components/scroll-area";
-import { Separator } from "@materia/ui/components/separator";
-import { cn } from "@materia/ui/utils/cn";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
+import { Separator } from "@repo/ui/components/separator";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 
 export function DetailsPanelHeader({

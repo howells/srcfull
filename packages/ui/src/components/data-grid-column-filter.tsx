@@ -1,5 +1,5 @@
-import { Badge } from "@materia/ui/components/badge";
-import { Button } from "@materia/ui/components/button";
+import { Badge } from "@repo/ui/components/badge";
+import { Button } from "@repo/ui/components/button";
 import {
   Command,
   CommandEmpty,
@@ -8,14 +8,14 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@materia/ui/components/command";
+} from "@repo/ui/components/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@materia/ui/components/popover";
-import { Separator } from "@materia/ui/components/separator";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/popover";
+import { Separator } from "@repo/ui/components/separator";
+import { cn } from "@repo/ui/utils/cn";
 import type { Column } from "@tanstack/react-table";
 import { Check, CirclePlus } from "lucide-react";
 import type * as React from "react";

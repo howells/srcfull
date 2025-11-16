@@ -8,7 +8,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../card";
 import { Collapsible } from "./collapsible-root";
 import { CollapsibleContent } from "./collapsible-content";
 import { CollapsibleTrigger } from "./collapsible-trigger";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Icon } from "../icon";
 
 const meta = {

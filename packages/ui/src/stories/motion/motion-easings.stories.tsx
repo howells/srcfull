@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { easings, easingsCSS, type Easing } from "@materia/motion/easings";
-import { durations } from "@materia/motion/durations";
+import { easings, easingsCSS, type Easing } from "@repo/ui/lib/motion";
+import { durations } from "@repo/ui/lib/motion";
 
 const meta = {
   title: "Motion/Easings",

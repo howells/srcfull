@@ -1,5 +1,5 @@
-import { Button } from "@materia/ui/components/button";
-import { useDataGrid } from "@materia/ui/components/data-grid";
+import { Button } from "@repo/ui/components/button";
+import { useDataGrid } from "@repo/ui/components/data-grid";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,8 +12,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@materia/ui/components/dropdown-menu";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/dropdown-menu";
+import { cn } from "@repo/ui/utils/cn";
 import type { Column } from "@tanstack/react-table";
 import {
   ArrowDown,

@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
-import type { ComponentSize } from "@materia/ui/lib/size";
+import { cn } from "@repo/ui/utils/cn";
+import type { ComponentSize } from "@repo/ui/lib/size";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { TabsContext } from "./tabs-context";
 

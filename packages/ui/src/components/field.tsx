@@ -1,9 +1,9 @@
 "use client";
 
-import { Label } from "@materia/ui/components/label";
-import { Separator } from "@materia/ui/components/separator";
+import { Label } from "@repo/ui/components/label";
+import { Separator } from "@repo/ui/components/separator";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";
 

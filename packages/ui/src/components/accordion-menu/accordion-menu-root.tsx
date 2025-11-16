@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Root as AccordionPrimitive } from "@radix-ui/react-accordion";
 import { Children, isValidElement, useEffect, useMemo, useState } from "react";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";

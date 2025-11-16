@@ -1,5 +1,5 @@
-import { type Button, buttonVariants } from "@materia/ui/components/button";
-import { cn } from "@materia/ui/utils/cn";
+import { type Button, buttonVariants } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/utils/cn";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

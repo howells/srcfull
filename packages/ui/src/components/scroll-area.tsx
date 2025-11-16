@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type * as React from "react";
 

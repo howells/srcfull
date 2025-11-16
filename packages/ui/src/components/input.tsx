@@ -1,8 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@materia/ui/utils/cn";
-import { focusInput } from "@materia/ui/utils/focus-input";
-import { hasErrorInput } from "@materia/ui/utils/has-error-input";
-import type { WithTestId } from "@materia/ui/utils/test-id";
+import { cn } from "@repo/ui/utils/cn";
+import { focusInput } from "@repo/ui/utils/focus-input";
+import { hasErrorInput } from "@repo/ui/utils/has-error-input";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import * as React from "react";
 import { Copy, X } from "lucide-react";
 import type { ComponentSize } from "../lib/size";

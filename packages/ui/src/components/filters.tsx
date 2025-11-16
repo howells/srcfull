@@ -8,27 +8,27 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@materia/ui/components/command";
+} from "@repo/ui/components/command";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@materia/ui/components/dropdown-menu";
+} from "@repo/ui/components/dropdown-menu";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@materia/ui/components/popover";
-import { Switch } from "@materia/ui/components/switch";
+} from "@repo/ui/components/popover";
+import { Switch } from "@repo/ui/components/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@materia/ui/components/tooltip";
+} from "@repo/ui/components/tooltip";
 import { cva, type VariantProps } from "class-variance-authority";
 import { AlertCircle, Check, Plus, X } from "lucide-react";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import type React from "react";
 import {
   createContext,

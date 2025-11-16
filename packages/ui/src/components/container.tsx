@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as React from "react";
 import type { ComponentSize } from "../lib/size";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
-import type { WithTestId } from "@materia/ui/utils/test-id";
+import { cn } from "@repo/ui/utils/cn";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type * as React from "react";

@@ -6,8 +6,8 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@materia/ui/components/sheet";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/sheet";
+import { cn } from "@repo/ui/utils/cn";
 import { motion } from "motion/react";
 import type React from "react";
 import { SIDEBAR_WIDTH_MOBILE } from "./sidebar-constants";

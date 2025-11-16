@@ -1,7 +1,7 @@
  "use client";
 
-import { Button } from "@materia/ui/components/button";
-import { cn } from "@materia/ui/utils/cn";
+import { Button } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/utils/cn";
 import { Download } from "lucide-react";
 import type * as React from "react";
 import { useDocumentListContext } from "./document-list-context";

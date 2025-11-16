@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { durations, durationMs, type Duration } from "@materia/motion/durations";
+import { durations, durationMs, type Duration } from "@repo/ui/lib/motion";
 
 const meta = {
   title: "Motion/Durations",

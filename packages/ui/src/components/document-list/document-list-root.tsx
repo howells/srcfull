@@ -1,6 +1,6 @@
  "use client";
 
-import { ItemList } from "@materia/ui/components/item-list/item-list-root";
+import { ItemList } from "@repo/ui/components/item-list/item-list-root";
 import type * as React from "react";
 import { DocumentListProvider } from "./document-list-context";
 import { DocumentListActions } from "./document-list-actions";

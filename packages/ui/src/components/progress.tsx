@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
 

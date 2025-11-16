@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import type { VariantProps } from "class-variance-authority";
 import { useTabsContext } from "../tabs/tabs-context";
 import { tabsListVariants } from "../tabs/tabs-variants";

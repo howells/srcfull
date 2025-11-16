@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import type * as React from "react";
 

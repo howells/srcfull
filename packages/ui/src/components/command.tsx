@@ -6,8 +6,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@materia/ui/components/dialog";
-import { cn } from "@materia/ui/utils/cn";
+} from "@repo/ui/components/dialog";
+import { cn } from "@repo/ui/utils/cn";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import { Icon } from "./icon";

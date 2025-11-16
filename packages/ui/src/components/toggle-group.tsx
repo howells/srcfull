@@ -1,7 +1,7 @@
 "use client";
 
-import { toggleVariants } from "@materia/ui/components/toggle";
-import { cn } from "@materia/ui/utils/cn";
+import { toggleVariants } from "@repo/ui/components/toggle";
+import { cn } from "@repo/ui/utils/cn";
 import { Item, Root } from "@radix-ui/react-toggle-group";
 import type { VariantProps } from "class-variance-authority";
 import React, { useContext } from "react";

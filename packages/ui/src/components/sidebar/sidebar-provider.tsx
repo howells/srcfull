@@ -1,8 +1,8 @@
 "use client";
 
-import { TooltipProvider } from "@materia/ui/components/tooltip";
-import { useIsMobile } from "@materia/ui/hooks/use-mobile";
-import { cn } from "@materia/ui/utils/cn";
+import { TooltipProvider } from "@repo/ui/components/tooltip";
+import { useIsMobile } from "@repo/ui/hooks/use-mobile";
+import { cn } from "@repo/ui/utils/cn";
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   SIDEBAR_COOKIE_MAX_AGE,

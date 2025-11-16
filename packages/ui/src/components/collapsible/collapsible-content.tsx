@@ -1,7 +1,7 @@
 "use client";
 
-import { presets } from "@materia/motion";
-import { cn } from "@materia/ui/utils/cn";
+import { presets } from "@repo/ui/lib/motion";
+import { cn } from "@repo/ui/utils/cn";
 import { CollapsibleContent as CollapsiblePrimitiveContent } from "@radix-ui/react-collapsible";
 import { motion } from "motion/react";
 import { useCollapsibleContext } from "./collapsible-context";

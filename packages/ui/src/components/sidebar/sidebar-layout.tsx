@@ -1,8 +1,8 @@
 "use client";
 
-import { Input } from "@materia/ui/components/input";
-import { Separator } from "@materia/ui/components/separator";
-import { cn } from "@materia/ui/utils/cn";
+import { Input } from "@repo/ui/components/input";
+import { Separator } from "@repo/ui/components/separator";
+import { cn } from "@repo/ui/utils/cn";
 import type React from "react";
 import { SidebarTrigger } from "./sidebar-trigger";
 

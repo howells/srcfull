@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
-import { focusRing } from "@materia/ui/utils/focus-ring";
+import { cn } from "@repo/ui/utils/cn";
+import { focusRing } from "@repo/ui/utils/focus-ring";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import React, { createContext, useContext } from "react";
 

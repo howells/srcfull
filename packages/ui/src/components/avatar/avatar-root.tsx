@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Root as AvatarRootPrimitive } from "@radix-ui/react-avatar";
 import type { ComponentProps } from "react";
 import type { ComponentSize } from "../../lib/size";

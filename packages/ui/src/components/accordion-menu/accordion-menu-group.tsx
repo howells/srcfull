@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { useContext } from "react";
 import type { ReactNode } from "react";
 import { AccordionMenuContext } from "./accordion-menu-context";

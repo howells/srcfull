@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { presets, type Preset } from "@materia/motion/presets";
+import { presets, type Preset } from "@repo/ui/lib/motion";
 
 const meta = {
   title: "Motion/Presets",

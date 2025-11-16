@@ -1,6 +1,6 @@
 "use client";
 
-import type { WithTestId } from "@materia/ui/utils/test-id";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import type * as React from "react";
 

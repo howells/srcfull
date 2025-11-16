@@ -237,7 +237,7 @@ ItemList and Card work together beautifully:
 Since we use a folder structure without barrel files, import directly from the files:
 
 ```tsx
-import { ItemList } from "@materia/ui/components/item-list/item-list-root";
+import { ItemList } from "@repo/ui/components/item-list/item-list-root";
 import {
   Item,
   ItemMedia,
@@ -245,7 +245,7 @@ import {
   ItemTitle,
   ItemDescription,
   ItemActions
-} from "@materia/ui/components/item-list/item-list-item";
+} from "@repo/ui/components/item-list/item-list-item";
 ```
 
 ---

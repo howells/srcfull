@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@materia/ui/components/button";
-import { Input } from "@materia/ui/components/input";
-import { Textarea } from "@materia/ui/components/textarea";
-import { cn } from "@materia/ui/utils/cn";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Textarea } from "@repo/ui/components/textarea";
+import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 

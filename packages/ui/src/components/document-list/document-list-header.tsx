@@ -1,7 +1,7 @@
  "use client";
 
-import { Checkbox } from "@materia/ui/components/checkbox";
-import { cn } from "@materia/ui/utils/cn";
+import { Checkbox } from "@repo/ui/components/checkbox";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 import { useDocumentListContext } from "./document-list-context";
 

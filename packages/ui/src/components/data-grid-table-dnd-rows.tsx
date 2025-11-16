@@ -16,8 +16,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button } from "@materia/ui/components/button";
-import { useDataGrid } from "@materia/ui/components/data-grid-context";
+import { Button } from "@repo/ui/components/button";
+import { useDataGrid } from "@repo/ui/components/data-grid-context";
 import {
   DataGridTableBase,
   DataGridTableBody,
@@ -31,7 +31,7 @@ import {
   DataGridTableHeadRowCell,
   DataGridTableHeadRowCellResize,
   DataGridTableRowSpacer,
-} from "@materia/ui/components/data-grid-table";
+} from "@repo/ui/components/data-grid-table";
 import {
   type Cell,
   flexRender,

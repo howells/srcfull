@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 
 interface DescriptionListProps extends React.ComponentProps<"dl"> {

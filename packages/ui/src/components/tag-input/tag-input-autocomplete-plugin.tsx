@@ -14,7 +14,7 @@ import {
 } from "lexical";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { useTagInputContext } from "./tag-input-context";
 import type { TagData } from "./tag-input-types";
 import { getTextSinceLastTag } from "./utils/get-text-since-last-tag";

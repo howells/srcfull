@@ -1,5 +1,5 @@
-import { cn } from "@materia/ui/utils/cn";
-import type { WithTestId } from "@materia/ui/utils/test-id";
+import { cn } from "@repo/ui/utils/cn";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import type * as React from "react";
 
 interface CardProps extends WithTestId<React.ComponentProps<"div">> {

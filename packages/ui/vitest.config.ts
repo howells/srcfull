@@ -1,8 +1,13 @@
-import { sharedConfig } from "@materia/vitest-config";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    ...sharedConfig.test,
+    globals: true,
+    environment: "jsdom",
+    setupFiles: [],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+    },
   },
 });

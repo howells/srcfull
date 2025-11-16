@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 

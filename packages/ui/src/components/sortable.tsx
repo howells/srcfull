@@ -26,7 +26,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 

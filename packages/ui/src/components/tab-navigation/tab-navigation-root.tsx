@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { TabsContext } from "../tabs/tabs-context";
 
 export interface TabNavigationProps extends React.ComponentProps<"nav"> {

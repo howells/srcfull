@@ -1,7 +1,7 @@
 "use client";
 
-import { Sheet, SheetContent } from "@materia/ui/components/sheet";
-import { cn } from "@materia/ui/utils/cn";
+import { Sheet, SheetContent } from "@repo/ui/components/sheet";
+import { cn } from "@repo/ui/utils/cn";
 import type { ReactNode } from "react";
 import React, { useContext, useEffect, useRef } from "react";
 import { useMediaQuery } from "usehooks-ts";

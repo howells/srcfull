@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { easings } from "@materia/motion/easings";
+import { easings } from "@repo/ui/lib/motion";
 
 export interface SearchAssistantProps {
   message: string;

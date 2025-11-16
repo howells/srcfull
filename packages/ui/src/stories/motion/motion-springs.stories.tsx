@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { springs, type SpringType } from "@materia/motion/springs";
+import { springs, type SpringType } from "@repo/ui/lib/motion";
 
 const meta = {
   title: "Motion/Springs",

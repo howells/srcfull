@@ -1,7 +1,7 @@
 "use client";
 
-import { buttonVariants } from "@materia/ui/components/button";
-import { cn } from "@materia/ui/utils/cn";
+import { buttonVariants } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/utils/cn";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import type * as React from "react";
 

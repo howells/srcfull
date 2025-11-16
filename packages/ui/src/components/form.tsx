@@ -1,7 +1,7 @@
 "use client";
 
-import { Label } from "@materia/ui/components/label";
-import { cn } from "@materia/ui/utils/cn";
+import { Label } from "@repo/ui/components/label";
+import { cn } from "@repo/ui/utils/cn";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import React, { useContext, useId } from "react";

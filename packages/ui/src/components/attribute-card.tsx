@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import type { LucideIcon } from "lucide-react";
 import type * as React from "react";
 import { Card, CardContent, CardDescription, CardTitle } from "./card";

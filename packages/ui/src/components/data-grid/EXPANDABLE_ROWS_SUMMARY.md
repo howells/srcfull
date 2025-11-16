@@ -23,7 +23,7 @@ import {
   DataGrid,
   DataGridTable,
   createExpanderColumn,
-} from "@materia/ui/components/data-grid";
+} from "@repo/ui/components/data-grid";
 import { getExpandedRowModel } from "@tanstack/react-table";
 
 // 1. Add expander column
@@ -89,7 +89,7 @@ import {
   DataGridContainer,
   DataGridTable,
   createExpanderColumn,
-} from "@materia/ui/components/data-grid";
+} from "@repo/ui/components/data-grid";
 ```
 
 See `data-grid-expandable-rows.md` for complete examples and advanced usage patterns.

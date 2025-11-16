@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import type * as React from "react";
 import type { ComponentSize } from "../lib/size";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 
 const ICON_SIZE_CLASS: Record<ComponentSize, string> = {
   "2xs": "size-3", // 12px

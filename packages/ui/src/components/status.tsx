@@ -1,5 +1,5 @@
-import { Badge } from "@materia/ui/components/badge";
-import { cn } from "@materia/ui/utils/cn";
+import { Badge } from "@repo/ui/components/badge";
+import { cn } from "@repo/ui/utils/cn";
 import type { ComponentProps, HTMLAttributes } from "react";
 import type { ComponentSize } from "../lib/size";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { AnimatePresence, wrap } from "motion/react";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";

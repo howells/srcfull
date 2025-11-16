@@ -4,7 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@materia/ui/components/dropdown-menu";
+} from "@repo/ui/components/dropdown-menu";
 import type { Table } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 

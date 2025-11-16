@@ -1,5 +1,5 @@
-import { cn } from "@materia/ui/lib/utils";
-import type { ComponentSize } from "@materia/ui/lib/size";
+import { cn } from "@repo/ui/lib/utils";
+import type { ComponentSize } from "@repo/ui/lib/size";
 import type { VariantProps } from "class-variance-authority";
 import { Slot as SlotPrimitive } from "radix-ui";
 import type * as React from "react";

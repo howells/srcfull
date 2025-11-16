@@ -4,7 +4,7 @@ import { Calendar, Settings, User } from "lucide-react";
 import { Badge } from "../badge";
 import { Icon } from "../icon";
 import { Text } from "../text";
-import { sizeArgType } from "@materia/ui/lib/storybook";
+import { sizeArgType } from "@repo/ui/lib/storybook";
 import { Tabs } from "./tabs-root";
 import { TabsContent } from "./tabs-content";
 import { TabsList } from "./tabs-list";

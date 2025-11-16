@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import type { VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import { Slot as SlotPrimitive } from "radix-ui";

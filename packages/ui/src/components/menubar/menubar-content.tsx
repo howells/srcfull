@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import type * as React from "react";
 import { MenubarPortal } from "./menubar-portal";

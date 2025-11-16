@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { Check, type LucideIcon } from "lucide-react";
 import type React from "react";
 import { Icon } from "./icon";

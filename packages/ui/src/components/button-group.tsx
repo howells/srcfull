@@ -1,5 +1,5 @@
-import { Separator } from "@materia/ui/components/separator";
-import { cn } from "@materia/ui/utils/cn";
+import { Separator } from "@repo/ui/components/separator";
+import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 

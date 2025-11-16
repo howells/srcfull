@@ -1,8 +1,8 @@
 "use client";
 
-import { InputCard } from "@materia/ui/components/input-card";
-import { cn } from "@materia/ui/utils/cn";
-import { focusInput } from "@materia/ui/utils/focus-input";
+import { InputCard } from "@repo/ui/components/input-card";
+import { cn } from "@repo/ui/utils/cn";
+import { focusInput } from "@repo/ui/utils/focus-input";
 import { Item as RadioGroupItem } from "@radix-ui/react-radio-group";
 import { Check } from "lucide-react";
 import type { ReactNode } from "react";

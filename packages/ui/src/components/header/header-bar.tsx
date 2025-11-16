@@ -1,12 +1,12 @@
 "use client";
 
-import { Input } from "@materia/ui/components/input";
+import { Input } from "@repo/ui/components/input";
 import {
   SIDEBAR_WIDTH,
   SIDEBAR_WIDTH_ICON,
-} from "@materia/ui/components/sidebar/sidebar-constants";
-import { SIDEBAR_TRANSITION } from "@materia/ui/components/sidebar/sidebar-motion-config";
-import { useSidebar } from "@materia/ui/components/sidebar/sidebar-provider";
+} from "@repo/ui/components/sidebar/sidebar-constants";
+import { SIDEBAR_TRANSITION } from "@repo/ui/components/sidebar/sidebar-motion-config";
+import { useSidebar } from "@repo/ui/components/sidebar/sidebar-provider";
 import { motion } from "motion/react";
 import { useMemo } from "react";
 

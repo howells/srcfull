@@ -9,7 +9,7 @@ The DataGrid component supports expandable rows (sub-tables) using TanStack Tabl
 Use the `createExpanderColumn()` helper to add a toggle column:
 
 ```tsx
-import { createExpanderColumn } from "@materia/ui/components/data-grid";
+import { createExpanderColumn } from "@repo/ui/components/data-grid";
 
 const columns = useMemo<ColumnDef<MyData>[]>(() => [
   createExpanderColumn<MyData>(),
@@ -67,7 +67,7 @@ const table = useReactTable({
 Create your own toggle component instead of using the default:
 
 ```tsx
-import { DataGridExpandToggle } from "@materia/ui/components/data-grid";
+import { DataGridExpandToggle } from "@repo/ui/components/data-grid";
 import { PlusIcon, MinusIcon } from "lucide-react";
 
 {
@@ -157,7 +157,7 @@ import {
   DataGridTable,
   DataGridPagination,
   createExpanderColumn,
-} from "@materia/ui/components/data-grid";
+} from "@repo/ui/components/data-grid";
 import {
   type ColumnDef,
   getCoreRowModel,

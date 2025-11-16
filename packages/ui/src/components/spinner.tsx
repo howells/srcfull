@@ -1,4 +1,4 @@
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import { LoaderCircleIcon, type LucideProps } from "lucide-react";
 import type { ComponentSize } from "../lib/size";
 

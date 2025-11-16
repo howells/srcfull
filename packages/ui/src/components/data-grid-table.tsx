@@ -1,5 +1,5 @@
-import { Checkbox } from "@materia/ui/components/checkbox";
-import { useDataGrid } from "@materia/ui/components/data-grid";
+import { Checkbox } from "@repo/ui/components/checkbox";
+import { useDataGrid } from "@repo/ui/components/data-grid";
 import {
   type Cell,
   type Column,
@@ -9,7 +9,7 @@ import {
   type Row,
 } from "@tanstack/react-table";
 import { cva } from "class-variance-authority";
-import { cn } from "@materia/ui/utils/cn";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 import { type CSSProperties, Fragment, type ReactNode } from "react";
 

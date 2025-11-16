@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { easings } from "@materia/motion/easings";
+import { easings } from "@repo/ui/lib/motion";
 
 export interface WizardTagsProps {
   tags: string[];

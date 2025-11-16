@@ -1,5 +1,5 @@
-import { cn } from "@materia/ui/utils/cn";
-import type { WithTestId } from "@materia/ui/utils/test-id";
+import { cn } from "@repo/ui/utils/cn";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { LucideIcon } from "lucide-react";

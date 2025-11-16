@@ -10,10 +10,10 @@ import {
   DataGrid,
   DataGridContainer,
   createExpanderColumn,
-} from "@materia/ui/components/data-grid";
-import { DataGridTable } from "@materia/ui/components/data-grid-table";
-import { DataGridPagination } from "@materia/ui/components/data-grid-pagination";
-import { Badge } from "@materia/ui/components/badge";
+} from "@repo/ui/components/data-grid";
+import { DataGridTable } from "@repo/ui/components/data-grid-table";
+import { DataGridPagination } from "@repo/ui/components/data-grid-pagination";
+import { Badge } from "@repo/ui/components/badge";
 
 type Order = {
   id: string;
