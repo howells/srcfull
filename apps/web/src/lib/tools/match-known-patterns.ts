@@ -28,7 +28,11 @@ export const matchKnownPatterns = tool({
             cleanUrl = cleanUrl.replace(regex, '');
           }
           // Clean up leftover ? and & characters
-          cleanUrl = cleanUrl.replace(/\?&/g, '?').replace(/\?$/g, '').replace(/&$/g, '');
+          cleanUrl = cleanUrl
+            .replace(/\?&/g, '?')
+            .replace(/&&+/g, '&')
+            .replace(/[?&]+$/g, '')
+            .replace(/&+/g, '&');
         }
 
         // Strip suffixes from filename
@@ -56,7 +60,11 @@ export const matchKnownPatterns = tool({
           const regex = new RegExp(`[?&]${param}`, 'g');
           cleanUrl = cleanUrl.replace(regex, '');
         }
-        cleanUrl = cleanUrl.replace(/\?&/g, '?').replace(/\?$/g, '').replace(/&$/g, '');
+        cleanUrl = cleanUrl
+          .replace(/\?&/g, '?')
+          .replace(/&&+/g, '&')
+          .replace(/[?&]+$/g, '')
+          .replace(/&+/g, '&');
 
         if (cleanUrl !== url) {
           return {
