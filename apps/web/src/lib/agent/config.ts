@@ -7,7 +7,8 @@ export const openrouter = createOpenAI({
 });
 
 // Model configuration
-export const model = openrouter('google/gemini-flash-1.5-8b');
+// Using Claude Haiku for fast, reliable processing with excellent tool calling support
+export const model = openrouter('anthropic/claude-haiku-4.5');
 
 // System prompt for the agent
 export const systemPrompt = `You are an AI agent specialized in extracting clean, full-resolution image URLs from web pages.

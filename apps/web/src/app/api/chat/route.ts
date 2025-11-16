@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     return result.toDataStreamResponse();
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('Chat API error:', error);
 
     if (error instanceof z.ZodError) {
       return Response.json(
