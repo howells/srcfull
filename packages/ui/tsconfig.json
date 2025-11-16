@@ -1,0 +1,13 @@
+{
+  "extends": "@materia/typescript-config/react-library.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@materia/ui/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
