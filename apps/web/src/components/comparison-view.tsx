@@ -78,6 +78,7 @@ export function ComparisonView({ result }: Props) {
           type="text"
           value={result.resolved}
           readOnly
+          aria-label="Resolved image URL"
           className="flex-1 px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border)] rounded text-sm text-[var(--text-muted)] font-mono"
         />
         <button
@@ -91,6 +92,7 @@ export function ComparisonView({ result }: Props) {
           href={result.resolved}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Open image in new tab"
           className="px-4 py-2 border border-[var(--border)] rounded hover:border-[var(--accent)] transition-colors"
         >
           Open
