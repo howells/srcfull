@@ -32,6 +32,7 @@ export function ImageGrid({ results }: Props) {
           {results.length} image{results.length !== 1 ? 's' : ''} found
         </p>
         <button
+          type="button"
           onClick={handleCopyAll}
           className="px-3 py-1.5 text-sm bg-[var(--bg-secondary)] border border-[var(--border)] rounded hover:border-[var(--accent)] transition-colors"
         >
@@ -40,8 +41,8 @@ export function ImageGrid({ results }: Props) {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {results.map((result, i) => (
-          <ImageCard key={i} result={result} />
+        {results.map((result) => (
+          <ImageCard key={result.original} result={result} />
         ))}
       </div>
     </div>
