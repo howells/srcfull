@@ -12,9 +12,13 @@ export function ImageCard({ result }: Props) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(result.resolved);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(result.resolved);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard access denied or not available
+    }
   };
 
   return (
@@ -27,13 +31,13 @@ export function ImageCard({ result }: Props) {
       >
         <img
           src={result.resolved}
-          alt=""
+          alt="Resolved image"
           className="w-full h-full object-cover"
           loading="lazy"
         />
       </a>
 
-      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center gap-2">
         <a
           href={result.resolved}
           target="_blank"
