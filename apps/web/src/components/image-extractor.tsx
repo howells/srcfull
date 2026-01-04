@@ -1,104 +1,88 @@
 'use client';
 
-import { useChat } from 'ai/react';
+import { useState } from 'react';
 import { UrlForm } from './url-form';
 import { ImageResults } from './image-results';
-import { ToolProgress } from './tool-progress';
+
+type ExtractionState = 'idle' | 'loading' | 'success' | 'error';
 
 export function ImageExtractor() {
-  const { messages, append, isLoading } = useChat({
-    api: '/api/chat',
-  });
+  const [state, setState] = useState<ExtractionState>('idle');
+  const [images, setImages] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (url: string) => {
-    append({
-      role: 'user',
-      content: `Extract all main images from this URL: ${url}`,
-    });
-  };
+  const handleSubmit = async (url: string) => {
+    setState('loading');
+    setImages([]);
+    setError(null);
 
-  // Extract URLs from the last assistant message
-  const lastMessage = messages.filter(m => m.role === 'assistant').pop();
-  const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g;
-
-  // Helper function to check if URL is definitely an image (strict validation)
-  const isImageUrl = (url: string): boolean => {
     try {
-      const urlObj = new URL(url);
-      const pathname = urlObj.pathname.toLowerCase();
-      const fullUrl = url.toLowerCase();
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{ role: 'user', content: `Extract images from: ${url}` }],
+        }),
+      });
 
-      // Check if it's a known image CDN (these don't always have file extensions)
-      const isKnownImageCdn =
-        fullUrl.includes('imageresizer.azureedge.net') ||
-        fullUrl.includes('cloudinary.com') ||
-        fullUrl.includes('imgix.net') ||
-        fullUrl.includes('images.unsplash.com');
+      const data = await response.json();
 
-      // Must have an image extension in the path or query string, OR be from a known image CDN
-      const hasImageExtension = /\.(jpg|jpeg|png|gif|webp|avif|bmp|svg)(\?|$)/i.test(pathname);
-      const hasFormatParam = /[?&]format=(jpg|jpeg|png|gif|webp|avif|bmp)/i.test(fullUrl);
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to extract images');
+      }
 
-      // Filter out obvious non-images
-      const isNonImage =
-        fullUrl.includes('.css') ||
-        fullUrl.includes('.js') ||
-        fullUrl.includes('.json') ||
-        fullUrl.includes('/css/') ||
-        fullUrl.includes('/js/') ||
-        fullUrl.includes('/fonts/') ||
-        pathname === '/' ||
-        !pathname ||
-        pathname.length < 5;
+      const extractedImages = data.images || [];
+      setImages(extractedImages);
+      setState(extractedImages.length > 0 ? 'success' : 'error');
 
-      return (hasImageExtension || hasFormatParam || isKnownImageCdn) && !isNonImage;
-    } catch {
-      return false;
+      if (extractedImages.length === 0) {
+        setError('No images found on this page');
+      }
+    } catch (err) {
+      setState('error');
+      setError(err instanceof Error ? err.message : 'An error occurred');
     }
   };
 
-  // Extract URLs from text content (agent's final response)
-  const contentUrls = (lastMessage?.content.match(urlRegex) || [])
-    .filter(isImageUrl);
-
-  // Deduplicate
-  const uniqueUrls = [...new Set(contentUrls)];
-
-  // Get tool invocations for progress display
-  const toolInvocations = lastMessage?.toolInvocations || [];
-  const hasActiveTools = toolInvocations.some(t => t.state === 'call');
-
   return (
     <div className="w-full">
-      <UrlForm onSubmit={handleSubmit} isLoading={isLoading} />
+      <UrlForm onSubmit={handleSubmit} isLoading={state === 'loading'} />
 
-      {/* Initial loading state */}
-      {isLoading && messages.length === 0 && (
-        <div className="mt-12 text-center animate-fade-in-up">
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)]">
-            <div className="relative w-5 h-5">
+      {/* Loading state */}
+      {state === 'loading' && (
+        <div className="mt-12 animate-fade-in-up">
+          <div className="flex flex-col items-center gap-4">
+            {/* Animated loader */}
+            <div className="relative w-16 h-16">
               <div className="absolute inset-0 rounded-full border-2 border-[var(--accent)]/20" />
               <div className="absolute inset-0 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
+              <div className="absolute inset-2 rounded-full border-2 border-[var(--accent)]/20" />
+              <div
+                className="absolute inset-2 rounded-full border-2 border-[var(--accent)] border-b-transparent animate-spin"
+                style={{ animationDirection: 'reverse', animationDuration: '0.8s' }}
+              />
             </div>
-            <span className="text-sm text-[var(--text-secondary)] animate-shimmer">
-              Scraping webpage and extracting images...
-            </span>
+
+            {/* Progress steps */}
+            <div className="space-y-2 text-center">
+              <p className="text-sm font-medium text-[var(--text-primary)] animate-shimmer">
+                Extracting images...
+              </p>
+              <p className="text-xs text-[var(--text-muted)]">
+                Scraping page, finding images, validating URLs
+              </p>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Tool progress */}
-      {toolInvocations.length > 0 && (
-        <ToolProgress toolInvocations={toolInvocations} />
-      )}
-
       {/* Results */}
-      {uniqueUrls.length > 0 && !hasActiveTools && (
-        <ImageResults images={uniqueUrls} />
+      {state === 'success' && images.length > 0 && (
+        <ImageResults images={images} />
       )}
 
-      {/* Empty state after completion */}
-      {!isLoading && lastMessage && uniqueUrls.length === 0 && !hasActiveTools && (
+      {/* Error/Empty state */}
+      {state === 'error' && (
         <div className="mt-12 text-center animate-fade-in-up">
           <div className="inline-flex flex-col items-center gap-3 px-8 py-6 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border)]">
             <div className="w-12 h-12 rounded-xl bg-[var(--error-bg)] flex items-center justify-center">
@@ -117,7 +101,7 @@ export function ImageExtractor() {
             </div>
             <div>
               <p className="text-sm font-medium text-[var(--text-primary)]">
-                No images found
+                {error || 'No images found'}
               </p>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 Try a different URL or check if the page has visible images
