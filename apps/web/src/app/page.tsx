@@ -84,6 +84,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setMode('transform')}
+              aria-pressed={mode === 'transform'}
               className={`px-4 py-2 rounded-lg transition-colors ${
                 mode === 'transform'
                   ? 'bg-[var(--accent)] text-black'
@@ -95,6 +96,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setMode('scrape')}
+              aria-pressed={mode === 'scrape'}
               className={`px-4 py-2 rounded-lg transition-colors ${
                 mode === 'scrape'
                   ? 'bg-[var(--accent)] text-black'
@@ -119,7 +121,7 @@ export default function Home() {
 
           {/* Error */}
           {error && (
-            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+            <div role="alert" className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
               {error}
             </div>
           )}
