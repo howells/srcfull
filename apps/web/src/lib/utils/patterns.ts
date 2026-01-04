@@ -6,6 +6,10 @@ export interface Pattern {
   pattern?: string;
   stripParams?: string[];
   stripSuffixes?: string[];
+  extractSource?: {
+    pattern: string;
+    replacement: string;
+  };
   sourceTransform?: string;
   preservePath?: string;
   confidence: 'high' | 'medium' | 'low';

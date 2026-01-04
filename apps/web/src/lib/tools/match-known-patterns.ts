@@ -19,6 +19,21 @@ export async function executeMatchKnownPatterns(
 
       let cleanUrl = url;
 
+      // Try extractSource regex first (for path-based CDN transforms)
+      if (pattern.extractSource) {
+        const regex = new RegExp(pattern.extractSource.pattern);
+        const match = url.match(regex);
+        if (match) {
+          cleanUrl = url.replace(regex, pattern.extractSource.replacement);
+          if (cleanUrl !== url) {
+            return {
+              success: true,
+              data: cleanUrl,
+            };
+          }
+        }
+      }
+
       // Strip query parameters
       if (pattern.stripParams) {
         for (const param of pattern.stripParams) {
