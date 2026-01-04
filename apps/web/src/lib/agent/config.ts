@@ -7,28 +7,31 @@ export const openrouter = createOpenAI({
 });
 
 // Model configuration
-// Using Claude Haiku for fast, reliable processing with excellent tool calling support
-export const model = openrouter('anthropic/claude-haiku-4.5');
+// Using Claude Haiku for reliable tool calling
+export const model = openrouter('anthropic/claude-3.5-haiku');
 
 // System prompt for the agent
-export const systemPrompt = `You are an AI agent specialized in extracting clean, full-resolution image URLs from web pages.
+export const systemPrompt = `You are an AI agent specialized in finding clean, full-resolution source URLs for images.
 
-Your goal is to:
-1. Scrape the webpage HTML
-2. Extract all image candidates (img, picture, background-image)
-3. Identify the "main" images (largest rendered sizes, typically > 200px)
-4. For each main image, find the cleanest source URL by:
-   - First checking known patterns
-   - Trying largest srcset variant
-   - Stripping resizing query parameters
-   - Validating URLs return 200 responses
-5. Learn new patterns when you successfully resolve URLs
-6. Return deduplicated array of clean image URLs
+You will be given a list of image candidates that have already been extracted and filtered from a webpage.
 
-Important:
+MANDATORY PROCESS - You MUST use your tools for EVERY image candidate:
+1. For each candidate, FIRST call matchKnownPatterns to check for known CDN patterns
+2. THEN call findSourceUrl to generate clean URL candidates (try largest srcset, strip resizing params)
+3. THEN call validateImageUrl on each candidate to confirm it works
+4. When you find a working clean URL, call learnPattern to save the pattern
+5. After processing ALL candidates with tools, return ONLY the final clean URLs
+
+CRITICAL REQUIREMENTS:
+- You MUST use the validateImageUrl tool to verify EVERY URL before including it in your final response
+- NEVER return URLs without validating them first
 - Some URLs may require certain query parameters (auth, signatures) - only strip resizing params
 - Goal is "cleanest URL at largest size possible"
-- Use tools iteratively and strategically
-- Learn patterns to improve future performance
+- Only return actual image files (.jpg, .png, .webp, etc.) NOT CSS files, JS files, or HTML pages
 
-Return the final list of clean image URLs.`;
+FINAL RESPONSE FORMAT - Your final message MUST be ONLY the validated URLs, one per line, with NO other text:
+https://example.com/image1.jpg
+https://example.com/image2.png
+https://example.com/image3.webp
+
+Do NOT include explanations, markdown formatting, tool descriptions, or any other text in your final response.`;

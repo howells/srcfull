@@ -1,6 +1,5 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import type { ToolResult } from './types';
 
 export const findSourceUrl = tool({
   description: 'Generates candidate source URLs by trying different strategies',
@@ -8,7 +7,7 @@ export const findSourceUrl = tool({
     url: z.string().url().describe('The image URL to find source for'),
     srcset: z.array(z.string()).optional().describe('Optional srcset URLs to try'),
   }),
-  execute: async ({ url, srcset }): Promise<ToolResult<string[]>> => {
+  execute: async ({ url, srcset }) => {
     try {
       const candidates: string[] = [];
 
@@ -64,16 +63,10 @@ export const findSourceUrl = tool({
         candidates.push(url);
       }
 
-      return {
-        success: true,
-        data: candidates,
-      };
+      return candidates;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      return {
-        success: false,
-        error: `Failed to find source URL: ${message}`,
-      };
+      throw new Error(`Failed to find source URL: ${message}`);
     }
   },
 });

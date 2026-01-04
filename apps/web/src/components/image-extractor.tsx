@@ -3,6 +3,8 @@
 import { useChat } from 'ai/react';
 import { UrlForm } from './url-form';
 import { ImageResults } from './image-results';
+import { ToolProgress } from './tool-progress';
+import { ShimmerText } from './shimmer-text';
 
 export function ImageExtractor() {
   const { messages, append, isLoading } = useChat({
@@ -20,95 +22,84 @@ export function ImageExtractor() {
   const lastMessage = messages.filter(m => m.role === 'assistant').pop();
   const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g;
 
-  // Helper function to check if URL looks like an image
-  const isLikelyImageUrl = (url: string): boolean => {
+  // Helper function to check if URL is definitely an image (strict validation)
+  const isImageUrl = (url: string): boolean => {
     try {
       const urlObj = new URL(url);
       const pathname = urlObj.pathname.toLowerCase();
-      // Check for image extensions or common image CDN patterns
-      return (
-        pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|avif|bmp)(\?|$)/i) !== null ||
-        url.includes('/images/') ||
-        url.includes('/img/') ||
-        url.includes('cdn') ||
-        url.includes('cloudinary') ||
-        url.includes('imgix')
-      );
+      const fullUrl = url.toLowerCase();
+
+      // Check if it's a known image CDN (these don't always have file extensions)
+      const isKnownImageCdn =
+        fullUrl.includes('imageresizer.azureedge.net') ||
+        fullUrl.includes('cloudinary.com') ||
+        fullUrl.includes('imgix.net') ||
+        fullUrl.includes('images.unsplash.com');
+
+      // Must have an image extension in the path or query string, OR be from a known image CDN
+      const hasImageExtension = /\.(jpg|jpeg|png|gif|webp|avif|bmp|svg)(\?|$)/i.test(pathname);
+      const hasFormatParam = /[?&]format=(jpg|jpeg|png|gif|webp|avif|bmp)/i.test(fullUrl);
+
+      // Filter out obvious non-images
+      const isNonImage =
+        fullUrl.includes('.css') ||
+        fullUrl.includes('.js') ||
+        fullUrl.includes('.json') ||
+        fullUrl.includes('/css/') ||
+        fullUrl.includes('/js/') ||
+        fullUrl.includes('/fonts/') ||
+        pathname === '/' ||
+        !pathname ||
+        pathname.length < 5;
+
+      return (hasImageExtension || hasFormatParam || isKnownImageCdn) && !isNonImage;
     } catch {
       return false;
     }
   };
 
-  // Extract URLs from message content
+  // Extract URLs from text content (agent's final response)
   const contentUrls = (lastMessage?.content.match(urlRegex) || [])
-    .filter(isLikelyImageUrl);
+    .filter(isImageUrl);
 
-  // Extract URLs from tool invocations results
-  const toolUrls: string[] = [];
-  if (lastMessage?.toolInvocations) {
-    for (const invocation of lastMessage.toolInvocations) {
-      if (invocation.state === 'result' && invocation.result) {
-        // Convert result to string and extract URLs
-        const resultStr = JSON.stringify(invocation.result);
-        const urls = (resultStr.match(urlRegex) || []).filter(isLikelyImageUrl);
-        toolUrls.push(...urls);
-      }
-    }
-  }
+  // Deduplicate
+  const uniqueUrls = [...new Set(contentUrls)];
 
-  // Combine all URLs and deduplicate
-  const allUrls = [...contentUrls, ...toolUrls];
-  const uniqueUrls = [...new Set(allUrls)];
+  // Get tool invocations for progress display
+  const toolInvocations = lastMessage?.toolInvocations || [];
+  const hasActiveTools = toolInvocations.some(t => t.state === 'call');
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full gap-8">
       <UrlForm onSubmit={handleSubmit} isLoading={isLoading} />
 
-      {/* Show agent progress during development */}
-      {process.env.NODE_ENV === 'development' && messages.length > 0 && (
-        <div className="w-full max-w-2xl mt-8 space-y-4">
-          <h3 className="text-lg font-semibold">Agent Progress:</h3>
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`p-4 rounded-lg ${
-                message.role === 'user'
-                  ? 'bg-blue-50 border border-blue-200'
-                  : 'bg-gray-50 border border-gray-200'
-              }`}
-            >
-              <div className="text-xs font-semibold text-gray-500 uppercase mb-2">
-                {message.role}
-              </div>
-              <div className="text-sm whitespace-pre-wrap">
-                {message.content}
-              </div>
-              {message.toolInvocations && message.toolInvocations.length > 0 && (
-                <div className="mt-3 space-y-2">
-                  {message.toolInvocations.map((tool, toolIndex) => (
-                    <div
-                      key={toolIndex}
-                      className="p-2 bg-white rounded border border-gray-200"
-                    >
-                      <div className="text-xs font-mono text-purple-600">
-                        {tool.toolName}
-                      </div>
-                      {tool.state === 'result' && (
-                        <div className="mt-1 text-xs text-gray-600">
-                          Complete
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+      {/* Show loading state when processing but no messages yet */}
+      {isLoading && messages.length === 0 && (
+        <div className="w-full max-w-2xl">
+          <ShimmerText className="text-lg">
+            Scraping webpage and extracting images...
+          </ShimmerText>
+        </div>
+      )}
+
+      {/* Show tool progress when agent is resolving URLs */}
+      {toolInvocations.length > 0 && (
+        <div className="w-full max-w-2xl">
+          <h3 className="text-lg font-semibold mb-4">
+            {hasActiveTools ? (
+              <ShimmerText>Resolving clean image URLs...</ShimmerText>
+            ) : (
+              'URL resolution complete'
+            )}
+          </h3>
+          <ToolProgress toolInvocations={toolInvocations} />
         </div>
       )}
 
       {/* Show final results */}
-      <ImageResults images={uniqueUrls} />
+      {uniqueUrls.length > 0 && (
+        <ImageResults images={uniqueUrls} />
+      )}
     </div>
   );
 }

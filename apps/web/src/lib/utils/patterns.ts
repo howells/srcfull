@@ -22,14 +22,28 @@ export function loadPatterns(): Patterns {
     return cachedPatterns;
   }
 
-  const patternsPath = path.join(process.cwd(), '../../data/patterns.json');
-  const data = fs.readFileSync(patternsPath, 'utf-8');
-  cachedPatterns = JSON.parse(data) as Patterns;
-  return cachedPatterns;
+  try {
+    const patternsPath = path.join(process.cwd(), '../../data/patterns.json');
+    const data = fs.readFileSync(patternsPath, 'utf-8');
+    cachedPatterns = JSON.parse(data) as Patterns;
+    console.log('Loaded patterns from:', patternsPath);
+    return cachedPatterns;
+  } catch (error) {
+    console.error('Failed to load patterns:', error);
+    // Return empty patterns instead of crashing
+    cachedPatterns = {};
+    return cachedPatterns;
+  }
 }
 
 export function savePatterns(patterns: Patterns): void {
-  const patternsPath = path.join(process.cwd(), '../../data/patterns.json');
-  fs.writeFileSync(patternsPath, JSON.stringify(patterns, null, 2));
-  cachedPatterns = patterns;
+  try {
+    const patternsPath = path.join(process.cwd(), '../../data/patterns.json');
+    fs.writeFileSync(patternsPath, JSON.stringify(patterns, null, 2));
+    cachedPatterns = patterns;
+    console.log('Saved patterns to:', patternsPath);
+  } catch (error) {
+    console.error('Failed to save patterns:', error);
+    // Don't crash if we can't save patterns
+  }
 }

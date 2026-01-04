@@ -91,5 +91,11 @@ export const matchKnownPatterns = tool({
   parameters: z.object({
     url: z.string().url().describe('The image URL to check against known patterns'),
   }),
-  execute: async ({ url }) => executeMatchKnownPatterns(url),
+  execute: async ({ url }) => {
+    const result = await executeMatchKnownPatterns(url);
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to match patterns');
+    }
+    return result.data;
+  },
 });

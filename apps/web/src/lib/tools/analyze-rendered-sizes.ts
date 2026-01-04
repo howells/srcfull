@@ -19,11 +19,39 @@ export const analyzeRenderedSizes = tool({
   execute: async ({ candidates }): Promise<ToolResult<ImageCandidate[]>> => {
     try {
       const MIN_SIZE = 200; // Minimum width or height to be considered a "main" image
+      const MAX_LOGO_SIZE = 150; // Maximum dimension for likely logos
+
+      // Common logo and icon patterns to filter out
+      const logoPatterns = [
+        /logo/i,
+        /icon/i,
+        /favicon/i,
+        /badge/i,
+        /sprite/i,
+        /thumbnail/i,
+        /avatar/i,
+        /profile-pic/i,
+        /social/i,
+        /share/i,
+        /button/i,
+      ];
 
       const mainImages = candidates.filter(candidate => {
+        // Filter out URLs that match logo patterns
+        const isLikelyLogo = logoPatterns.some(pattern => pattern.test(candidate.url));
+        if (isLikelyLogo) {
+          return false;
+        }
+
         // If we have explicit dimensions, check them
         if (candidate.width || candidate.height) {
           const maxDimension = Math.max(candidate.width || 0, candidate.height || 0);
+
+          // Filter out small images that are likely icons/logos
+          if (maxDimension < MAX_LOGO_SIZE) {
+            return false;
+          }
+
           return maxDimension >= MIN_SIZE;
         }
 

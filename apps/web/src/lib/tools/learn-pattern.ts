@@ -1,6 +1,5 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import type { ToolResult } from './types';
 import { loadPatterns, savePatterns } from '../utils/patterns';
 
 export const learnPattern = tool({
@@ -10,11 +9,11 @@ export const learnPattern = tool({
     sourceUrl: z.string().url().describe('The resolved source URL'),
     domain: z.string().describe('The domain to associate this pattern with'),
   }),
-  execute: async ({ originalUrl, sourceUrl, domain }): Promise<ToolResult<void>> => {
+  execute: async ({ originalUrl, sourceUrl, domain }) => {
     try {
       // Don't learn if URLs are the same
       if (originalUrl === sourceUrl) {
-        return { success: true };
+        return { learned: false, reason: 'URLs are identical' };
       }
 
       const patterns = loadPatterns();
@@ -48,7 +47,9 @@ export const learnPattern = tool({
             stripParams: [...currentParams, ...newParams],
           };
           savePatterns(patterns);
+          return { learned: true, updated: true, params: newParams };
         }
+        return { learned: false, reason: 'Pattern already known' };
       } else if (strippedParams.length > 0) {
         // Create new pattern
         const patternName = domain.replace(/[^a-zA-Z0-9]/g, '_');
@@ -59,18 +60,15 @@ export const learnPattern = tool({
           examples: [originalUrl],
         };
         savePatterns(patterns);
+        return { learned: true, created: true, params: strippedParams };
       }
 
-      return {
-        success: true,
-      };
+      return { learned: false, reason: 'No params to learn' };
     } catch (error) {
       // Don't fail the request if we can't learn
       // Just log and continue
       console.error('Failed to learn pattern:', error);
-      return {
-        success: true,
-      };
+      return { learned: false, reason: 'Error during learning' };
     }
   },
 });
