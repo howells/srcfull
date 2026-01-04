@@ -1,7 +1,10 @@
 import { ScrapingBeeClient } from 'scrapingbee';
-import { tool } from 'ai';
-import { z } from 'zod';
-import type { ToolResult } from './types';
+
+interface ToolResult<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
 
 const client = new ScrapingBeeClient(
   process.env.SCRAPINGBEE_API_KEY!
@@ -40,11 +43,3 @@ export async function executeScrapeWebpage(url: string): Promise<ToolResult<stri
     };
   }
 }
-
-export const scrapeWebpage = tool({
-  description: 'Scrapes a webpage and returns its HTML content using ScrapingBee',
-  parameters: z.object({
-    url: z.string().url().describe('The URL to scrape'),
-  }),
-  execute: async ({ url }) => executeScrapeWebpage(url),
-});

@@ -1,7 +1,19 @@
 import * as cheerio from 'cheerio';
-import { tool } from 'ai';
-import { z } from 'zod';
-import type { ToolResult, ImageCandidate } from './types';
+
+export interface ImageCandidate {
+  url: string;
+  source: 'img' | 'picture' | 'background';
+  width?: number;
+  height?: number;
+  srcset?: string[];
+  alt?: string;
+}
+
+export interface ToolResult<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
 
 // Internal function for testing
 export async function executeExtractImageElements(
@@ -86,11 +98,3 @@ export async function executeExtractImageElements(
     };
   }
 }
-
-export const extractImageElements = tool({
-  description: 'Extracts all image elements from HTML including img, picture, and CSS background images',
-  parameters: z.object({
-    html: z.string().describe('The HTML content to parse'),
-  }),
-  execute: async ({ html }) => executeExtractImageElements(html),
-});
