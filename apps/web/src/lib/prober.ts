@@ -30,13 +30,14 @@ export function generateCandidates(url: string): string[] {
     }
 
     // 2. Try larger dimensions
-    const largeUrl = new URL(url);
-    if (largeUrl.searchParams.has('w')) {
+    if (urlObj.searchParams.has('w')) {
+      const largeUrl = new URL(url);
       largeUrl.searchParams.set('w', '2560');
       largeUrl.searchParams.delete('h');
       candidates.push(largeUrl.href);
     }
-    if (largeUrl.searchParams.has('width')) {
+    if (urlObj.searchParams.has('width')) {
+      const largeUrl = new URL(url);
       largeUrl.searchParams.set('width', '2560');
       largeUrl.searchParams.delete('height');
       candidates.push(largeUrl.href);
