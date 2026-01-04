@@ -21,6 +21,9 @@ export async function savePattern(
     DO UPDATE SET successes = patterns.successes + 1, last_used_at = NOW()
     RETURNING *
   `;
+  if (!pattern) {
+    throw new Error('Failed to save pattern');
+  }
   return pattern;
 }
 
@@ -40,7 +43,7 @@ export async function incrementFailure(patternId: number): Promise<void> {
     UPDATE patterns
     SET
       failures = failures + 1,
-      confidence = confidence - 0.2
+      confidence = GREATEST(confidence - 0.2, 0)
     WHERE id = ${patternId}
   `;
 
