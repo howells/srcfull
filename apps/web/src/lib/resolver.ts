@@ -75,19 +75,23 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
   }
 
   // 4. Probe for source
-  const probeResult = await probeForSource(imageUrl, originalSize);
-  if (probeResult) {
-    // Learn the pattern for next time
-    await learnPattern(imageUrl, probeResult.url);
-    const sizeIncrease = calculateSizeIncrease(originalSize, probeResult.size);
-    await cacheResult(imageUrl, probeResult.url);
-    return {
-      original,
-      resolved: probeResult.url,
-      method: 'probed',
-      confidence: 0.5,
-      sizeIncrease,
-    };
+  try {
+    const probeResult = await probeForSource(imageUrl, originalSize);
+    if (probeResult) {
+      // Learn the pattern for next time
+      await learnPattern(imageUrl, probeResult.url);
+      const sizeIncrease = calculateSizeIncrease(originalSize, probeResult.size);
+      await cacheResult(imageUrl, probeResult.url);
+      return {
+        original,
+        resolved: probeResult.url,
+        method: 'probed',
+        confidence: 0.5,
+        sizeIncrease,
+      };
+    }
+  } catch {
+    // Probing failed, continue to fallback
   }
 
   // 5. Fallback - return original
