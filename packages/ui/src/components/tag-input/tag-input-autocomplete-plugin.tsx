@@ -1,6 +1,7 @@
 "use client";
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { cn } from "@repo/ui/lib/utils";
 import {
   $getSelection,
   $isRangeSelection,
@@ -14,12 +15,11 @@ import {
 } from "lexical";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { cn } from "@repo/ui/lib/utils";
 import { useTagInputContext } from "./tag-input-context";
+import { $isMatchedElementNode } from "./tag-input-matched-element-node";
 import type { TagData } from "./tag-input-types";
 import { getTextSinceLastTag } from "./utils/get-text-since-last-tag";
 import { replaceKeywordWithNode } from "./utils/replace-keyword-with-node";
-import { $isMatchedElementNode } from "./tag-input-matched-element-node";
 
 function DropdownList({
   suggestions,
@@ -36,35 +36,35 @@ function DropdownList({
 }) {
   return createPortal(
     <div
-      className="fixed z-50 w-64 max-h-60 overflow-auto rounded-md border border-border bg-popover shadow-lg"
-      style={{
-        top: `${anchorPosition.bottom + window.scrollY + 4}px`,
-        left: `${anchorPosition.left + window.scrollX}px`,
-      }}
+      className="fixed z-50 max-h-60 w-64 overflow-auto rounded-md border border-border bg-popover shadow-lg"
       onMouseDown={(e) => {
         // Prevent focus loss from Lexical editor
         e.preventDefault();
+      }}
+      style={{
+        top: `${anchorPosition.bottom + window.scrollY + 4}px`,
+        left: `${anchorPosition.left + window.scrollX}px`,
       }}
     >
       <div className="py-1">
         {suggestions.map((item, index) => (
           <div
-            key={`${item.id}-${index}`}
             className={cn(
               "w-full cursor-default select-none px-3 py-2 text-left text-sm outline-none transition-colors",
               index === highlightedIndex
                 ? "bg-accent text-accent-foreground"
                 : "hover:bg-accent hover:text-accent-foreground"
             )}
-            onMouseEnter={() => onHighlight(index)}
+            key={`${item.id}-${index}`}
             onMouseDown={(e) => {
               e.preventDefault();
               onSelect(item);
             }}
+            onMouseEnter={() => onHighlight(index)}
           >
             <div className="font-medium">{item.label}</div>
             {item.type && (
-              <div className="text-xs text-muted-foreground capitalize">
+              <div className="text-muted-foreground text-xs capitalize">
                 {item.type}
               </div>
             )}
@@ -105,7 +105,7 @@ export function AutocompletePlugin() {
           return;
         }
 
-        const textContent = node.getTextContent();
+        const _textContent = node.getTextContent();
         const offset = selection.anchor.offset;
         const textSinceLastTag = getTextSinceLastTag(node, offset);
 
@@ -274,11 +274,11 @@ export function AutocompletePlugin() {
 
   return (
     <DropdownList
-      suggestions={suggestions}
-      highlightedIndex={highlightedIndex}
-      onSelect={handleSelect}
-      onHighlight={setHighlightedIndex}
       anchorPosition={anchorPosition}
+      highlightedIndex={highlightedIndex}
+      onHighlight={setHighlightedIndex}
+      onSelect={handleSelect}
+      suggestions={suggestions}
     />
   );
 }

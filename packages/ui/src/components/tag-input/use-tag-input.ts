@@ -24,7 +24,9 @@ export function useTagInput(editor: LexicalEditor | null) {
 
   // Listen to editor updates and collect tags
   useEffect(() => {
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
 
     return editor.registerUpdateListener(({ editorState }) => {
       const newTags = collectTags(editorState);

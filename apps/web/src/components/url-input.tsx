@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 type Props = {
   onSubmit: (url: string) => void;
@@ -9,8 +9,13 @@ type Props = {
   buttonText?: string;
 };
 
-export function UrlInput({ onSubmit, isLoading, placeholder, buttonText }: Props) {
-  const [url, setUrl] = useState('');
+export function UrlInput({
+  onSubmit,
+  isLoading,
+  placeholder,
+  buttonText,
+}: Props) {
+  const [url, setUrl] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,21 +25,21 @@ export function UrlInput({ onSubmit, isLoading, placeholder, buttonText }: Props
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3">
+    <form className="flex gap-3" onSubmit={handleSubmit}>
       <input
+        className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--accent)] focus:outline-none"
+        disabled={isLoading}
+        onChange={(e) => setUrl(e.target.value)}
+        placeholder={placeholder ?? "Paste image or page URL..."}
         type="url"
         value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder={placeholder ?? 'Paste image or page URL...'}
-        className="flex-1 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)]"
-        disabled={isLoading}
       />
       <button
-        type="submit"
+        className="rounded-lg bg-[var(--accent)] px-6 py-3 font-medium text-black transition-colors hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         disabled={!url.trim() || isLoading}
-        className="px-6 py-3 bg-[var(--accent)] text-black font-medium rounded-lg hover:bg-[var(--accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        type="submit"
       >
-        {isLoading ? 'Loading...' : buttonText ?? 'Go'}
+        {isLoading ? "Loading..." : (buttonText ?? "Go")}
       </button>
     </form>
   );

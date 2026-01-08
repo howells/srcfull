@@ -12,9 +12,9 @@ import {
   useTransform,
   wrap,
 } from "motion/react";
-import * as React from "react";
+import type * as React from "react";
 
-export interface CardStackItemProps {
+export type CardStackItemProps = {
   children?: React.ReactNode;
   className?: string;
   index?: number;
@@ -27,7 +27,7 @@ export interface CardStackItemProps {
   aspectRatio?: number;
   isNew?: boolean;
   baseRotation?: number;
-}
+};
 
 /**
  * CardStackItem represents a single card in the stack.
@@ -85,29 +85,29 @@ export function CardStackItem({
 
   return (
     <motion.li
+      animate={{ opacity: 1, scale }}
       className={cn(
-        "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-sm will-change-transform",
+        "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 overflow-hidden rounded-xl shadow-sm will-change-transform",
         aspectRatio && aspectRatio > 1 ? "h-auto w-full" : "h-full w-auto",
         className
       )}
+      data-component="card-stack-item"
+      drag={index === currentIndex ? "x" : false}
+      exit={{ opacity: 0, scale: 0.5 }}
+      initial={isNew ? { opacity: 0, scale: 0.3 } : false}
+      onDragEnd={handleDragEnd}
       style={{
         aspectRatio: aspectRatio ? aspectRatio : undefined,
         zIndex,
         rotate,
         x,
       }}
-      initial={isNew ? { opacity: 0, scale: 0.3 } : false}
-      animate={{ opacity: 1, scale }}
-      exit={{ opacity: 0, scale: 0.5 }}
-      whileTap={index === currentIndex ? { scale: 0.99 } : {}}
       transition={{
         type: "spring",
         stiffness: 350,
         damping: 35,
       }}
-      drag={index === currentIndex ? "x" : false}
-      onDragEnd={handleDragEnd}
-      data-component="card-stack-item"
+      whileTap={index === currentIndex ? { scale: 0.99 } : {}}
     >
       {children}
     </motion.li>

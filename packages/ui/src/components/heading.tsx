@@ -21,7 +21,10 @@ const headingVariants = cva("font-semibold", {
 type HeadingLevel = "1" | "2" | "3" | "4" | "5" | "6";
 
 // Map heading levels to default sizes
-const LEVEL_SIZE_MAP: Record<HeadingLevel, VariantProps<typeof headingVariants>["size"]> = {
+const LEVEL_SIZE_MAP: Record<
+  HeadingLevel,
+  VariantProps<typeof headingVariants>["size"]
+> = {
   "1": "2xl",
   "2": "xl",
   "3": "lg",
@@ -35,12 +38,7 @@ type HeadingProps = Omit<React.ComponentProps<"h1">, "size"> &
     level?: HeadingLevel;
   };
 
-function Heading({
-  level = "1",
-  size,
-  className,
-  ...props
-}: HeadingProps) {
+function Heading({ level = "1", size, className, ...props }: HeadingProps) {
   const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   // Default size to match level if not specified
   const effectiveSize = size ?? LEVEL_SIZE_MAP[level];

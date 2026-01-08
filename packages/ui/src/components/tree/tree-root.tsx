@@ -1,4 +1,8 @@
-import { syncDataLoaderFeature, hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
+import {
+  hotkeysCoreFeature,
+  selectionFeature,
+  syncDataLoaderFeature,
+} from "@headless-tree/core";
 import type { ItemInstance } from "@headless-tree/react";
 import { useTree } from "@headless-tree/react";
 import { useMemo } from "react";
@@ -7,13 +11,13 @@ import { TreeItem } from "./tree-item";
 import type { TreeNode } from "./tree-types";
 import { buildTreeDataStructure } from "./tree-utils";
 
-export interface TreeRootProps<T = unknown> {
+export type TreeRootProps<T = unknown> = {
   data: TreeNode<T>[];
   onItemClick?: (item: ItemInstance, data?: T) => void;
   renderLabel?: (item: ItemInstance, data?: T) => React.ReactNode;
   defaultExpandedIds?: string[];
   className?: string;
-}
+};
 
 export function TreeRoot<T = unknown>({
   data,
@@ -27,7 +31,7 @@ export function TreeRoot<T = unknown>({
     [data]
   );
 
-  console.log('TreeRoot dataStructure sample:', {
+  console.log("TreeRoot dataStructure sample:", {
     rootId: rootItemId,
     root: dataStructure[rootItemId],
     firstChild: dataStructure[dataStructure[rootItemId]?.childrenIds?.[0]],
@@ -37,24 +41,31 @@ export function TreeRoot<T = unknown>({
     rootItemId,
     getItemName: (item) => {
       const data = item.getItemData();
-      console.log('getItemName:', data?.name);
+      console.log("getItemName:", data?.name);
       return data.name;
     },
     isItemFolder: (item) => {
       const data = item.getItemData();
       const result = Boolean(data?.isFolder);
-      console.log('isItemFolder:', data?.name, 'isFolder:', data?.isFolder, 'result:', result);
+      console.log(
+        "isItemFolder:",
+        data?.name,
+        "isFolder:",
+        data?.isFolder,
+        "result:",
+        result
+      );
       return result;
     },
     dataLoader: {
       getItem: (itemId) => {
         const item = dataStructure[itemId];
-        console.log('getItem:', itemId, 'item:', item);
+        console.log("getItem:", itemId, "item:", item);
         return item;
       },
       getChildren: (itemId) => {
         const children = dataStructure[itemId]?.childrenIds ?? [];
-        console.log('getChildren:', itemId, 'children:', children);
+        console.log("getChildren:", itemId, "children:", children);
         return children;
       },
     },
@@ -72,8 +83,8 @@ export function TreeRoot<T = unknown>({
 
         return (
           <TreeItem
-            key={itemId}
             item={item}
+            key={itemId}
             onItemClick={
               onItemClick ? () => onItemClick(item, itemData) : undefined
             }

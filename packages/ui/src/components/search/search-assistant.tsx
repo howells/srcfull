@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
 import { easings } from "@repo/ui/lib/motion";
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 
-export interface SearchAssistantProps {
+export type SearchAssistantProps = {
   message: string;
   visible: boolean;
-}
+};
 
 export function SearchAssistant({ message, visible }: SearchAssistantProps) {
   const [gradientPosition, setGradientPosition] = useState(0);
@@ -20,23 +20,23 @@ export function SearchAssistant({ message, visible }: SearchAssistantProps) {
   }, []);
 
   return (
-    <div className="mb-6 h-8 relative overflow-visible">
+    <div className="relative mb-6 h-8 overflow-visible">
       <motion.div
         animate={{
           y: visible ? 0 : 60,
           opacity: visible ? 1 : 0,
           filter: visible ? "blur(0px)" : "blur(4px)",
         }}
+        className="absolute inset-0 flex items-center gap-3"
+        style={{ marginLeft: "16px", zIndex: 1 }}
         transition={{
           duration: 0.25,
           ease: visible ? easings.customOut : easings.customIn,
         }}
-        className="flex items-center gap-3 absolute inset-0"
-        style={{ marginLeft: "16px", zIndex: 1 }}
       >
-        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full">
           <div
-            className="w-full h-full rounded-full"
+            className="h-full w-full rounded-full"
             style={{
               background: `linear-gradient(${gradientPosition}deg, #dbeafe, #bfdbfe, #93c5fd)`,
               filter: "blur(0.5px)",
@@ -44,14 +44,14 @@ export function SearchAssistant({ message, visible }: SearchAssistantProps) {
           />
         </div>
         <motion.div
-          key={message}
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, ease: easings.smooth }}
-          className="text-[15px] text-gray-600 font-normal leading-relaxed"
-          style={{ letterSpacing: "-0.01em" }}
-          role="status"
           aria-live="polite"
+          className="font-normal text-[15px] text-gray-600 leading-relaxed"
+          initial={{ opacity: 0 }}
+          key={message}
+          role="status"
+          style={{ letterSpacing: "-0.01em" }}
+          transition={{ duration: 0.3, ease: easings.smooth }}
         >
           {message}
         </motion.div>

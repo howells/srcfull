@@ -3,7 +3,10 @@ import type * as React from "react";
 
 export type BadgeDotProps = React.HTMLAttributes<HTMLSpanElement>;
 
-export function BadgeDot({ className, ...props }: React.ComponentProps<"span">) {
+export function BadgeDot({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(

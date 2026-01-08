@@ -87,7 +87,9 @@ export function DetailsPanel({
   const setOpen = store((s) => s.setOpen);
 
   if (isDesktop) {
-    if (!open) return null;
+    if (!open) {
+      return null;
+    }
     const sideClasses =
       side === "right" ? "right-0 border-l" : "left-0 border-r";
     return (

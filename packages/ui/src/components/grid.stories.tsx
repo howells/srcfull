@@ -72,14 +72,15 @@ export const ColumnSpans: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Grid columns can span different widths across the 12-column layout.",
+        story:
+          "Grid columns can span different widths across the 12-column layout.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Equal columns (4 each)</div>
+        <div className="mb-2 font-medium text-sm">Equal columns (4 each)</div>
         <Grid>
           <GridCol span={4}>
             <Box>span 4</Box>
@@ -93,7 +94,7 @@ export const ColumnSpans: Story = {
         </Grid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Mixed widths</div>
+        <div className="mb-2 font-medium text-sm">Mixed widths</div>
         <Grid>
           <GridCol span={8}>
             <Box>span 8</Box>
@@ -104,7 +105,7 @@ export const ColumnSpans: Story = {
         </Grid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Full width</div>
+        <div className="mb-2 font-medium text-sm">Full width</div>
         <Grid>
           <GridCol span={12}>
             <Box>span 12</Box>
@@ -120,14 +121,15 @@ export const OffsetsAndOrder: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Use offsets to create spacing and order props to control visual sequence.",
+        story:
+          "Use offsets to create spacing and order props to control visual sequence.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">With offset</div>
+        <div className="mb-2 font-medium text-sm">With offset</div>
         <Grid>
           <GridCol offset={3} span={3}>
             <Box>offset 3, span 3</Box>
@@ -138,7 +140,7 @@ export const OffsetsAndOrder: Story = {
         </Grid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Reordered</div>
+        <div className="mb-2 font-medium text-sm">Reordered</div>
         <Grid>
           <GridCol order={2} span={3}>
             <Box>Second (order 2)</Box>
@@ -160,7 +162,8 @@ export const Grow: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "When grow is enabled, columns without explicit spans distribute space equally.",
+        story:
+          "When grow is enabled, columns without explicit spans distribute space equally.",
       },
     },
   },
@@ -197,7 +200,7 @@ export const GutterSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Gap: 8px</div>
+        <div className="mb-2 font-medium text-sm">Gap: 8px</div>
         <Grid gap={8}>
           <GridCol span={4}>
             <Box>1</Box>
@@ -211,7 +214,7 @@ export const GutterSizes: Story = {
         </Grid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Gap: 32px</div>
+        <div className="mb-2 font-medium text-sm">Gap: 32px</div>
         <Grid gap={32}>
           <GridCol span={4}>
             <Box>1</Box>
@@ -233,7 +236,8 @@ export const ResponsiveLayout: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Common responsive pattern: full width on mobile, split on desktop.",
+        story:
+          "Common responsive pattern: full width on mobile, split on desktop.",
       },
     },
   },

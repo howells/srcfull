@@ -16,15 +16,15 @@ export function SidebarTrigger({
 
   return (
     <Button
+      appearance="ghost"
       className={cn("size-7", className)}
-      data-sidebar="trigger"
       data-component="sidebar-trigger"
+      data-sidebar="trigger"
       data-slot="sidebar-trigger"
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
-      appearance="ghost"
       {...props}
     >
       <Icon className="size-4" icon={PanelLeftIcon} />
@@ -51,8 +51,8 @@ export function SidebarRail({
         "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
         className
       )}
-      data-sidebar="rail"
       data-component="sidebar-rail"
+      data-sidebar="rail"
       data-slot="sidebar-rail"
       onClick={toggleSidebar}
       tabIndex={-1}

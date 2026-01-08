@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { executeExtractImageElements } from '../lib/tools/extract-image-elements';
+import { describe, expect, it } from "vitest";
+import { executeExtractImageElements } from "../lib/tools/extract-image-elements";
 
-describe('extractImageElements', () => {
-  it('should extract images from img tags', async () => {
+describe("extractImageElements", () => {
+  it("should extract images from img tags", async () => {
     const html = `
       <html>
         <body>
@@ -17,19 +17,19 @@ describe('extractImageElements', () => {
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(2);
     expect(result.data?.[0]).toMatchObject({
-      url: 'https://example.com/image1.jpg',
-      source: 'img',
+      url: "https://example.com/image1.jpg",
+      source: "img",
       width: 800,
       height: 600,
-      alt: 'Test image',
+      alt: "Test image",
     });
     expect(result.data?.[1]).toMatchObject({
-      url: 'https://example.com/image2.jpg',
-      source: 'img',
+      url: "https://example.com/image2.jpg",
+      source: "img",
     });
   });
 
-  it('should extract images from img tags with srcset', async () => {
+  it("should extract images from img tags with srcset", async () => {
     const html = `
       <html>
         <body>
@@ -47,17 +47,17 @@ describe('extractImageElements', () => {
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
     expect(result.data?.[0]).toMatchObject({
-      url: 'https://example.com/image-small.jpg',
-      source: 'img',
-      alt: 'Responsive image',
+      url: "https://example.com/image-small.jpg",
+      source: "img",
+      alt: "Responsive image",
       srcset: [
-        'https://example.com/image-medium.jpg',
-        'https://example.com/image-large.jpg',
+        "https://example.com/image-medium.jpg",
+        "https://example.com/image-large.jpg",
       ],
     });
   });
 
-  it('should extract images from picture elements', async () => {
+  it("should extract images from picture elements", async () => {
     const html = `
       <html>
         <body>
@@ -74,17 +74,19 @@ describe('extractImageElements', () => {
     expect(result.success).toBe(true);
     expect(result.data?.length).toBeGreaterThanOrEqual(2);
 
-    const pictureImages = result.data?.filter(img => img.source === 'picture');
+    const pictureImages = result.data?.filter(
+      (img) => img.source === "picture"
+    );
     expect(pictureImages?.length).toBe(2);
     expect(pictureImages).toContainEqual(
       expect.objectContaining({
-        url: 'https://example.com/image-wide.jpg',
-        source: 'picture',
+        url: "https://example.com/image-wide.jpg",
+        source: "picture",
       })
     );
   });
 
-  it('should extract background images from inline styles', async () => {
+  it("should extract background images from inline styles", async () => {
     const html = `
       <html>
         <body>
@@ -100,14 +102,20 @@ describe('extractImageElements', () => {
     expect(result.success).toBe(true);
     expect(result.data?.length).toBeGreaterThanOrEqual(3);
 
-    const bgImages = result.data?.filter(img => img.source === 'background');
+    const bgImages = result.data?.filter((img) => img.source === "background");
     expect(bgImages?.length).toBe(3);
-    expect(bgImages?.map(img => img.url)).toContain('https://example.com/bg1.jpg');
-    expect(bgImages?.map(img => img.url)).toContain('https://example.com/bg2.jpg');
-    expect(bgImages?.map(img => img.url)).toContain('https://example.com/bg3.jpg');
+    expect(bgImages?.map((img) => img.url)).toContain(
+      "https://example.com/bg1.jpg"
+    );
+    expect(bgImages?.map((img) => img.url)).toContain(
+      "https://example.com/bg2.jpg"
+    );
+    expect(bgImages?.map((img) => img.url)).toContain(
+      "https://example.com/bg3.jpg"
+    );
   });
 
-  it('should deduplicate images with the same URL', async () => {
+  it("should deduplicate images with the same URL", async () => {
     const html = `
       <html>
         <body>
@@ -122,17 +130,17 @@ describe('extractImageElements', () => {
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
-    expect(result.data?.[0].url).toBe('https://example.com/same.jpg');
+    expect(result.data?.[0].url).toBe("https://example.com/same.jpg");
   });
 
-  it('should handle empty HTML', async () => {
-    const result = await executeExtractImageElements('');
+  it("should handle empty HTML", async () => {
+    const result = await executeExtractImageElements("");
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(0);
   });
 
-  it('should handle HTML with no images', async () => {
+  it("should handle HTML with no images", async () => {
     const html = `
       <html>
         <body>
@@ -148,7 +156,7 @@ describe('extractImageElements', () => {
     expect(result.data).toHaveLength(0);
   });
 
-  it('should skip img tags without src attribute', async () => {
+  it("should skip img tags without src attribute", async () => {
     const html = `
       <html>
         <body>
@@ -162,10 +170,10 @@ describe('extractImageElements', () => {
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
-    expect(result.data?.[0].url).toBe('https://example.com/valid.jpg');
+    expect(result.data?.[0].url).toBe("https://example.com/valid.jpg");
   });
 
-  it('should handle malformed HTML gracefully', async () => {
+  it("should handle malformed HTML gracefully", async () => {
     const html = `
       <html>
         <body>
@@ -181,7 +189,7 @@ describe('extractImageElements', () => {
     expect(result.data?.length).toBeGreaterThan(0);
   });
 
-  it('should extract real-world Shopify product images', async () => {
+  it("should extract real-world Shopify product images", async () => {
     const html = `
       <html>
         <body>
@@ -203,19 +211,19 @@ describe('extractImageElements', () => {
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
     expect(result.data?.[0]).toMatchObject({
-      url: 'https://cdn.shopify.com/s/files/1/0001/2345/products/product_large.jpg?v=1234',
-      source: 'img',
+      url: "https://cdn.shopify.com/s/files/1/0001/2345/products/product_large.jpg?v=1234",
+      source: "img",
       width: 1200,
       height: 800,
       srcset: expect.arrayContaining([
-        expect.stringContaining('product_small.jpg'),
-        expect.stringContaining('product_medium.jpg'),
-        expect.stringContaining('product_large.jpg'),
+        expect.stringContaining("product_small.jpg"),
+        expect.stringContaining("product_medium.jpg"),
+        expect.stringContaining("product_large.jpg"),
       ]),
     });
   });
 
-  it('should extract Cloudinary images', async () => {
+  it("should extract Cloudinary images", async () => {
     const html = `
       <html>
         <body>
@@ -228,7 +236,7 @@ describe('extractImageElements', () => {
 
     expect(result.success).toBe(true);
     expect(result.data).toHaveLength(1);
-    expect(result.data?.[0].url).toContain('res.cloudinary.com');
-    expect(result.data?.[0].url).toContain('sample.jpg');
+    expect(result.data?.[0].url).toContain("res.cloudinary.com");
+    expect(result.data?.[0].url).toContain("sample.jpg");
   });
 });

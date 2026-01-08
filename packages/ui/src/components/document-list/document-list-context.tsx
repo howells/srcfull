@@ -1,6 +1,12 @@
- "use client";
+"use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import type { DocumentItem } from "./document-list-types";
 
 type DocumentListContextValue = {
@@ -15,7 +21,9 @@ type DocumentListContextValue = {
   getSelectedDocuments: () => DocumentItem[];
 };
 
-const DocumentListContext = createContext<DocumentListContextValue | null>(null);
+const DocumentListContext = createContext<DocumentListContextValue | null>(
+  null
+);
 
 export function DocumentListProvider({
   documents,
@@ -28,14 +36,17 @@ export function DocumentListProvider({
 
   const isSelected = useCallback(
     (id: string) => selectedIds.has(id),
-    [selectedIds],
+    [selectedIds]
   );
 
   const toggleItem = useCallback((id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   }, []);
@@ -46,17 +57,21 @@ export function DocumentListProvider({
 
   const toggleAll = useCallback(() => {
     setSelectedIds((prev) => {
-      if (prev.size === documents.length) return new Set();
+      if (prev.size === documents.length) {
+        return new Set();
+      }
       return new Set(documents.map((d) => d.id));
     });
   }, [documents]);
 
-  const allSelected = selectedIds.size > 0 && selectedIds.size === documents.length;
-  const someSelected = selectedIds.size > 0 && selectedIds.size < documents.length;
+  const allSelected =
+    selectedIds.size > 0 && selectedIds.size === documents.length;
+  const someSelected =
+    selectedIds.size > 0 && selectedIds.size < documents.length;
 
   const getSelectedDocuments = useCallback(
     () => documents.filter((d) => selectedIds.has(d.id)),
-    [documents, selectedIds],
+    [documents, selectedIds]
   );
 
   const value = useMemo<DocumentListContextValue>(
@@ -81,7 +96,7 @@ export function DocumentListProvider({
       allSelected,
       someSelected,
       getSelectedDocuments,
-    ],
+    ]
   );
 
   return (
@@ -94,7 +109,9 @@ export function DocumentListProvider({
 export function useDocumentListContext(): DocumentListContextValue {
   const ctx = useContext(DocumentListContext);
   if (!ctx) {
-    throw new Error("useDocumentListContext must be used within DocumentListProvider");
+    throw new Error(
+      "useDocumentListContext must be used within DocumentListProvider"
+    );
   }
   return ctx;
 }

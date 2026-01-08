@@ -50,6 +50,7 @@ export function AvatarStatus({
 }: AvatarStatusProps) {
   return (
     <span
+      aria-hidden="true"
       className={cn(
         "absolute rounded-full",
         STATUS_SIZE[size],
@@ -60,7 +61,6 @@ export function AvatarStatus({
       )}
       data-component="avatar-status"
       data-status={status}
-      aria-hidden="true"
     />
   );
 }

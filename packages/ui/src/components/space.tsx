@@ -12,10 +12,16 @@ const SIZE_PX: Record<ComponentSize, number> = {
 };
 
 function toSize(value?: ComponentSize | number | string): string | undefined {
-  if (value === undefined) return;
-  if (typeof value === "number") return `${value}px`;
+  if (value === undefined) {
+    return;
+  }
+  if (typeof value === "number") {
+    return `${value}px`;
+  }
   if (typeof value === "string") {
-    if (value in SIZE_PX) return `${SIZE_PX[value as ComponentSize]}px`;
+    if (value in SIZE_PX) {
+      return `${SIZE_PX[value as ComponentSize]}px`;
+    }
     return value;
   }
   return;

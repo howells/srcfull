@@ -39,9 +39,13 @@ export const Base: Story = {
     <div className="flex min-h-screen items-center justify-center">
       <CardStack totalCards={sampleCards.length}>
         {sampleCards.map((card) => (
-          <CardStackItem key={card.id} aspectRatio={card.aspectRatio} className="h-[300px] w-[300px]">
+          <CardStackItem
+            aspectRatio={card.aspectRatio}
+            className="h-[300px] w-[300px]"
+            key={card.id}
+          >
             <div
-              className={`flex h-full w-full items-center justify-center ${card.color} text-4xl font-bold text-white`}
+              className={`flex h-full w-full items-center justify-center ${card.color} font-bold text-4xl text-white`}
             >
               {card.id}
             </div>
@@ -57,17 +61,17 @@ export const WithImages: Story = {
     <div className="flex min-h-screen items-center justify-center">
       <CardStack totalCards={3}>
         <CardStackItem aspectRatio={3 / 4} className="h-[400px] w-[300px]">
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-2xl font-semibold text-white">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 font-semibold text-2xl text-white">
             Card 1
           </div>
         </CardStackItem>
         <CardStackItem aspectRatio={3 / 4} className="h-[400px] w-[300px]">
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-400 to-purple-600 text-2xl font-semibold text-white">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-400 to-purple-600 font-semibold text-2xl text-white">
             Card 2
           </div>
         </CardStackItem>
         <CardStackItem aspectRatio={4 / 3} className="h-[300px] w-[400px]">
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-400 to-pink-600 text-2xl font-semibold text-white">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-400 to-pink-600 font-semibold text-2xl text-white">
             Card 3
           </div>
         </CardStackItem>
@@ -85,11 +89,15 @@ export const LargeStack: Story = {
 
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <CardStack totalCards={cards.length} maxRotate={8}>
+        <CardStack maxRotate={8} totalCards={cards.length}>
           {cards.map((card) => (
-            <CardStackItem key={card.id} aspectRatio={1} className="h-[250px] w-[250px]">
+            <CardStackItem
+              aspectRatio={1}
+              className="h-[250px] w-[250px]"
+              key={card.id}
+            >
               <div
-                className="flex h-full w-full items-center justify-center text-3xl font-bold text-white"
+                className="flex h-full w-full items-center justify-center font-bold text-3xl text-white"
                 style={{ backgroundColor: card.color }}
               >
                 {card.id}
@@ -136,10 +144,10 @@ export const Interactive: Story = {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-8">
         <div className="flex gap-4">
-          <Button size="sm" variant="primary" onClick={addCard}>
+          <Button onClick={addCard} size="sm" variant="primary">
             Add Card to Top
           </Button>
-          <Button size="sm" variant="destructive" onClick={() => setCards([])}>
+          <Button onClick={() => setCards([])} size="sm" variant="destructive">
             Clear All
           </Button>
         </div>
@@ -151,7 +159,11 @@ export const Interactive: Story = {
         {cards.length > 0 ? (
           <CardStack totalCards={cards.length}>
             {cards.map((card) => (
-              <CardStackItem key={card.id} aspectRatio={1} className="h-[220px] w-[220px]">
+              <CardStackItem
+                aspectRatio={1}
+                className="h-[220px] w-[220px]"
+                key={card.id}
+              >
                 <div
                   className="relative flex h-full w-full flex-col items-center justify-center gap-2"
                   style={{ backgroundColor: card.color }}
@@ -160,9 +172,9 @@ export const Interactive: Story = {
                   <Button
                     appearance="ghost"
                     aria-label="Remove card"
-                    className="absolute right-2 top-2"
-                    size="xs"
+                    className="absolute top-2 right-2"
                     onClick={() => removeCard(card.id)}
+                    size="xs"
                   >
                     ×
                   </Button>
@@ -171,7 +183,7 @@ export const Interactive: Story = {
             ))}
           </CardStack>
         ) : (
-          <div className="flex h-[220px] w-[220px] items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-gray-400">
+          <div className="flex h-[220px] w-[220px] items-center justify-center rounded-xl border-2 border-gray-300 border-dashed text-gray-400">
             No cards
           </div>
         )}

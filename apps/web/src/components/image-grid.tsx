@@ -1,9 +1,9 @@
 // apps/web/src/components/image-grid.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ImageCard } from './image-card';
-import type { ResolveResult } from '@/lib/resolver';
+import { useState } from "react";
+import type { ResolveResult } from "@/lib/resolver";
+import { ImageCard } from "./image-card";
 
 type Props = {
   results: ResolveResult[];
@@ -14,7 +14,7 @@ export function ImageGrid({ results }: Props) {
 
   const handleCopyAll = async () => {
     try {
-      const urls = results.map(r => r.resolved).join('\n');
+      const urls = results.map((r) => r.resolved).join("\n");
       await navigator.clipboard.writeText(urls);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -23,24 +23,26 @@ export function ImageGrid({ results }: Props) {
     }
   };
 
-  if (results.length === 0) return null;
+  if (results.length === 0) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-[var(--text-muted)]">
-          {results.length} image{results.length !== 1 ? 's' : ''} found
+        <p className="text-[var(--text-muted)] text-sm">
+          {results.length} image{results.length !== 1 ? "s" : ""} found
         </p>
         <button
-          type="button"
+          className="rounded border border-[var(--border)] bg-[var(--bg-secondary)] px-3 py-1.5 text-sm transition-colors hover:border-[var(--accent)]"
           onClick={handleCopyAll}
-          className="px-3 py-1.5 text-sm bg-[var(--bg-secondary)] border border-[var(--border)] rounded hover:border-[var(--accent)] transition-colors"
+          type="button"
         >
-          {copied ? 'Copied!' : 'Copy All URLs'}
+          {copied ? "Copied!" : "Copy All URLs"}
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {results.map((result) => (
           <ImageCard key={result.original} result={result} />
         ))}

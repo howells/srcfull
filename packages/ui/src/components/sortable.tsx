@@ -26,11 +26,17 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { cn } from "@repo/ui/utils/cn";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-interface KanbanContextProps<T> {
+type KanbanContextProps<T> = {
   columns: Record<string, T[]>;
   setColumns: (columns: Record<string, T[]>) => void;
   getItemId: (item: T) => string;
@@ -39,7 +45,7 @@ interface KanbanContextProps<T> {
   setActiveId: (id: UniqueIdentifier | null) => void;
   findContainer: (id: UniqueIdentifier) => string | undefined;
   isColumn: (id: UniqueIdentifier) => boolean;
-}
+};
 
 const KanbanContext = React.createContext<KanbanContextProps<any>>({
   columns: {},
@@ -85,22 +91,22 @@ const dropAnimationConfig: DropAnimation = {
   }),
 };
 
-export interface KanbanMoveEvent {
+export type KanbanMoveEvent = {
   event: DragEndEvent;
   activeContainer: string;
   activeIndex: number;
   overContainer: string;
   overIndex: number;
-}
+};
 
-export interface KanbanRootProps<T> {
+export type KanbanRootProps<T> = {
   value: Record<string, T[]>;
   onValueChange: (value: Record<string, T[]>) => void;
   getItemValue: (item: T) => string;
   children: React.ReactNode;
   className?: string;
   onMove?: (event: KanbanMoveEvent) => void;
-}
+};
 
 function Kanban<T>({
   value,
@@ -134,7 +140,9 @@ function Kanban<T>({
 
   const findContainer = useCallback(
     (id: UniqueIdentifier) => {
-      if (isColumn(id)) return id as string;
+      if (isColumn(id)) {
+        return id as string;
+      }
       return columnIds.find((key) =>
         columns[key].some((item) => getItemValue(item) === id)
       );
@@ -153,9 +161,13 @@ function Kanban<T>({
       }
 
       const { active, over } = event;
-      if (!over) return;
+      if (!over) {
+        return;
+      }
 
-      if (isColumn(active.id)) return;
+      if (isColumn(active.id)) {
+        return;
+      }
 
       const activeContainer = findContainer(active.id);
       const overContainer = findContainer(over.id);
@@ -201,7 +213,9 @@ function Kanban<T>({
       const { active, over } = event;
       setActiveId(null);
 
-      if (!over) return;
+      if (!over) {
+        return;
+      }
 
       // Handle item move callback
       if (onMove && !isColumn(active.id)) {
@@ -316,8 +330,8 @@ function Kanban<T>({
       >
         <div
           className={cn(className)}
-          data-dragging={activeId !== null}
           data-component="kanban"
+          data-dragging={activeId !== null}
           data-slot="kanban"
         >
           {children}
@@ -327,10 +341,10 @@ function Kanban<T>({
   );
 }
 
-export interface KanbanBoardProps {
+export type KanbanBoardProps = {
   className?: string;
   children: React.ReactNode;
-}
+};
 
 function KanbanBoard({ children, className }: KanbanBoardProps) {
   const { columnIds } = useContext(KanbanContext);
@@ -348,12 +362,12 @@ function KanbanBoard({ children, className }: KanbanBoardProps) {
   );
 }
 
-export interface KanbanColumnProps {
+export type KanbanColumnProps = {
   value: string;
   className?: string;
   children: React.ReactNode;
   disabled?: boolean;
-}
+};
 
 function KanbanColumn({
   value,
@@ -392,9 +406,9 @@ function KanbanColumn({
           disabled && "opacity-50",
           className
         )}
+        data-component="kanban-column"
         data-disabled={disabled}
         data-dragging={isSortableDragging}
-        data-component="kanban-column"
         data-slot="kanban-column"
         data-value={value}
         ref={setNodeRef}
@@ -406,12 +420,12 @@ function KanbanColumn({
   );
 }
 
-export interface KanbanColumnHandleProps {
+export type KanbanColumnHandleProps = {
   asChild?: boolean;
   className?: string;
   children?: React.ReactNode;
   cursor?: boolean;
-}
+};
 
 function KanbanColumnHandle({
   asChild,
@@ -426,9 +440,9 @@ function KanbanColumnHandle({
 
   return (
     <Comp
+      data-component="kanban-column-handle"
       data-disabled={disabled}
       data-dragging={isDragging}
-      data-component="kanban-column-handle"
       data-slot="kanban-column-handle"
       {...attributes}
       {...listeners}
@@ -443,13 +457,13 @@ function KanbanColumnHandle({
   );
 }
 
-export interface KanbanItemProps {
+export type KanbanItemProps = {
   value: string;
   asChild?: boolean;
   className?: string;
   children: React.ReactNode;
   disabled?: boolean;
-}
+};
 
 function KanbanItem({
   value,
@@ -485,9 +499,9 @@ function KanbanItem({
       value={{ listeners, isDragging: isItemDragging, disabled }}
     >
       <Comp
+        data-component="kanban-item"
         data-disabled={disabled}
         data-dragging={isSortableDragging}
-        data-component="kanban-item"
         data-slot="kanban-item"
         data-value={value}
         ref={setNodeRef}
@@ -505,12 +519,12 @@ function KanbanItem({
   );
 }
 
-export interface KanbanItemHandleProps {
+export type KanbanItemHandleProps = {
   asChild?: boolean;
   className?: string;
   children?: React.ReactNode;
   cursor?: boolean;
-}
+};
 
 function KanbanItemHandle({
   asChild,
@@ -524,9 +538,9 @@ function KanbanItemHandle({
 
   return (
     <Comp
+      data-component="kanban-item-handle"
       data-disabled={disabled}
       data-dragging={isDragging}
-      data-component="kanban-item-handle"
       data-slot="kanban-item-handle"
       {...listeners}
       className={cn(
@@ -539,11 +553,11 @@ function KanbanItemHandle({
   );
 }
 
-export interface KanbanColumnContentProps {
+export type KanbanColumnContentProps = {
   value: string;
   className?: string;
   children: React.ReactNode;
-}
+};
 
 function KanbanColumnContent({
   value,
@@ -570,7 +584,7 @@ function KanbanColumnContent({
   );
 }
 
-export interface KanbanOverlayProps {
+export type KanbanOverlayProps = {
   className?: string;
   children?:
     | React.ReactNode
@@ -578,7 +592,7 @@ export interface KanbanOverlayProps {
         value: UniqueIdentifier;
         variant: "column" | "item";
       }) => React.ReactNode);
-}
+};
 
 function KanbanOverlay({ children, className }: KanbanOverlayProps) {
   const { activeId, isColumn } = useContext(KanbanContext);
@@ -599,7 +613,7 @@ function KanbanOverlay({ children, className }: KanbanOverlayProps) {
     } else {
       setDimensions(null);
     }
-  }, [activeId]);
+  }, [activeId, isColumn]);
 
   const style = {
     width: dimensions?.width,
@@ -607,7 +621,9 @@ function KanbanOverlay({ children, className }: KanbanOverlayProps) {
   } as React.CSSProperties;
 
   const content = useMemo(() => {
-    if (!activeId) return null;
+    if (!activeId) {
+      return null;
+    }
     if (typeof children === "function") {
       return children({
         value: activeId,
@@ -625,8 +641,8 @@ function KanbanOverlay({ children, className }: KanbanOverlayProps) {
           className,
           activeId ? "!cursor-grabbing" : ""
         )}
-        data-dragging={true}
         data-component="kanban-overlay"
+        data-dragging={true}
         data-slot="kanban-overlay"
         style={style}
       >
@@ -648,7 +664,7 @@ const SortableItemContext = React.createContext<{
 });
 
 // Multipurpose Sortable Component
-export interface SortableRootProps<T> {
+export type SortableRootProps<T> = {
   value: T[];
   onValueChange: (value: T[]) => void;
   getItemValue: (item: T) => string;
@@ -662,7 +678,7 @@ export interface SortableRootProps<T> {
   strategy?: "horizontal" | "vertical" | "grid";
   onDragStart?: (event: DragStartEvent) => void;
   onDragEnd?: (event: DragEndEvent) => void;
-}
+};
 
 function Sortable<T>({
   value,
@@ -702,7 +718,9 @@ function Sortable<T>({
       setActiveId(null);
       onDragEnd?.(event);
 
-      if (!over) return;
+      if (!over) {
+        return;
+      }
 
       // Handle item reordering
       const activeIndex = value.findIndex(
@@ -730,16 +748,12 @@ function Sortable<T>({
         return rectSortingStrategy;
       case "grid":
         return rectSortingStrategy;
-      case "vertical":
       default:
         return verticalListSortingStrategy;
     }
   };
 
-  const itemIds = useMemo(
-    () => value.map(getItemValue),
-    [value, getItemValue]
-  );
+  const itemIds = useMemo(() => value.map(getItemValue), [value, getItemValue]);
 
   return (
     <DndContext
@@ -750,8 +764,8 @@ function Sortable<T>({
       <SortableContext items={itemIds} strategy={getStrategy()}>
         <div
           className={cn(className)}
-          data-dragging={activeId !== null}
           data-component="sortable"
+          data-dragging={activeId !== null}
           data-slot="sortable"
         >
           {children}
@@ -783,13 +797,13 @@ function Sortable<T>({
   );
 }
 
-export interface SortableItemProps {
+export type SortableItemProps = {
   value: string;
   asChild?: boolean;
   className?: string;
   children: React.ReactNode;
   disabled?: boolean;
-}
+};
 
 function SortableItem({
   value,
@@ -822,9 +836,9 @@ function SortableItem({
       value={{ listeners, isDragging: isSortableDragging, disabled }}
     >
       <Comp
+        data-component="sortable-item"
         data-disabled={disabled}
         data-dragging={isSortableDragging}
-        data-component="sortable-item"
         data-slot="sortable-item"
         data-value={value}
         ref={setNodeRef}
@@ -842,12 +856,12 @@ function SortableItem({
   );
 }
 
-export interface SortableItemHandleProps {
+export type SortableItemHandleProps = {
   asChild?: boolean;
   className?: string;
   children?: React.ReactNode;
   cursor?: boolean;
-}
+};
 
 function SortableItemHandle({
   asChild,
@@ -855,16 +869,15 @@ function SortableItemHandle({
   children,
   cursor = true,
 }: SortableItemHandleProps) {
-  const { listeners, isDragging, disabled } =
-    useContext(SortableItemContext);
+  const { listeners, isDragging, disabled } = useContext(SortableItemContext);
 
   const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
+      data-component="sortable-item-handle"
       data-disabled={disabled}
       data-dragging={isDragging}
-      data-component="sortable-item-handle"
       data-slot="sortable-item-handle"
       {...listeners}
       className={cn(

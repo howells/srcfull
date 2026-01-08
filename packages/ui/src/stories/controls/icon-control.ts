@@ -38,8 +38,8 @@ import {
   Trash,
   Upload,
   User,
-  Zap,
   X,
+  Zap,
 } from "lucide-react";
 
 /**

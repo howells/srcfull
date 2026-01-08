@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Root as RadioGroupRoot } from "@radix-ui/react-radio-group";
+import { cn } from "@repo/ui/utils/cn";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import {
@@ -36,7 +36,14 @@ export type VariantSelectorProps =
  * Renders card-style items that can display images or colors.
  */
 export function VariantSelector(props: VariantSelectorProps) {
-  const { mode = "single", value, onValueChange, defaultValue, className, children } = props;
+  const {
+    mode = "single",
+    value,
+    onValueChange,
+    defaultValue,
+    className,
+    children,
+  } = props;
 
   // Convert value to Set for easier management
   const selectedValues = useMemo(() => {
@@ -61,7 +68,9 @@ export function VariantSelector(props: VariantSelectorProps) {
       } else {
         newValues.add(itemValue);
       }
-      (onValueChange as ((value: string[]) => void) | undefined)?.(Array.from(newValues));
+      (onValueChange as ((value: string[]) => void) | undefined)?.(
+        Array.from(newValues)
+      );
     }
   };
 

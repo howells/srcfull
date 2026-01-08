@@ -112,7 +112,8 @@ export const WithoutHandle: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Resizable panels with a minimal handle (no visible grip indicator).",
+        story:
+          "Resizable panels with a minimal handle (no visible grip indicator).",
       },
     },
   },
@@ -140,7 +141,8 @@ export const NestedPanels: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Nested resizable panel groups for complex multi-dimensional layouts.",
+        story:
+          "Nested resizable panel groups for complex multi-dimensional layouts.",
       },
     },
   },
@@ -185,7 +187,7 @@ export const MinMaxSizes: Story = {
   render: () => (
     <div className="h-40 w-full rounded-md border">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
+        <ResizablePanel defaultSize={20} maxSize={30} minSize={15}>
           <div className="flex h-full items-center justify-center text-sm">
             Min: 15%, Max: 30%
           </div>

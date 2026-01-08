@@ -45,12 +45,12 @@ export const Base: Story = {
         <Switch
           {...args}
           checked={checked}
-          onCheckedChange={setChecked}
           id="default-switch"
+          onCheckedChange={setChecked}
         />
         <label
-          htmlFor="default-switch"
           className="cursor-pointer text-neutral-900 text-sm"
+          htmlFor="default-switch"
         >
           {checked ? "Enabled" : "Disabled"}
         </label>
@@ -72,19 +72,19 @@ export const DisabledStates: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Switch disabled checked={false} id="disabled-unchecked" />
+        <Switch checked={false} disabled id="disabled-unchecked" />
         <label
-          htmlFor="disabled-unchecked"
           className="cursor-not-allowed text-neutral-500 text-sm"
+          htmlFor="disabled-unchecked"
         >
           Disabled (unchecked)
         </label>
       </div>
       <div className="flex items-center gap-2">
-        <Switch disabled checked={true} id="disabled-checked" />
+        <Switch checked={true} disabled id="disabled-checked" />
         <label
-          htmlFor="disabled-checked"
           className="cursor-not-allowed text-neutral-500 text-sm"
+          htmlFor="disabled-checked"
         >
           Disabled (checked)
         </label>
@@ -113,8 +113,8 @@ export const WithLabels: Story = {
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <label
-              htmlFor="notifications"
               className="cursor-pointer font-medium text-neutral-900 text-sm"
+              htmlFor="notifications"
             >
               Push Notifications
             </label>
@@ -124,15 +124,15 @@ export const WithLabels: Story = {
           </div>
           <Switch
             checked={notifications}
-            onCheckedChange={setNotifications}
             id="notifications"
+            onCheckedChange={setNotifications}
           />
         </div>
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <label
-              htmlFor="marketing"
               className="cursor-pointer font-medium text-neutral-900 text-sm"
+              htmlFor="marketing"
             >
               Marketing Emails
             </label>
@@ -142,15 +142,15 @@ export const WithLabels: Story = {
           </div>
           <Switch
             checked={marketing}
-            onCheckedChange={setMarketing}
             id="marketing"
+            onCheckedChange={setMarketing}
           />
         </div>
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <label
-              htmlFor="updates"
               className="cursor-pointer font-medium text-neutral-900 text-sm"
+              htmlFor="updates"
             >
               Product Updates
             </label>
@@ -158,7 +158,7 @@ export const WithLabels: Story = {
               Get notified when we ship new features
             </p>
           </div>
-          <Switch checked={updates} onCheckedChange={setUpdates} id="updates" />
+          <Switch checked={updates} id="updates" onCheckedChange={setUpdates} />
         </div>
       </div>
     );

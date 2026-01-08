@@ -13,10 +13,16 @@ const GAP_PX: Record<ComponentSize, number> = {
 };
 
 function toGap(value?: ComponentSize | number | string): string | undefined {
-  if (value === undefined) return;
-  if (typeof value === "number") return `${value}px`;
+  if (value === undefined) {
+    return;
+  }
+  if (typeof value === "number") {
+    return `${value}px`;
+  }
   if (typeof value === "string") {
-    if (value in GAP_PX) return `${GAP_PX[value as ComponentSize]}px`;
+    if (value in GAP_PX) {
+      return `${GAP_PX[value as ComponentSize]}px`;
+    }
     return value;
   }
   return;

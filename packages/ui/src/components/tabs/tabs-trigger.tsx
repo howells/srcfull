@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import { cn } from "@repo/ui/utils/cn";
 import type { VariantProps } from "class-variance-authority";
 import { useTabsContext } from "./tabs-context";
 import { tabsTriggerVariants } from "./tabs-variants";

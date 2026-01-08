@@ -20,7 +20,7 @@ import type { Column } from "@tanstack/react-table";
 import { Check, CirclePlus } from "lucide-react";
 import type * as React from "react";
 
-interface DataGridColumnFilterProps<TData, TValue> {
+type DataGridColumnFilterProps<TData, TValue> = {
   column?: Column<TData, TValue>;
   title?: string;
   options: {
@@ -28,7 +28,7 @@ interface DataGridColumnFilterProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
-}
+};
 
 function DataGridColumnFilter<TData, TValue>({
   column,
@@ -41,7 +41,11 @@ function DataGridColumnFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button data-component="data-grid-column-filter" size="sm" variant="outline">
+        <Button
+          data-component="data-grid-column-filter"
+          size="sm"
+          variant="outline"
+        >
           <CirclePlus className="size-4" />
           {title}
           {selectedValues?.size > 0 && (

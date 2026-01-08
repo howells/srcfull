@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import React, { useMemo } from "react";
+import { cn } from "@repo/ui/utils/cn";
+import type React from "react";
+import { useMemo } from "react";
 
 function Slider({
   className,

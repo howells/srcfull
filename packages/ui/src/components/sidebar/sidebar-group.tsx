@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@repo/ui/utils/cn";
 import type React from "react";
 
 export function SidebarGroup({
@@ -11,8 +11,8 @@ export function SidebarGroup({
   return (
     <div
       className={cn("relative flex w-full min-w-0 flex-col p-0", className)}
-      data-sidebar="group"
       data-component="sidebar-group"
+      data-sidebar="group"
       data-slot="sidebar-group"
       {...props}
     />
@@ -34,8 +34,8 @@ export function SidebarGroupLabel({
         "group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:invisible group-data-[collapsible=icon]:opacity-0",
         className
       )}
-      data-sidebar="group-label"
       data-component="sidebar-group-label"
+      data-sidebar="group-label"
       data-slot="sidebar-group-label"
       {...props}
     />
@@ -58,8 +58,8 @@ export function SidebarGroupAction({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
-      data-sidebar="group-action"
       data-component="sidebar-group-action"
+      data-sidebar="group-action"
       data-slot="sidebar-group-action"
       {...props}
     />
@@ -73,8 +73,8 @@ export function SidebarGroupContent({
   return (
     <div
       className={cn("w-full text-sm", className)}
-      data-sidebar="group-content"
       data-component="sidebar-group-content"
+      data-sidebar="group-content"
       data-slot="sidebar-group-content"
       {...props}
     />

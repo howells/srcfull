@@ -1,9 +1,9 @@
- "use client";
+"use client";
 
 import { ItemList } from "@repo/ui/components/item-list/item-list-root";
 import type * as React from "react";
-import { DocumentListProvider } from "./document-list-context";
 import { DocumentListActions } from "./document-list-actions";
+import { DocumentListProvider } from "./document-list-context";
 import { DocumentListHeader } from "./document-list-header";
 import { DocumentListItem } from "./document-list-item";
 import type { DocumentItem } from "./document-list-types";
@@ -50,8 +50,8 @@ export function DocumentList({
         <ItemList className="mt-3" variant={variant}>
           {documents.map((doc) => (
             <DocumentListItem
-              key={doc.id}
               document={doc}
+              key={doc.id}
               onDownload={onDownload}
             />
           ))}

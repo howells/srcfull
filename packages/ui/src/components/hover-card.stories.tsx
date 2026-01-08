@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { Info, User, Calendar, Mail } from "lucide-react";
+import { Calendar, Info, Mail, User } from "lucide-react";
 import { Button } from "./button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Icon } from "./icon";
@@ -145,7 +145,7 @@ export const MultipleCards: Story = {
     <div className="flex min-h-[200px] items-center justify-center gap-4">
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Button variant="secondary" size="sm">
+          <Button size="sm" variant="secondary">
             Info
           </Button>
         </HoverCardTrigger>
@@ -154,7 +154,9 @@ export const MultipleCards: Story = {
             <Icon icon={Info} />
             <div>
               <div className="font-medium">Information</div>
-              <div className="text-neutral-600">Helpful context appears here.</div>
+              <div className="text-neutral-600">
+                Helpful context appears here.
+              </div>
             </div>
           </div>
         </HoverCardContent>
@@ -162,7 +164,7 @@ export const MultipleCards: Story = {
 
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Button variant="secondary" size="sm">
+          <Button size="sm" variant="secondary">
             Profile
           </Button>
         </HoverCardTrigger>
@@ -179,7 +181,7 @@ export const MultipleCards: Story = {
 
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Button variant="secondary" size="sm">
+          <Button size="sm" variant="secondary">
             Schedule
           </Button>
         </HoverCardTrigger>

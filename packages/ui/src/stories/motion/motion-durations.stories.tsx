@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { useState } from "react";
+import { type Duration, durationMs, durations } from "@repo/ui/lib/motion";
 import { motion } from "motion/react";
-import { durations, durationMs, type Duration } from "@repo/ui/lib/motion";
+import { useState } from "react";
 
 const meta = {
   title: "Motion/Durations",
@@ -19,9 +19,9 @@ type Story = StoryObj<typeof meta>;
 export const AllDurations: Story = {
   render: () => {
     const durationKeys = Object.keys(durations) as Duration[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(durationKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(durationKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -37,17 +37,17 @@ export const AllDurations: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-4xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Duration Tokens</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Duration Tokens</h2>
+          <p className="mb-8 text-neutral-600">
             Click "Trigger Animation" to see how each duration affects animation
             timing. Durations are in seconds for Framer Motion.
           </p>
 
           <button
+            className="mb-8 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg mb-8 hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Stop" : "Trigger"} Animation
           </button>
@@ -56,12 +56,12 @@ export const AllDurations: Story = {
         <div className="grid gap-8">
           {durationKeys.map((key) => (
             <div
+              className="space-y-4 rounded-lg border border-neutral-200 p-6"
               key={key}
-              className="border border-neutral-200 rounded-lg p-6 space-y-4"
             >
               <div className="flex items-baseline justify-between">
-                <h3 className="text-lg font-medium capitalize">{key}</h3>
-                <div className="text-sm text-neutral-600 space-x-4">
+                <h3 className="font-medium text-lg capitalize">{key}</h3>
+                <div className="space-x-4 text-neutral-600 text-sm">
                   <span>
                     <span className="font-mono text-neutral-900">
                       {durations[key]}
@@ -78,13 +78,11 @@ export const AllDurations: Story = {
                 </div>
               </div>
 
-              <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-start h-24 overflow-hidden">
+              <div className="flex h-24 items-center justify-start overflow-hidden rounded-lg bg-neutral-50 p-8">
                 <motion.div
-                  className="w-12 h-12 bg-primary rounded-lg cursor-pointer transition-shadow hover:shadow-lg"
+                  animate={animatingBoxes[key] ? { x: 300 } : { x: 0 }}
+                  className="h-12 w-12 cursor-pointer rounded-lg bg-primary transition-shadow hover:shadow-lg"
                   onClick={() => toggleBox(key)}
-                  animate={
-                    animatingBoxes[key] ? { x: 300 } : { x: 0 }
-                  }
                   transition={{
                     duration: durations[key],
                     ease: "easeInOut",
@@ -92,17 +90,13 @@ export const AllDurations: Story = {
                 />
               </div>
 
-              <p className="text-xs text-neutral-500">
-                {key === "instant" &&
-                  "No animation - immediate state change"}
-                {key === "quick" &&
-                  "Micro-interactions and hovers (150ms)"}
-                {key === "normal" &&
-                  "Dialogs, sheets, reveals (250ms)"}
+              <p className="text-neutral-500 text-xs">
+                {key === "instant" && "No animation - immediate state change"}
+                {key === "quick" && "Micro-interactions and hovers (150ms)"}
+                {key === "normal" && "Dialogs, sheets, reveals (250ms)"}
                 {key === "moderate" &&
                   "Page transitions, complex animations (350ms)"}
-                {key === "slow" &&
-                  "Emphasis and storytelling moments (500ms)"}
+                {key === "slow" && "Emphasis and storytelling moments (500ms)"}
               </p>
             </div>
           ))}
@@ -119,9 +113,9 @@ export const AllDurations: Story = {
 export const DurationComparison: Story = {
   render: () => {
     const durationKeys = Object.keys(durations) as Duration[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(durationKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(durationKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -137,30 +131,30 @@ export const DurationComparison: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-8">
+      <div className="mx-auto w-full max-w-6xl space-y-8 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Duration Comparison</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Duration Comparison</h2>
+          <p className="mb-8 text-neutral-600">
             Compare durations side-by-side. All boxes animate to the same
             distance but with different durations.
           </p>
 
           <button
+            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Reset" : "Animate"}
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
           {durationKeys.map((key) => (
-            <div key={key} className="space-y-3">
-              <div className="border border-neutral-200 rounded-lg p-4 bg-neutral-50 h-20 flex items-center overflow-hidden">
+            <div className="space-y-3" key={key}>
+              <div className="flex h-20 items-center overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-4">
                 <motion.div
-                  className="w-8 h-8 bg-primary rounded cursor-pointer transition-shadow hover:shadow-lg"
-                  onClick={() => toggleBox(key)}
                   animate={animatingBoxes[key] ? { x: 100 } : { x: 0 }}
+                  className="h-8 w-8 cursor-pointer rounded bg-primary transition-shadow hover:shadow-lg"
+                  onClick={() => toggleBox(key)}
                   transition={{
                     duration: durations[key],
                     ease: "easeInOut",
@@ -168,9 +162,9 @@ export const DurationComparison: Story = {
                 />
               </div>
 
-              <div className="text-center space-y-1">
+              <div className="space-y-1 text-center">
                 <p className="font-medium text-sm capitalize">{key}</p>
-                <p className="text-xs text-neutral-600 font-mono">
+                <p className="font-mono text-neutral-600 text-xs">
                   {durations[key]}s
                 </p>
               </div>
@@ -191,10 +185,10 @@ export const DurationScale: Story = {
     const maxDuration = Math.max(...Object.values(durations));
 
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 space-y-8">
+      <div className="mx-auto w-full max-w-4xl space-y-8 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Duration Scale</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Duration Scale</h2>
+          <p className="mb-8 text-neutral-600">
             Visual representation of the duration scale. Bars represent relative
             timing.
           </p>
@@ -206,16 +200,16 @@ export const DurationScale: Story = {
             const percentage = (value / maxDuration) * 100;
 
             return (
-              <div key={key} className="space-y-2">
+              <div className="space-y-2" key={key}>
                 <div className="flex items-center justify-between">
-                  <p className="font-medium capitalize w-20">{key}</p>
-                  <div className="flex-1 mx-4 h-8 bg-neutral-100 rounded overflow-hidden">
+                  <p className="w-20 font-medium capitalize">{key}</p>
+                  <div className="mx-4 h-8 flex-1 overflow-hidden rounded bg-neutral-100">
                     <div
-                      className="h-full bg-primary rounded transition-all duration-300"
+                      className="h-full rounded bg-primary transition-all duration-300"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
-                  <p className="text-sm text-neutral-600 font-mono w-16 text-right">
+                  <p className="w-16 text-right font-mono text-neutral-600 text-sm">
                     {value}s
                   </p>
                 </div>
@@ -224,8 +218,8 @@ export const DurationScale: Story = {
           })}
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-8">
-          <p className="text-sm text-blue-900">
+        <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <p className="text-blue-900 text-sm">
             <strong>Tip:</strong> These durations follow a semantic scale
             designed for common UI patterns. Start with "normal" (250ms) and
             adjust based on complexity and feedback.

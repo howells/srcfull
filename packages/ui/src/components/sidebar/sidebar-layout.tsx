@@ -53,8 +53,8 @@ export function SidebarInput({
   return (
     <Input
       className={cn("w-full bg-background shadow-none", className)}
-      data-sidebar="input"
       data-component="sidebar-input"
+      data-sidebar="input"
       data-slot="sidebar-input"
       {...props}
     />
@@ -69,8 +69,8 @@ export function SidebarHeader({
   return (
     <div
       className={cn("flex flex-col gap-2 p-2", className)}
-      data-sidebar="header"
       data-component="sidebar-header"
+      data-sidebar="header"
       data-slot="sidebar-header"
       {...props}
     >
@@ -91,8 +91,8 @@ export function SidebarFooter({
   return (
     <div
       className={cn("flex flex-col gap-2", className)}
-      data-sidebar="footer"
       data-component="sidebar-footer"
+      data-sidebar="footer"
       data-slot="sidebar-footer"
       {...props}
     />
@@ -106,8 +106,8 @@ export function SidebarSeparator({
   return (
     <Separator
       className={cn("w-auto bg-sidebar-border", className)}
-      data-sidebar="separator"
       data-component="sidebar-separator"
+      data-sidebar="separator"
       data-slot="sidebar-separator"
       {...props}
     />
@@ -124,8 +124,8 @@ export function SidebarContent({
         "flex min-h-0 flex-1 flex-col gap-1 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
-      data-sidebar="content"
       data-component="sidebar-content"
+      data-sidebar="content"
       data-slot="sidebar-content"
       {...props}
     />

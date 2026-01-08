@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { iconControlArgType } from "../stories/controls/icon-control";
 import {
   Diamond,
   Droplet,
@@ -11,6 +10,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { iconControlArgType } from "../stories/controls/icon-control";
 import { AttributeCard } from "./attribute-card";
 
 const meta = {
@@ -70,45 +70,45 @@ export const MaterialProperties: Story = {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <AttributeCard
         attributeLabel="Durability"
+        className="max-w-xs"
+        icon={Diamond}
         valueLabel="Medium Duty"
         valueSubLabel="Residential & commercial"
-        icon={Diamond}
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Water Resistance"
+        className="max-w-xs"
+        icon={Droplet}
         valueLabel="High"
         valueSubLabel="Suitable for wet areas"
-        icon={Droplet}
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Fire Rating"
+        className="max-w-xs"
+        icon={Flame}
         valueLabel="Class A"
         valueSubLabel="ASTM E84 certified"
-        icon={Flame}
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Thickness"
+        className="max-w-xs"
+        icon={Ruler}
         valueLabel="12mm"
         valueSubLabel="Standard commercial grade"
-        icon={Ruler}
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Warranty"
+        className="max-w-xs"
+        icon={ShieldCheck}
         valueLabel="25 Years"
         valueSubLabel="Residential use only"
-        icon={ShieldCheck}
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Finish"
+        className="max-w-xs"
+        icon={Sparkles}
         valueLabel="Polished"
         valueSubLabel="High gloss surface"
-        icon={Sparkles}
-        className="max-w-xs"
       />
     </div>
   ),
@@ -127,27 +127,27 @@ export const WithoutIcon: Story = {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <AttributeCard
         attributeLabel="Coverage"
+        className="max-w-xs"
         valueLabel="500 sq ft"
         valueSubLabel="Per box"
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Installation"
+        className="max-w-xs"
         valueLabel="Floating"
         valueSubLabel="Click-lock system"
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Origin"
+        className="max-w-xs"
         valueLabel="Italy"
         valueSubLabel="Imported"
-        className="max-w-xs"
       />
       <AttributeCard
         attributeLabel="Lead Time"
+        className="max-w-xs"
         valueLabel="3-5 Days"
         valueSubLabel="In stock items"
-        className="max-w-xs"
       />
     </div>
   ),
@@ -164,9 +164,24 @@ export const WithoutSubLabel: Story = {
   },
   render: () => (
     <div className="grid gap-4 sm:grid-cols-3">
-      <AttributeCard attributeLabel="Style" valueLabel="Contemporary" icon={Home} className="max-w-xs" />
-      <AttributeCard attributeLabel="Certification" valueLabel="LEED Certified" icon={ShieldCheck} className="max-w-xs" />
-      <AttributeCard attributeLabel="Performance" valueLabel="Premium" icon={Zap} className="max-w-xs" />
+      <AttributeCard
+        attributeLabel="Style"
+        className="max-w-xs"
+        icon={Home}
+        valueLabel="Contemporary"
+      />
+      <AttributeCard
+        attributeLabel="Certification"
+        className="max-w-xs"
+        icon={ShieldCheck}
+        valueLabel="LEED Certified"
+      />
+      <AttributeCard
+        attributeLabel="Performance"
+        className="max-w-xs"
+        icon={Zap}
+        valueLabel="Premium"
+      />
     </div>
   ),
 };
@@ -176,55 +191,56 @@ export const ProductSpecifications: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Example of product specification cards for an e-commerce product page.",
+        story:
+          "Example of product specification cards for an e-commerce product page.",
       },
     },
   },
   render: () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold">Product Specifications</h3>
+      <h3 className="font-semibold text-lg">Product Specifications</h3>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <AttributeCard
           attributeLabel="Material Type"
+          className="max-w-xs"
+          icon={Diamond}
           valueLabel="Porcelain Tile"
           valueSubLabel="Full body construction"
-          icon={Diamond}
-          className="max-w-xs"
         />
         <AttributeCard
           attributeLabel="Application"
+          className="max-w-xs"
+          icon={Home}
           valueLabel="Indoor/Outdoor"
           valueSubLabel="Freeze-thaw resistant"
-          icon={Home}
-          className="max-w-xs"
         />
         <AttributeCard
           attributeLabel="Surface Treatment"
+          className="max-w-xs"
+          icon={Sparkles}
           valueLabel="Nano Technology"
           valueSubLabel="Stain resistant coating"
-          icon={Sparkles}
-          className="max-w-xs"
         />
         <AttributeCard
           attributeLabel="Slip Resistance"
+          className="max-w-xs"
+          icon={ShieldCheck}
           valueLabel="R10"
           valueSubLabel="DIN 51130 rated"
-          icon={ShieldCheck}
-          className="max-w-xs"
         />
         <AttributeCard
           attributeLabel="Color Variation"
+          className="max-w-xs"
+          icon={Droplet}
           valueLabel="V3 - Moderate"
           valueSubLabel="Random pattern"
-          icon={Droplet}
-          className="max-w-xs"
         />
         <AttributeCard
           attributeLabel="Rectified Edges"
+          className="max-w-xs"
+          icon={Ruler}
           valueLabel="Yes"
           valueSubLabel="Precise dimensions"
-          icon={Ruler}
-          className="max-w-xs"
         />
       </div>
     </div>
@@ -244,9 +260,9 @@ export const SingleCard: Story = {
     <div className="max-w-xs">
       <AttributeCard
         attributeLabel="Environmental Impact"
+        icon={ShieldCheck}
         valueLabel="Carbon Neutral"
         valueSubLabel="Certified by Climate Neutral organization. All manufacturing emissions offset through renewable energy credits and verified carbon offset projects."
-        icon={ShieldCheck}
       />
     </div>
   ),

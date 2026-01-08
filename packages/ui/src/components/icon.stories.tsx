@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
-import { ICON_OPTIONS, iconControlArgType } from "../stories/controls/icon-control";
 import {
   AlertCircle,
   Bell,
@@ -22,6 +21,10 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import {
+  ICON_OPTIONS,
+  iconControlArgType,
+} from "../stories/controls/icon-control";
 import { Icon } from "./icon";
 
 const meta = {
@@ -64,7 +67,7 @@ export const AllSizes: Story = {
   render: ({ icon }) => (
     <div className="flex items-center gap-4 text-neutral-700">
       {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map((size) => (
-        <Icon key={size} icon={icon} size={size} />
+        <Icon icon={icon} key={size} size={size} />
       ))}
     </div>
   ),
@@ -150,7 +153,7 @@ export const SizeComparison: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div>
-        <div className="mb-2 text-sm font-medium">Small (sm)</div>
+        <div className="mb-2 font-medium text-sm">Small (sm)</div>
         <div className="flex gap-4 text-neutral-700">
           <Icon icon={Heart} size="sm" />
           <Icon icon={Star} size="sm" />
@@ -160,7 +163,7 @@ export const SizeComparison: Story = {
         </div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Base (default)</div>
+        <div className="mb-2 font-medium text-sm">Base (default)</div>
         <div className="flex gap-4 text-neutral-700">
           <Icon icon={Heart} size="base" />
           <Icon icon={Star} size="base" />
@@ -170,7 +173,7 @@ export const SizeComparison: Story = {
         </div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Large (lg)</div>
+        <div className="mb-2 font-medium text-sm">Large (lg)</div>
         <div className="flex gap-4 text-neutral-700">
           <Icon icon={Heart} size="lg" />
           <Icon icon={Star} size="lg" />

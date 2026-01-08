@@ -1,20 +1,30 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 
 function HoverCard({
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
-  return <HoverCardPrimitive.Root data-component="hover-card" data-slot="hover-card" {...props} />;
+  return (
+    <HoverCardPrimitive.Root
+      data-component="hover-card"
+      data-slot="hover-card"
+      {...props}
+    />
+  );
 }
 
 function HoverCardTrigger({
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
   return (
-    <HoverCardPrimitive.Trigger data-component="hover-card-trigger" data-slot="hover-card-trigger" {...props} />
+    <HoverCardPrimitive.Trigger
+      data-component="hover-card-trigger"
+      data-slot="hover-card-trigger"
+      {...props}
+    />
   );
 }
 
@@ -25,7 +35,10 @@ function HoverCardContent({
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
   return (
-    <HoverCardPrimitive.Portal data-component="hover-card-portal" data-slot="hover-card-portal">
+    <HoverCardPrimitive.Portal
+      data-component="hover-card-portal"
+      data-slot="hover-card-portal"
+    >
       <HoverCardPrimitive.Content
         align={align}
         className={cn(

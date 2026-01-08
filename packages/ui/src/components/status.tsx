@@ -41,7 +41,11 @@ export const StatusIndicator = ({
   size = "base",
   ...props
 }: StatusIndicatorProps) => (
-  <span className={cn("relative flex", DOT_SIZE[size])} data-component="status-indicator" {...props}>
+  <span
+    className={cn("relative flex", DOT_SIZE[size])}
+    data-component="status-indicator"
+    {...props}
+  >
     <span
       className={cn(
         "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
@@ -71,7 +75,11 @@ export const StatusLabel = ({
   children,
   ...props
 }: StatusLabelProps) => (
-  <span className={cn("text-muted-foreground", className)} data-component="status-label" {...props}>
+  <span
+    className={cn("text-muted-foreground", className)}
+    data-component="status-label"
+    {...props}
+  >
     {children ?? (
       <>
         <span className="hidden group-[.online]:block">Online</span>

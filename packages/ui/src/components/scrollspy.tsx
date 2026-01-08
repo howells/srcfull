@@ -37,7 +37,9 @@ export function Scrollspy({
   // Sets active nav, hash, prevIdTracker, and calls onUpdate
   const setActiveSection = useCallback(
     (sectionId: string | null, force = false) => {
-      if (!sectionId) return;
+      if (!sectionId) {
+        return;
+      }
       anchorElementsRef.current?.forEach((item) => {
         const id = item.getAttribute(`data-${dataAttribute}-anchor`);
         if (id === sectionId) {
@@ -46,18 +48,21 @@ export function Scrollspy({
           item.removeAttribute("data-active");
         }
       });
-      if (onUpdate) onUpdate(sectionId);
+      if (onUpdate) {
+        onUpdate(sectionId);
+      }
       if (history && (force || prevIdTracker.current !== sectionId)) {
         window.history.replaceState({}, "", `#${sectionId}`);
       }
       prevIdTracker.current = sectionId;
     },
-    [anchorElementsRef, dataAttribute, history, onUpdate]
+    [dataAttribute, history, onUpdate]
   );
 
   const handleScroll = useCallback(() => {
-    if (!anchorElementsRef.current || anchorElementsRef.current.length === 0)
+    if (!anchorElementsRef.current || anchorElementsRef.current.length === 0) {
       return;
+    }
     const scrollElement =
       targetRef?.current === document ? window : targetRef?.current;
     const scrollTop =
@@ -71,10 +76,14 @@ export function Scrollspy({
     anchorElementsRef.current.forEach((anchor, idx) => {
       const sectionId = anchor.getAttribute(`data-${dataAttribute}-anchor`);
       const sectionElement = document.getElementById(sectionId!);
-      if (!sectionElement) return;
+      if (!sectionElement) {
+        return;
+      }
       let customOffset = offset;
       const dataOffset = anchor.getAttribute(`data-${dataAttribute}-offset`);
-      if (dataOffset) customOffset = Number.parseInt(dataOffset, 10);
+      if (dataOffset) {
+        customOffset = Number.parseInt(dataOffset, 10);
+      }
       const delta = Math.abs(
         sectionElement.offsetTop - customOffset - scrollTop
       );
@@ -113,18 +122,24 @@ export function Scrollspy({
         item.removeAttribute("data-active");
       }
     });
-  }, [anchorElementsRef, targetRef, dataAttribute, offset, setActiveSection]);
+  }, [targetRef, dataAttribute, offset, setActiveSection]);
 
   const scrollTo = useCallback(
     (anchorElement: HTMLElement) => (event?: Event) => {
-      if (event) event.preventDefault();
+      if (event) {
+        event.preventDefault();
+      }
       const sectionId =
         anchorElement
           .getAttribute(`data-${dataAttribute}-anchor`)
           ?.replace("#", "") || null;
-      if (!sectionId) return;
+      if (!sectionId) {
+        return;
+      }
       const sectionElement = document.getElementById(sectionId);
-      if (!sectionElement) return;
+      if (!sectionElement) {
+        return;
+      }
 
       const scrollToElement =
         targetRef?.current === document ? window : targetRef?.current;
@@ -198,17 +213,15 @@ export function Scrollspy({
         item.removeEventListener("click", scrollTo(item as HTMLElement));
       });
     };
-  }, [
-    targetRef,
-    selfRef,
-    handleScroll,
-    dataAttribute,
-    scrollTo,
-    scrollToHashSection,
-  ]);
+  }, [targetRef, handleScroll, dataAttribute, scrollTo, scrollToHashSection]);
 
   return (
-    <div className={className} data-component="scrollspy" data-slot="scrollspy" ref={selfRef}>
+    <div
+      className={className}
+      data-component="scrollspy"
+      data-slot="scrollspy"
+      ref={selfRef}
+    >
       {children}
     </div>
   );

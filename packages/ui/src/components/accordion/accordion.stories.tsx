@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { AccordionRoot as Accordion } from "./accordion-root";
-import { AccordionItem } from "./accordion-item";
-import { AccordionTrigger } from "./accordion-trigger";
 import { AccordionContent } from "./accordion-content";
+import { AccordionItem } from "./accordion-item";
+import { AccordionRoot as Accordion } from "./accordion-root";
+import { AccordionTrigger } from "./accordion-trigger";
 
 const meta = {
   title: "Accordion",
@@ -83,7 +83,12 @@ export const Outline: Story = {
     },
   },
   render: () => (
-    <Accordion type="single" variant="outline" collapsible className="w-full lg:w-3/4">
+    <Accordion
+      className="w-full lg:w-3/4"
+      collapsible
+      type="single"
+      variant="outline"
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger>Asset Management</AccordionTrigger>
         <AccordionContent>
@@ -116,7 +121,12 @@ export const Solid: Story = {
     },
   },
   render: () => (
-    <Accordion type="single" variant="solid" collapsible className="w-full lg:w-3/4">
+    <Accordion
+      className="w-full lg:w-3/4"
+      collapsible
+      type="single"
+      variant="solid"
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger>Asset Management</AccordionTrigger>
         <AccordionContent>
@@ -151,8 +161,16 @@ export const Indicator: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-semibold text-sm">Arrow Indicator (Default)</h3>
-        <Accordion type="single" variant="outline" indicator="arrow" collapsible className="w-full lg:w-3/4">
+        <h3 className="mb-4 font-semibold text-sm">
+          Arrow Indicator (Default)
+        </h3>
+        <Accordion
+          className="w-full lg:w-3/4"
+          collapsible
+          indicator="arrow"
+          type="single"
+          variant="outline"
+        >
           <AccordionItem value="arrow-1">
             <AccordionTrigger>Asset Management</AccordionTrigger>
             <AccordionContent>
@@ -169,7 +187,13 @@ export const Indicator: Story = {
       </div>
       <div>
         <h3 className="mb-4 font-semibold text-sm">Plus Indicator</h3>
-        <Accordion type="single" variant="outline" indicator="plus" collapsible className="w-full lg:w-3/4">
+        <Accordion
+          className="w-full lg:w-3/4"
+          collapsible
+          indicator="plus"
+          type="single"
+          variant="outline"
+        >
           <AccordionItem value="plus-1">
             <AccordionTrigger>Asset Management</AccordionTrigger>
             <AccordionContent>
@@ -193,16 +217,27 @@ export const Nested: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Nested accordions demonstrating hierarchical content organization.",
+        story:
+          "Nested accordions demonstrating hierarchical content organization.",
       },
     },
   },
   render: () => (
-    <Accordion type="single" variant="outline" collapsible className="w-full lg:w-3/4">
+    <Accordion
+      className="w-full lg:w-3/4"
+      collapsible
+      type="single"
+      variant="outline"
+    >
       <AccordionItem value="parent-1">
         <AccordionTrigger>Getting Started</AccordionTrigger>
         <AccordionContent>
-          <Accordion type="single" variant="default" collapsible className="ml-4">
+          <Accordion
+            className="ml-4"
+            collapsible
+            type="single"
+            variant="default"
+          >
             <AccordionItem value="nested-1-1">
               <AccordionTrigger>Installation</AccordionTrigger>
               <AccordionContent>
@@ -221,7 +256,12 @@ export const Nested: Story = {
       <AccordionItem value="parent-2">
         <AccordionTrigger>Advanced Usage</AccordionTrigger>
         <AccordionContent>
-          <Accordion type="single" variant="default" collapsible className="ml-4">
+          <Accordion
+            className="ml-4"
+            collapsible
+            type="single"
+            variant="default"
+          >
             <AccordionItem value="nested-2-1">
               <AccordionTrigger>Customization</AccordionTrigger>
               <AccordionContent>

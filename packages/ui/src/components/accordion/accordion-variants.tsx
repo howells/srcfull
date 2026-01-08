@@ -1,7 +1,6 @@
 "use client";
 
-import { cn } from "@repo/ui/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
 // Variants
 export const accordionRootVariants = cva("", {

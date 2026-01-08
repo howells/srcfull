@@ -3,7 +3,13 @@
 import { TooltipProvider } from "@repo/ui/components/tooltip";
 import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 import { cn } from "@repo/ui/utils/cn";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   SIDEBAR_COOKIE_MAX_AGE,
   SIDEBAR_COOKIE_NAME,
@@ -66,7 +72,6 @@ export function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      /* biome-ignore lint/suspicious/noDocumentCookie: cookie state persistence is intentional */
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
     },
     [setOpenProp, open]

@@ -8,7 +8,6 @@ import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin";
 import { useMemo } from "react";
 import { cn } from "../../utils/cn";
 import { focusInput } from "../../utils/focus-input";
-import { AutocompletePlugin } from "./tag-input-autocomplete-plugin";
 import { ContentChangePlugin } from "./tag-input-content-change-plugin";
 import { TagInputProvider } from "./tag-input-context";
 import { KeywordNode } from "./tag-input-keyword-node";

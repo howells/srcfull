@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
 import type { ComponentSize } from "@repo/ui/lib/size";
+import { createContext, useContext } from "react";
 
 export type TabsContextValue = {
   variant: "default" | "underline" | "pill" | "button" | "line";

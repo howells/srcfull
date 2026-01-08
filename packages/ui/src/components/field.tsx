@@ -89,8 +89,8 @@ function Field({
   return (
     <div
       className={cn(fieldVariants({ orientation }), className)}
-      data-orientation={orientation}
       data-component="field"
+      data-orientation={orientation}
       data-slot="field"
       role="group"
       {...props}
@@ -174,8 +174,8 @@ function FieldSeparator({
         "-my-2 group-data-[variant=outline]/field-group:-mb-2 relative h-5 text-sm",
         className
       )}
-      data-content={!!children}
       data-component="field-separator"
+      data-content={!!children}
       data-slot="field-separator"
       {...props}
     >
@@ -214,7 +214,7 @@ function FieldError({
       ...new Map(errors.map((error) => [error?.message, error])).values(),
     ];
 
-    if (uniqueErrors?.length == 1) {
+    if (uniqueErrors?.length === 1) {
       return uniqueErrors[0]?.message;
     }
 

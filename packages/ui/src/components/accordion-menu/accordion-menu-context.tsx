@@ -2,7 +2,7 @@
 
 import { createContext } from "react";
 
-export interface AccordionMenuClassNames {
+export type AccordionMenuClassNames = {
   root?: string;
   group?: string;
   label?: string;
@@ -13,9 +13,9 @@ export interface AccordionMenuClassNames {
   subContent?: string;
   subWrapper?: string;
   indicator?: string;
-}
+};
 
-export interface AccordionMenuContextValue {
+export type AccordionMenuContextValue = {
   matchPath: (href: string) => boolean;
   selectedValue: string | undefined;
   setSelectedValue: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -25,7 +25,7 @@ export interface AccordionMenuContextValue {
     React.SetStateAction<Record<string, string | string[]>>
   >;
   onItemClick?: (value: string, event: React.MouseEvent) => void;
-}
+};
 
 export const AccordionMenuContext = createContext<AccordionMenuContextValue>({
   matchPath: () => false,

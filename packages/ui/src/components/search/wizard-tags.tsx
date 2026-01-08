@@ -1,14 +1,14 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
 import { easings } from "@repo/ui/lib/motion";
+import { AnimatePresence, motion } from "motion/react";
 
-export interface WizardTagsProps {
+export type WizardTagsProps = {
   tags: string[];
   onSelect: (tag: string) => void;
   visible: boolean;
   currentStageKey?: string;
-}
+};
 
 export function WizardTags({
   tags,
@@ -23,15 +23,15 @@ export function WizardTags({
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={currentStageKey}
-        initial={{ opacity: 0, height: 0, filter: "blur(4px)" }}
         animate={{ opacity: 1, height: "auto", filter: "blur(0px)" }}
+        className="overflow-hidden"
         exit={{ opacity: 0, height: 0, filter: "blur(4px)" }}
+        initial={{ opacity: 0, height: 0, filter: "blur(4px)" }}
+        key={currentStageKey}
         transition={{
           duration: 0.25,
           ease: easings.customExpand,
         }}
-        className="overflow-hidden"
       >
         <div className="p-2 pt-0">
           <div className="flex flex-wrap gap-2">
@@ -44,9 +44,9 @@ export function WizardTags({
 
               return (
                 <motion.div
-                  key={`${currentStageKey}-${tag}`}
-                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                  key={`${currentStageKey}-${tag}`}
                   transition={{
                     delay,
                     duration: 0.2,
@@ -54,10 +54,10 @@ export function WizardTags({
                   }}
                 >
                   <button
-                    type="button"
-                    onClick={() => onSelect(tag)}
-                    className="bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-gray-300 min-h-[32px] flex items-center justify-center [transition:background-color_70ms_ease-out,border-color_70ms_ease-out] hover:[transition:none]"
                     aria-label={`Select ${tag}`}
+                    className="flex min-h-[32px] items-center justify-center rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-600 text-sm [transition:background-color_70ms_ease-out,border-color_70ms_ease-out] hover:border-gray-300 hover:bg-gray-50 hover:[transition:none]"
+                    onClick={() => onSelect(tag)}
+                    type="button"
                   >
                     {tag}
                   </button>

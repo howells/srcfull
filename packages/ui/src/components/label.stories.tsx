@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
+import { Checkbox } from "./checkbox";
 import { Input } from "./input";
 import { Label } from "./label";
-import { Checkbox } from "./checkbox";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import { Switch } from "./switch";
 
@@ -118,15 +118,15 @@ export const WithRadioGroup: Story = {
       <Label>Notification Preference</Label>
       <RadioGroup defaultValue="all">
         <div className="flex items-center gap-2">
-          <RadioGroupItem value="all" id="all" />
+          <RadioGroupItem id="all" value="all" />
           <Label htmlFor="all">All notifications</Label>
         </div>
         <div className="flex items-center gap-2">
-          <RadioGroupItem value="important" id="important" />
+          <RadioGroupItem id="important" value="important" />
           <Label htmlFor="important">Important only</Label>
         </div>
         <div className="flex items-center gap-2">
-          <RadioGroupItem value="none" id="none" />
+          <RadioGroupItem id="none" value="none" />
           <Label htmlFor="none">None</Label>
         </div>
       </RadioGroup>
@@ -156,7 +156,7 @@ export const WithSwitch: Story = {
       </div>
       <div className="flex items-center justify-between">
         <Label htmlFor="auto-save">Auto Save</Label>
-        <Switch id="auto-save" defaultChecked />
+        <Switch defaultChecked id="auto-save" />
       </div>
     </div>
   ),
@@ -216,9 +216,7 @@ export const WithHelperText: Story = {
       <div className="flex flex-col gap-2">
         <Label htmlFor="bio">Bio</Label>
         <Input id="bio" placeholder="Tell us about yourself" />
-        <p className="text-muted-foreground text-xs">
-          Maximum 160 characters.
-        </p>
+        <p className="text-muted-foreground text-xs">Maximum 160 characters.</p>
       </div>
     </div>
   ),

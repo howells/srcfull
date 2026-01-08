@@ -65,7 +65,7 @@ export const ColumnCounts: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm font-medium">2 columns</div>
+        <div className="mb-2 font-medium text-sm">2 columns</div>
         <SimpleGrid cols={2} spacing="sm">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
@@ -78,7 +78,7 @@ export const ColumnCounts: Story = {
         </SimpleGrid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">3 columns</div>
+        <div className="mb-2 font-medium text-sm">3 columns</div>
         <SimpleGrid cols={3} spacing="sm">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -91,7 +91,7 @@ export const ColumnCounts: Story = {
         </SimpleGrid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">4 columns</div>
+        <div className="mb-2 font-medium text-sm">4 columns</div>
         <SimpleGrid cols={4} spacing="sm">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
@@ -119,7 +119,7 @@ export const SpacingOptions: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm font-medium">2xs spacing</div>
+        <div className="mb-2 font-medium text-sm">2xs spacing</div>
         <SimpleGrid cols={3} spacing="2xs">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -132,7 +132,7 @@ export const SpacingOptions: Story = {
         </SimpleGrid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">sm spacing</div>
+        <div className="mb-2 font-medium text-sm">sm spacing</div>
         <SimpleGrid cols={3} spacing="sm">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -145,7 +145,7 @@ export const SpacingOptions: Story = {
         </SimpleGrid>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">lg spacing</div>
+        <div className="mb-2 font-medium text-sm">lg spacing</div>
         <SimpleGrid cols={3} spacing="lg">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -166,7 +166,8 @@ export const Cards: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Common use case: displaying card-based content in a grid layout.",
+        story:
+          "Common use case: displaying card-based content in a grid layout.",
       },
     },
   },

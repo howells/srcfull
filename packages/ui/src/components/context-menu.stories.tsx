@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { Copy, Trash, Edit, Share2, Download } from "lucide-react";
+import { Copy, Download, Edit, Share2, Trash } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -34,7 +34,8 @@ export const Base: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Basic context menu with labels, items, and separators. Right-click on the trigger area to open the menu.",
+        story:
+          "Basic context menu with labels, items, and separators. Right-click on the trigger area to open the menu.",
       },
     },
   },
@@ -64,7 +65,8 @@ export const WithIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Context menu items can include icons for better visual recognition.",
+        story:
+          "Context menu items can include icons for better visual recognition.",
       },
     },
   },
@@ -107,7 +109,8 @@ export const WithSections: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Use labels and separators to organize menu items into logical sections.",
+        story:
+          "Use labels and separators to organize menu items into logical sections.",
       },
     },
   },

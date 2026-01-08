@@ -14,7 +14,6 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       className={cn("mx-auto flex w-full justify-center text-sm", className)}
       data-component="pagination"
       data-slot="pagination"
-      role="navigation"
       {...props}
     />
   );
@@ -35,7 +34,13 @@ function PaginationContent({
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
-  return <li data-component="pagination-item" data-slot="pagination-item" {...props} />;
+  return (
+    <li
+      data-component="pagination-item"
+      data-slot="pagination-item"
+      {...props}
+    />
+  );
 }
 
 type PaginationLinkProps = {

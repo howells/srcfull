@@ -203,7 +203,7 @@ export const PlatformSpecific: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div>
-        <div className="mb-3 text-sm font-medium">macOS</div>
+        <div className="mb-3 font-medium text-sm">macOS</div>
         <div className="flex flex-col gap-2">
           <KbdGroup>
             <Kbd>⌘</Kbd>
@@ -217,7 +217,7 @@ export const PlatformSpecific: Story = {
         </div>
       </div>
       <div>
-        <div className="mb-3 text-sm font-medium">Windows/Linux</div>
+        <div className="mb-3 font-medium text-sm">Windows/Linux</div>
         <div className="flex flex-col gap-2">
           <KbdGroup>
             <Kbd>Ctrl</Kbd>

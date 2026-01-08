@@ -191,7 +191,10 @@ export const WithCheckboxes: Story = {
           >
             Push Notifications
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={emails} onCheckedChange={setEmails}>
+          <DropdownMenuCheckboxItem
+            checked={emails}
+            onCheckedChange={setEmails}
+          >
             Email Notifications
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
@@ -227,7 +230,7 @@ export const WithRadioGroup: Story = {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+          <DropdownMenuRadioGroup onValueChange={setTheme} value={theme}>
             <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
@@ -344,7 +347,7 @@ export const ComplexExample: Story = {
           </DropdownMenuCheckboxItem>
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Theme</DropdownMenuLabel>
-          <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+          <DropdownMenuRadioGroup onValueChange={setTheme} value={theme}>
             <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>

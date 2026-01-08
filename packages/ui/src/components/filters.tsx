@@ -26,9 +26,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/components/tooltip";
+import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { AlertCircle, Check, Plus, X } from "lucide-react";
-import { cn } from "@repo/ui/utils/cn";
 import type React from "react";
 import {
   createContext,
@@ -39,7 +39,7 @@ import {
 } from "react";
 
 // i18n Configuration Interface
-export interface FilterI18nConfig {
+export type FilterI18nConfig = {
   // UI Labels
   addFilter: string;
   searchFields: string;
@@ -110,7 +110,7 @@ export interface FilterI18nConfig {
     invalidTel: string;
     invalid: string;
   };
-}
+};
 
 // Default English i18n configuration
 export const DEFAULT_I18N: FilterI18nConfig = {
@@ -187,7 +187,7 @@ export const DEFAULT_I18N: FilterI18nConfig = {
 };
 
 // Context for all Filter component props
-interface FilterContextValue {
+type FilterContextValue = {
   variant: "solid" | "outline";
   size: "sm" | "md" | "lg";
   radius: "md" | "full";
@@ -202,7 +202,7 @@ interface FilterContextValue {
   showSearchInput?: boolean;
   trigger?: React.ReactNode;
   allowMultiple?: boolean;
-}
+};
 
 const FilterContext = createContext<FilterContextValue>({
   variant: "outline",
@@ -505,7 +505,9 @@ function FilterInput<T = unknown>({
 
   // Validation function to check if input matches pattern
   const validateInput = (value: string, pattern?: string): boolean => {
-    if (!(pattern && value)) return true;
+    if (!(pattern && value)) {
+      return true;
+    }
     const regex = new RegExp(pattern);
     return regex.test(value);
   };
@@ -716,39 +718,39 @@ function FilterRemoveButton({
 }
 
 // Generic types for flexible filter system
-export interface FilterOption<T = unknown> {
+export type FilterOption<T = unknown> = {
   value: T;
   label: string;
   icon?: React.ReactNode;
   metadata?: Record<string, unknown>;
-}
+};
 
-export interface FilterOperator {
+export type FilterOperator = {
   value: string;
   label: string;
   supportsMultiple?: boolean;
-}
+};
 
 // Custom renderer props interface
-export interface CustomRendererProps<T = unknown> {
+export type CustomRendererProps<T = unknown> = {
   field: FilterFieldConfig<T>;
   values: T[];
   onChange: (values: T[]) => void;
   operator: string;
-}
+};
 
 // Grouped field configuration interface
-export interface FilterFieldGroup<T = unknown> {
+export type FilterFieldGroup<T = unknown> = {
   group?: string;
   fields: FilterFieldConfig<T>[];
-}
+};
 
 // Union type for both flat and grouped field configurations
 export type FilterFieldsConfig<T = unknown> =
   | FilterFieldConfig<T>[]
   | FilterFieldGroup<T>[];
 
-export interface FilterFieldConfig<T = unknown> {
+export type FilterFieldConfig<T = unknown> = {
   key?: string;
   label?: string;
   icon?: React.ReactNode;
@@ -805,7 +807,7 @@ export interface FilterFieldConfig<T = unknown> {
   // Controlled values support for this field
   value?: T[];
   onValueChange?: (values: T[]) => void;
-}
+};
 
 // Helper functions to handle both flat and grouped field configurations
 const isFieldGroup = <T = unknown>(
@@ -966,7 +968,9 @@ const getOperatorsForField = <T = unknown>(
   values: T[],
   i18n: FilterI18nConfig
 ): FilterOperator[] => {
-  if (field.operators) return field.operators;
+  if (field.operators) {
+    return field.operators;
+  }
 
   const operators = createOperatorsFromI18n(i18n);
 
@@ -986,12 +990,12 @@ const getOperatorsForField = <T = unknown>(
   return operators[fieldType] || operators.select;
 };
 
-interface FilterOperatorDropdownProps<T = unknown> {
+type FilterOperatorDropdownProps<T = unknown> = {
   field: FilterFieldConfig<T>;
   operator: string;
   values: T[];
   onChange: (operator: string) => void;
-}
+};
 
 function FilterOperatorDropdown<T = unknown>({
   field,
@@ -1043,14 +1047,14 @@ function FilterOperatorDropdown<T = unknown>({
   );
 }
 
-interface FilterValueSelectorProps<T = unknown> {
+type FilterValueSelectorProps<T = unknown> = {
   field: FilterFieldConfig<T>;
   values: T[];
   onChange: (values: T[]) => void;
   operator: string;
-}
+};
 
-interface SelectOptionsPopoverProps<T = unknown> {
+type SelectOptionsPopoverProps<T = unknown> = {
   field: FilterFieldConfig<T>;
   values: T[];
   onChange: (values: T[]) => void;
@@ -1058,7 +1062,7 @@ interface SelectOptionsPopoverProps<T = unknown> {
   showBackButton?: boolean;
   onBack?: () => void;
   inline?: boolean;
-}
+};
 
 function SelectOptionsPopover<T = unknown>({
   field,
@@ -1393,7 +1397,11 @@ function FilterValueSelector<T = unknown>({
       const endTime = (values[1] as string) || "";
 
       return (
-        <div className="flex items-center" data-component="filters-item" data-slot="filters-item">
+        <div
+          className="flex items-center"
+          data-component="filters-item"
+          data-slot="filters-item"
+        >
           <FilterInput
             className={field.className}
             field={field}
@@ -1442,7 +1450,11 @@ function FilterValueSelector<T = unknown>({
       const endDateTime = (values[1] as string) || "";
 
       return (
-        <div className="flex items-center" data-component="filters-item" data-slot="filters-item">
+        <div
+          className="flex items-center"
+          data-component="filters-item"
+          data-slot="filters-item"
+        >
           <FilterInput
             className={cn("w-36", field.className)}
             field={field}
@@ -1578,7 +1590,11 @@ function FilterValueSelector<T = unknown>({
       const maxVal = (values[1] as string) || "";
 
       return (
-        <div className="flex items-center" data-component="filters-item" data-slot="filters-item">
+        <div
+          className="flex items-center"
+          data-component="filters-item"
+          data-slot="filters-item"
+        >
           <FilterInput
             className={cn("w-16", field.className)}
             field={field}
@@ -1620,7 +1636,11 @@ function FilterValueSelector<T = unknown>({
     }
 
     return (
-      <div className="flex items-center" data-component="filters-item" data-slot="filters-item">
+      <div
+        className="flex items-center"
+        data-component="filters-item"
+        data-slot="filters-item"
+      >
         <FilterInput
           className={cn("w-36", field.className)}
           field={field}
@@ -1732,7 +1752,9 @@ function FilterValueSelector<T = unknown>({
                       } else {
                         onChange([] as T[]);
                       }
-                      if (!isMultiSelect) setOpen(false);
+                      if (!isMultiSelect) {
+                        setOpen(false);
+                      }
                     }}
                   >
                     {option.icon && option.icon}
@@ -1788,26 +1810,26 @@ function FilterValueSelector<T = unknown>({
   );
 }
 
-export interface Filter<T = unknown> {
+export type Filter<T = unknown> = {
   id: string;
   field: string;
   operator: string;
   values: T[];
-}
+};
 
-export interface FilterGroup<T = unknown> {
+export type FilterGroup<T = unknown> = {
   id: string;
   label?: string;
   filters: Filter<T>[];
   fields: FilterFieldConfig<T>[];
-}
+};
 
 // FiltersContent component for the filter panel content
-interface FiltersContentProps<T = unknown> {
+type FiltersContentProps<T = unknown> = {
   filters: Filter<T>[];
   fields: FilterFieldsConfig<T>;
   onChange: (filters: Filter<T>[]) => void;
-}
+};
 
 export const FiltersContent = <T = unknown>({
   filters,
@@ -1858,7 +1880,9 @@ export const FiltersContent = <T = unknown>({
     >
       {filters.map((filter) => {
         const field = fieldsMap[filter.field];
-        if (!field) return null;
+        if (!field) {
+          return null;
+        }
 
         return (
           <div
@@ -1904,7 +1928,7 @@ export const FiltersContent = <T = unknown>({
   );
 };
 
-interface FiltersProps<T = unknown> {
+type FiltersProps<T = unknown> = {
   filters: Filter<T>[];
   fields: FilterFieldsConfig<T>;
   onChange: (filters: Filter<T>[]) => void;
@@ -1923,7 +1947,7 @@ interface FiltersProps<T = unknown> {
   trigger?: React.ReactNode;
   allowMultiple?: boolean;
   popoverContentClassName?: string;
-}
+};
 
 export function Filters<T = unknown>({
   filters,
@@ -2002,7 +2026,7 @@ export function Filters<T = unknown>({
   const addFilter = useCallback(
     (fieldKey: string) => {
       const field = fieldsMap[fieldKey];
-      if (field && field.key) {
+      if (field?.key) {
         // For select and multiselect types, show options directly
         if (field.type === "select" || field.type === "multiselect") {
           setSelectedFieldForOptions(field);
@@ -2068,7 +2092,9 @@ export function Filters<T = unknown>({
 
   const addFilterWithOption = useCallback(
     (field: FilterFieldConfig<T>, values: unknown[], closePopover = true) => {
-      if (!field.key) return;
+      if (!field.key) {
+        return;
+      }
 
       const defaultOperator =
         field.defaultOperator ||
@@ -2233,7 +2259,9 @@ export function Filters<T = unknown>({
                             );
                           });
 
-                          if (groupFields.length === 0) return null;
+                          if (groupFields.length === 0) {
+                            return null;
+                          }
 
                           return (
                             <CommandGroup
@@ -2269,7 +2297,7 @@ export function Filters<T = unknown>({
 
                         // Handle group-level fields (new FilterFieldConfig structure with group property)
                         if (isGroupLevelField(item)) {
-                          const groupFields = item.fields!.filter((field) => {
+                          const groupFields = item.fields?.filter((field) => {
                             // Include separators and labels for display
                             if (field.type === "separator") {
                               return true;
@@ -2284,7 +2312,9 @@ export function Filters<T = unknown>({
                             );
                           });
 
-                          if (groupFields.length === 0) return null;
+                          if (groupFields.length === 0) {
+                            return null;
+                          }
 
                           return (
                             <CommandGroup
@@ -2349,7 +2379,9 @@ export function Filters<T = unknown>({
 
         {filters.map((filter) => {
           const field = fieldsMap[filter.field];
-          if (!field) return null;
+          if (!field) {
+            return null;
+          }
 
           return (
             <div

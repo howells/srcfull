@@ -89,7 +89,8 @@ export const Variants: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Semantic variants with appropriate colors for different states and contexts.",
+        story:
+          "Semantic variants with appropriate colors for different states and contexts.",
       },
     },
   },
@@ -112,17 +113,16 @@ export const WithDifferentIconSizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story:
-          "Icon size can be controlled independently from container size.",
+        story: "Icon size can be controlled independently from container size.",
       },
     },
   },
   render: () => (
     <div className="flex items-center gap-4">
-      <IconContainer icon={Search} size="lg" iconSize="xs" />
-      <IconContainer icon={Search} size="lg" iconSize="sm" />
-      <IconContainer icon={Search} size="lg" iconSize="base" />
-      <IconContainer icon={Search} size="lg" iconSize="lg" />
+      <IconContainer icon={Search} iconSize="xs" size="lg" />
+      <IconContainer icon={Search} iconSize="sm" size="lg" />
+      <IconContainer icon={Search} iconSize="base" size="lg" />
+      <IconContainer icon={Search} iconSize="lg" size="lg" />
     </div>
   ),
 };
@@ -140,8 +140,8 @@ export const InEmptyState: Story = {
     <div className="flex max-w-md flex-col items-center gap-4 rounded-lg border border-dashed p-12 text-center">
       <IconContainer icon={Package} variant="neutral" />
       <div>
-        <h3 className="mb-1 text-lg font-medium">No packages</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="mb-1 font-medium text-lg">No packages</h3>
+        <p className="text-muted-foreground text-sm">
           Get started by creating your first package.
         </p>
       </div>
@@ -161,19 +161,19 @@ export const StatusIndicators: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <IconContainer icon={Check} variant="success" size="sm" />
+        <IconContainer icon={Check} size="sm" variant="success" />
         <span className="text-sm">Deployment successful</span>
       </div>
       <div className="flex items-center gap-3">
-        <IconContainer icon={AlertCircle} variant="warning" size="sm" />
+        <IconContainer icon={AlertCircle} size="sm" variant="warning" />
         <span className="text-sm">Warning: High memory usage</span>
       </div>
       <div className="flex items-center gap-3">
-        <IconContainer icon={AlertCircle} variant="destructive" size="sm" />
+        <IconContainer icon={AlertCircle} size="sm" variant="destructive" />
         <span className="text-sm">Error: Connection failed</span>
       </div>
       <div className="flex items-center gap-3">
-        <IconContainer icon={Info} variant="info" size="sm" />
+        <IconContainer icon={Info} size="sm" variant="info" />
         <span className="text-sm">New update available</span>
       </div>
     </div>

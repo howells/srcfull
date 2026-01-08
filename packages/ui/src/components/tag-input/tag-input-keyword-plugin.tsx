@@ -12,8 +12,7 @@ import { useEffect } from "react";
 import { useTagInputContext } from "./tag-input-context";
 import { KeywordNode } from "./tag-input-keyword-node";
 import { getTextSinceLastTag } from "./utils/get-text-since-last-tag";
-import { handleAsyncKeywordReplacement } from "./utils/handle-async-keyword-replacement";
-import { findMatchingTag, queryTagMatches } from "./utils/keyword-utils";
+import { findMatchingTag } from "./utils/keyword-utils";
 import { replaceKeywordWithNode } from "./utils/replace-keyword-with-node";
 
 export function KeywordPlugin() {
@@ -46,7 +45,12 @@ export function KeywordPlugin() {
           const textContent = node.getTextContent();
           const anchorOffset = selection.anchor.offset;
 
-          console.log("[KeywordPlugin] Space pressed, text:", textContent, "offset:", anchorOffset);
+          console.log(
+            "[KeywordPlugin] Space pressed, text:",
+            textContent,
+            "offset:",
+            anchorOffset
+          );
 
           // Get all text since the last tag
           const textSinceLastTag = getTextSinceLastTag(node, anchorOffset);
@@ -61,7 +65,9 @@ export function KeywordPlugin() {
           // Handle async query mode
           // Disabled: automatic conversion on space is now handled by MatchHighlightPlugin + AutocompletePlugin
           if (onQuery) {
-            console.log("[KeywordPlugin] Query mode - automatic conversion disabled");
+            console.log(
+              "[KeywordPlugin] Query mode - automatic conversion disabled"
+            );
             return false;
           }
 
@@ -72,7 +78,12 @@ export function KeywordPlugin() {
             if (matchedTag) {
               console.log("[KeywordPlugin] Found keyword match:", matchedTag);
               editor.update(() => {
-                replaceKeywordWithNode(node, textContent, anchorOffset, matchedTag);
+                replaceKeywordWithNode(
+                  node,
+                  textContent,
+                  anchorOffset,
+                  matchedTag
+                );
               });
 
               event?.preventDefault();

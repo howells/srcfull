@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { cn } from "@repo/ui/utils/cn";
@@ -26,12 +26,20 @@ export function DocumentListHeader({
     >
       <label className="flex cursor-pointer items-center gap-3">
         <Checkbox
-          checked={allSelected ? true : someSelected ? ("indeterminate" as const) : false}
-          onCheckedChange={() => toggleAll()}
           aria-label="Select all documents"
+          checked={
+            allSelected
+              ? true
+              : someSelected
+                ? ("indeterminate" as const)
+                : false
+          }
+          onCheckedChange={() => toggleAll()}
         />
         <span className="text-sm">
-          {selected > 0 ? `${selected} selected` : `Select All (${total} items)`}
+          {selected > 0
+            ? `${selected} selected`
+            : `Select All (${total} items)`}
         </span>
       </label>
     </div>

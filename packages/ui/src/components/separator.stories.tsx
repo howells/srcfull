@@ -93,7 +93,8 @@ export const InCards: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Common usage of separators within card layouts to divide sections.",
+        story:
+          "Common usage of separators within card layouts to divide sections.",
       },
     },
   },
@@ -121,7 +122,8 @@ export const InMenus: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Separators commonly divide menu sections for better organization.",
+        story:
+          "Separators commonly divide menu sections for better organization.",
       },
     },
   },
@@ -151,19 +153,19 @@ export const WithCustomSpacing: Story = {
   render: () => (
     <div className="w-80 space-y-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Tight spacing (my-2)</div>
+        <div className="mb-2 font-medium text-sm">Tight spacing (my-2)</div>
         <div>Content above</div>
         <Separator className="my-2" />
         <div>Content below</div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Default spacing (my-4)</div>
+        <div className="mb-2 font-medium text-sm">Default spacing (my-4)</div>
         <div>Content above</div>
         <Separator className="my-4" />
         <div>Content below</div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Loose spacing (my-6)</div>
+        <div className="mb-2 font-medium text-sm">Loose spacing (my-6)</div>
         <div>Content above</div>
         <Separator className="my-6" />
         <div>Content below</div>

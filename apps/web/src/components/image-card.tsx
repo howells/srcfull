@@ -1,8 +1,8 @@
 // apps/web/src/components/image-card.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import type { ResolveResult } from '@/lib/resolver';
+import { useState } from "react";
+import type { ResolveResult } from "@/lib/resolver";
 
 type Props = {
   result: ResolveResult;
@@ -22,41 +22,45 @@ export function ImageCard({ result }: Props) {
   };
 
   return (
-    <div className="group relative bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg overflow-hidden">
+    <div className="group relative overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)]">
       <a
-        href={result.resolved}
-        target="_blank"
-        rel="noopener noreferrer"
         className="block aspect-square"
+        href={result.resolved}
+        rel="noopener noreferrer"
+        target="_blank"
       >
+        {/* biome-ignore lint/performance/noImgElement: image URLs are user-provided and can be any domain */}
         <img
-          src={result.resolved}
-          alt="Resolved image"
-          className="w-full h-full object-cover"
+          alt="Resolved"
+          className="h-full w-full object-cover"
+          height={512}
           loading="lazy"
+          src={result.resolved}
+          width={512}
         />
       </a>
 
-      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center gap-2">
+      <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
         <a
+          className="rounded bg-white px-3 py-1.5 font-medium text-black text-sm hover:bg-gray-100"
           href={result.resolved}
-          target="_blank"
           rel="noopener noreferrer"
-          className="px-3 py-1.5 bg-white text-black text-sm font-medium rounded hover:bg-gray-100"
+          target="_blank"
         >
           Open
         </a>
         <button
+          className="rounded bg-[var(--accent)] px-3 py-1.5 font-medium text-black text-sm hover:bg-[var(--accent-hover)]"
           onClick={handleCopy}
-          className="px-3 py-1.5 bg-[var(--accent)] text-black text-sm font-medium rounded hover:bg-[var(--accent-hover)]"
+          type="button"
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? "Copied!" : "Copy"}
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-        <div className="flex items-center gap-2 text-xs text-white/80">
-          <span className="px-1.5 py-0.5 bg-white/20 rounded">
+      <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+        <div className="flex items-center gap-2 text-white/80 text-xs">
+          <span className="rounded bg-white/20 px-1.5 py-0.5">
             {result.method}
           </span>
           {result.sizeIncrease && (

@@ -82,22 +82,20 @@ export const VerticalSpacing: Story = {
   },
   render: () => (
     <div className="space-y-8">
-      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map(
-        (size) => (
-          <div key={size}>
-            <div className="mb-2 text-sm font-medium">{size} spacing</div>
-            <div>
-              <div className="rounded-md border bg-neutral-50 p-3 text-sm">
-                Above
-              </div>
-              <Space h={size} />
-              <div className="rounded-md border bg-neutral-50 p-3 text-sm">
-                Below
-              </div>
+      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map((size) => (
+        <div key={size}>
+          <div className="mb-2 font-medium text-sm">{size} spacing</div>
+          <div>
+            <div className="rounded-md border bg-neutral-50 p-3 text-sm">
+              Above
+            </div>
+            <Space h={size} />
+            <div className="rounded-md border bg-neutral-50 p-3 text-sm">
+              Below
             </div>
           </div>
-        ),
-      )}
+        </div>
+      ))}
     </div>
   ),
 };
@@ -113,22 +111,20 @@ export const HorizontalSpacing: Story = {
   },
   render: () => (
     <div className="space-y-8">
-      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map(
-        (size) => (
-          <div key={size}>
-            <div className="mb-2 text-sm font-medium">{size} spacing</div>
-            <div className="flex items-center">
-              <div className="rounded-md border bg-neutral-50 p-3 text-sm">
-                Left
-              </div>
-              <Space w={size} />
-              <div className="rounded-md border bg-neutral-50 p-3 text-sm">
-                Right
-              </div>
+      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map((size) => (
+        <div key={size}>
+          <div className="mb-2 font-medium text-sm">{size} spacing</div>
+          <div className="flex items-center">
+            <div className="rounded-md border bg-neutral-50 p-3 text-sm">
+              Left
+            </div>
+            <Space w={size} />
+            <div className="rounded-md border bg-neutral-50 p-3 text-sm">
+              Right
             </div>
           </div>
-        ),
-      )}
+        </div>
+      ))}
     </div>
   ),
 };
@@ -145,7 +141,7 @@ export const PixelValues: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm font-medium">8px vertical</div>
+        <div className="mb-2 font-medium text-sm">8px vertical</div>
         <div>
           <div className="rounded-md border bg-neutral-50 p-3 text-sm">
             Above
@@ -157,7 +153,7 @@ export const PixelValues: Story = {
         </div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">24px horizontal</div>
+        <div className="mb-2 font-medium text-sm">24px horizontal</div>
         <div className="flex items-center">
           <div className="rounded-md border bg-neutral-50 p-3 text-sm">
             Left

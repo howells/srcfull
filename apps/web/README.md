@@ -1,6 +1,6 @@
 # Web App
 
-Next.js application for Beeline image extractor.
+Next.js app for Beeline (dashboard + API).
 
 ## Development
 
@@ -10,9 +10,12 @@ pnpm dev
 
 ## API Endpoints
 
-- `POST /api/extract-images` - REST API for programmatic access
-- `POST /api/chat` - Streaming chat API for UI
+- `POST /api/v1/scrape` - scrape a page and resolve image URLs (API key required)
+- `POST /api/v1/transform` - resolve a single image URL (API key required)
+- `GET /api/checkout` - Polar checkout (subscription)
+- `GET /api/portal` - Polar customer portal
+- `POST /api/webhooks/polar` - Polar webhook receiver
 
 ## Environment Variables
 
-See `.env.local.example`
+See `.env.local.example`.

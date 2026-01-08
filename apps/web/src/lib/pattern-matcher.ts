@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import curatedPatternsJson from "../../../../data/patterns.json";
 
 export type CuratedPattern = {
   domain: string;
@@ -10,62 +9,113 @@ export type CuratedPattern = {
   };
   stripParams?: string[];
   stripSuffixes?: string[];
-  confidence: 'high' | 'medium' | 'low';
+  confidence: "high" | "medium" | "low";
 };
 
 type CuratedPatterns = Record<string, CuratedPattern>;
 
-let cachedPatterns: CuratedPatterns | null = null;
+const curatedPatterns = curatedPatternsJson as unknown as CuratedPatterns;
 
-function loadCuratedPatterns(): CuratedPatterns {
-  if (cachedPatterns) return cachedPatterns;
+const FIX_QUERY_PARAM_SEPARATORS_REGEX = /\?&/g;
+const FIX_DUPLICATE_AMPERSANDS_REGEX = /&&+/g;
+const STRIP_TRAILING_QUERY_SEPARATORS_REGEX = /[?&]+$/g;
 
+function tryExtractSource(
+  url: string,
+  extractSource: NonNullable<CuratedPattern["extractSource"]>
+): string | null {
   try {
-    const patternsPath = path.join(process.cwd(), '../../data/patterns.json');
-    const data = fs.readFileSync(patternsPath, 'utf-8');
-    cachedPatterns = JSON.parse(data);
-    return cachedPatterns!;
+    const regex = new RegExp(extractSource.pattern);
+    if (!regex.test(url)) {
+      return null;
+    }
+    return url.replace(regex, extractSource.replacement);
   } catch {
-    return {};
+    return null;
   }
 }
 
+function tryStripParams(url: string, stripParams: string[]): string | null {
+  let cleanUrl = url;
+
+  for (const param of stripParams) {
+    try {
+      cleanUrl = cleanUrl.replace(new RegExp(param, "g"), "");
+    } catch {
+      // Ignore invalid regex
+    }
+  }
+
+  cleanUrl = cleanUrl
+    .replace(FIX_QUERY_PARAM_SEPARATORS_REGEX, "?")
+    .replace(FIX_DUPLICATE_AMPERSANDS_REGEX, "&")
+    .replace(STRIP_TRAILING_QUERY_SEPARATORS_REGEX, "");
+
+  if (cleanUrl === url) {
+    return null;
+  }
+
+  return cleanUrl;
+}
+
+function tryStripSuffixes(url: string, stripSuffixes: string[]): string | null {
+  let cleanUrl = url;
+
+  for (const suffix of stripSuffixes) {
+    try {
+      cleanUrl = cleanUrl.replace(new RegExp(`${suffix}(\\.\\w+)$`), "$1");
+    } catch {
+      // Ignore invalid regex
+    }
+  }
+
+  if (cleanUrl === url) {
+    return null;
+  }
+
+  return cleanUrl;
+}
+
+function tryApplyCuratedPattern(
+  url: string,
+  pattern: CuratedPattern
+): string | null {
+  if (pattern.extractSource) {
+    const extracted = tryExtractSource(url, pattern.extractSource);
+    if (extracted) {
+      return extracted;
+    }
+  }
+
+  if (pattern.stripParams) {
+    const stripped = tryStripParams(url, pattern.stripParams);
+    if (stripped) {
+      return stripped;
+    }
+  }
+
+  if (pattern.stripSuffixes) {
+    const stripped = tryStripSuffixes(url, pattern.stripSuffixes);
+    if (stripped) {
+      return stripped;
+    }
+  }
+
+  return null;
+}
+
 export function matchCuratedPattern(url: string): string | null {
-  const patterns = loadCuratedPatterns();
-
-  for (const [name, pattern] of Object.entries(patterns)) {
-    if (name === 'generic') continue;
-    if (!url.includes(pattern.domain)) continue;
-
-    // Try extractSource first
-    if (pattern.extractSource) {
-      const regex = new RegExp(pattern.extractSource.pattern);
-      if (regex.test(url)) {
-        return url.replace(regex, pattern.extractSource.replacement);
-      }
+  for (const [name, pattern] of Object.entries(curatedPatterns)) {
+    if (name === "generic") {
+      continue;
+    }
+    if (!url.includes(pattern.domain)) {
+      continue;
     }
 
-    // Try stripParams
-    if (pattern.stripParams) {
-      let cleanUrl = url;
-      for (const param of pattern.stripParams) {
-        cleanUrl = cleanUrl.replace(new RegExp(param, 'g'), '');
-      }
-      cleanUrl = cleanUrl
-        .replace(/\?&/g, '?')
-        .replace(/&&+/g, '&')
-        .replace(/[?&]+$/g, '');
-
-      if (cleanUrl !== url) return cleanUrl;
-    }
-
-    // Try stripSuffixes
-    if (pattern.stripSuffixes) {
-      let cleanUrl = url;
-      for (const suffix of pattern.stripSuffixes) {
-        cleanUrl = cleanUrl.replace(new RegExp(suffix + '(\\.\\w+)$'), '$1');
-      }
-      if (cleanUrl !== url) return cleanUrl;
+    const resolved = tryApplyCuratedPattern(url, pattern);
+    if (resolved) {
+      return resolved;
     }
   }
 
@@ -74,10 +124,10 @@ export function matchCuratedPattern(url: string): string | null {
 
 export function applyPattern(
   url: string,
-  pattern: { match_regex: string; transform: string }
+  pattern: { matchRegex: string; transform: string }
 ): string | null {
   try {
-    const regex = new RegExp(pattern.match_regex);
+    const regex = new RegExp(pattern.matchRegex);
     if (regex.test(url)) {
       return url.replace(regex, pattern.transform);
     }

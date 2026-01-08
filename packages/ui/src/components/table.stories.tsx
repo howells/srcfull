@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
+import { Badge } from "./badge";
 import {
   Table,
   TableBody,
@@ -10,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { Badge } from "./badge";
 
 const meta = {
   title: "Table",
@@ -132,7 +132,8 @@ export const WithBadges: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Tables can include other components like badges for visual status indicators.",
+        story:
+          "Tables can include other components like badges for visual status indicators.",
       },
     },
   },

@@ -4,10 +4,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";
 import { useMemo } from "react";
-import {
-  AccordionItemContext,
-  useAccordionContext,
-} from "./accordion-context";
+import { AccordionItemContext, useAccordionContext } from "./accordion-context";
 import { accordionItemVariants } from "./accordion-variants";
 
 function AccordionItem(props: ComponentProps<typeof AccordionPrimitive.Item>) {

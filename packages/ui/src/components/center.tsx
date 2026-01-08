@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@repo/ui/utils/cn";
-import * as React from "react";
+import type * as React from "react";
 
 export interface CenterProps extends React.ComponentProps<"div"> {
   /**
@@ -39,7 +39,13 @@ export interface CenterProps extends React.ComponentProps<"div"> {
  * </Center>
  * ```
  */
-export function Center({ children, className, inline = false, asChild = false, ...props }: CenterProps) {
+export function Center({
+  children,
+  className,
+  inline = false,
+  asChild = false,
+  ...props
+}: CenterProps) {
   const Component = asChild ? Slot : "div";
 
   return (

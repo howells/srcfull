@@ -11,10 +11,10 @@ export async function validateImageUrl(url: string): Promise<ValidationResult> {
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     const response = await fetch(url, {
-      method: 'HEAD',
+      method: "HEAD",
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; Beeline/2.0)',
-        'Accept': 'image/*',
+        "User-Agent": "Mozilla/5.0 (compatible; Beeline/2.0)",
+        Accept: "image/*",
       },
       signal: controller.signal,
     });
@@ -25,11 +25,11 @@ export async function validateImageUrl(url: string): Promise<ValidationResult> {
       return { valid: false };
     }
 
-    const contentType = response.headers.get('content-type') ?? '';
-    const contentLength = response.headers.get('content-length');
-    const size = contentLength ? parseInt(contentLength, 10) : undefined;
+    const contentType = response.headers.get("content-type") ?? "";
+    const contentLength = response.headers.get("content-length");
+    const size = contentLength ? Number.parseInt(contentLength, 10) : undefined;
 
-    const isImage = contentType.startsWith('image/');
+    const isImage = contentType.startsWith("image/");
 
     return {
       valid: isImage,

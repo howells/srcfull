@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Accordion as AccordionPrimitive } from "radix-ui";
 import { ChevronDown, Plus } from "lucide-react";
 import { motion } from "motion/react";
+import { Accordion as AccordionPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";
 import { Icon } from "../icon";
 import { useAccordionContext, useAccordionItem } from "./accordion-context";

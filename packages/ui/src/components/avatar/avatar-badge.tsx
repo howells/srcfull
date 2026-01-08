@@ -43,12 +43,14 @@ const POSITION_CLASS: Record<
   "top-left": "-top-1 -left-1",
 };
 
-const VARIANT_CLASS: Record<NonNullable<AvatarBadgeProps["variant"]>, string> =
-  {
-    default: "bg-secondary text-secondary-foreground",
-    primary: "bg-primary text-primary-foreground",
-    destructive: "bg-destructive text-destructive-foreground",
-  };
+const VARIANT_CLASS: Record<
+  NonNullable<AvatarBadgeProps["variant"]>,
+  string
+> = {
+  default: "bg-secondary text-secondary-foreground",
+  primary: "bg-primary text-primary-foreground",
+  destructive: "bg-destructive text-destructive-foreground",
+};
 
 export function AvatarBadge({
   count,
@@ -69,6 +71,7 @@ export function AvatarBadge({
   if (dot) {
     return (
       <span
+        aria-hidden="true"
         className={cn(
           "absolute rounded-full",
           DOT_SIZE[size],
@@ -78,13 +81,13 @@ export function AvatarBadge({
           className
         )}
         data-component="avatar-badge"
-        aria-hidden="true"
       />
     );
   }
 
   return (
     <span
+      aria-label={`${count} notifications`}
       className={cn(
         "absolute flex items-center justify-center rounded-full px-1 font-medium tabular-nums",
         BADGE_SIZE[size],
@@ -94,7 +97,6 @@ export function AvatarBadge({
         className
       )}
       data-component="avatar-badge"
-      aria-label={`${count} notifications`}
     >
       {displayCount}
     </span>

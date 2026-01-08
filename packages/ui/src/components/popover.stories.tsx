@@ -30,7 +30,8 @@ export const Base: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Basic popover with icon and content. Click outside or press escape to dismiss.",
+        story:
+          "Basic popover with icon and content. Click outside or press escape to dismiss.",
       },
     },
   },
@@ -75,12 +76,12 @@ export const WithIcon: Story = {
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex items-start gap-3">
-          <Icon icon={HelpCircle} className="text-blue-600" />
+          <Icon className="text-blue-600" icon={HelpCircle} />
           <div className="space-y-1">
             <div className="font-semibold">Need help?</div>
             <div className="text-muted-foreground text-sm">
-              Visit our documentation or contact support for assistance with this
-              feature.
+              Visit our documentation or contact support for assistance with
+              this feature.
             </div>
           </div>
         </div>
@@ -119,25 +120,25 @@ export const WithForm: Story = {
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="width">Width</Label>
               <Input
-                id="width"
-                defaultValue="100%"
                 className="col-span-2 h-8"
+                defaultValue="100%"
+                id="width"
               />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="maxWidth">Max. width</Label>
               <Input
-                id="maxWidth"
-                defaultValue="300px"
                 className="col-span-2 h-8"
+                defaultValue="300px"
+                id="maxWidth"
               />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="height">Height</Label>
               <Input
-                id="height"
-                defaultValue="25px"
                 className="col-span-2 h-8"
+                defaultValue="25px"
+                id="height"
               />
             </div>
           </div>
@@ -277,7 +278,7 @@ export const InfoPopover: Story = {
       <span>Hover for more info</span>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon-sm">
+          <Button size="icon-sm" variant="ghost">
             <Icon icon={Info} />
           </Button>
         </PopoverTrigger>
@@ -319,8 +320,8 @@ export const DatePickerPattern: Story = {
           <div className="space-y-2">
             <div className="font-medium">Select date</div>
             <div className="text-muted-foreground text-sm">
-              Calendar component would go here. This demonstrates how popovers can
-              host complex interactive components like date pickers.
+              Calendar component would go here. This demonstrates how popovers
+              can host complex interactive components like date pickers.
             </div>
           </div>
         </div>

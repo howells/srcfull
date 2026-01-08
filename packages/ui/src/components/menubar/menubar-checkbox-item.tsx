@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
+import { cn } from "@repo/ui/utils/cn";
 import { Check } from "lucide-react";
 import type * as React from "react";
 

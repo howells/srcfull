@@ -36,7 +36,8 @@ export const Base: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Basic drawer with header, content, and footer. Drag down or press escape to dismiss.",
+        story:
+          "Basic drawer with header, content, and footer. Drag down or press escape to dismiss.",
       },
     },
   },
@@ -68,7 +69,8 @@ export const WithForm: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Drawers can contain forms and interactive content. Perfect for mobile-friendly input experiences.",
+        story:
+          "Drawers can contain forms and interactive content. Perfect for mobile-friendly input experiences.",
       },
     },
   },
@@ -108,7 +110,8 @@ export const WithScrollableContent: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Drawers handle scrollable content gracefully while maintaining the header and footer in place.",
+        story:
+          "Drawers handle scrollable content gracefully while maintaining the header and footer in place.",
       },
     },
   },
@@ -127,7 +130,8 @@ export const WithScrollableContent: Story = {
         <div className="max-h-[400px] overflow-y-auto p-4">
           {Array.from({ length: 20 }).map((_, i) => (
             <p className="mb-4 text-neutral-700 text-sm" key={i}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           ))}
         </div>

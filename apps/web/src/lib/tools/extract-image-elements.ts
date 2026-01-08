@@ -1,45 +1,49 @@
-import * as cheerio from 'cheerio';
+import { load } from "cheerio";
 
-export interface ImageCandidate {
+const BACKGROUND_IMAGE_REGEX =
+  /background-image:\s*url\(['"]?([^'")\s]+)['"]?\)/;
+
+export type ImageCandidate = {
   url: string;
-  source: 'img' | 'picture' | 'background';
+  source: "img" | "picture" | "background";
   width?: number;
   height?: number;
   srcset?: string[];
   alt?: string;
-}
+};
 
-export interface ToolResult<T> {
+export type ToolResult<T> = {
   success: boolean;
   data?: T;
   error?: string;
-}
+};
 
 // Internal function for testing
-export async function executeExtractImageElements(
+export function executeExtractImageElements(
   html: string
-): Promise<ToolResult<ImageCandidate[]>> {
+): ToolResult<ImageCandidate[]> {
   try {
-    const $ = cheerio.load(html);
+    const $ = load(html);
     const candidates: ImageCandidate[] = [];
 
     // Extract from <img> tags
-    $('img').each((_, el) => {
+    $("img").each((_, el) => {
       const $el = $(el);
-      const src = $el.attr('src');
-      const srcset = $el.attr('srcset');
-      const width = parseInt($el.attr('width') || '0', 10) || undefined;
-      const height = parseInt($el.attr('height') || '0', 10) || undefined;
-      const alt = $el.attr('alt');
+      const src = $el.attr("src");
+      const srcset = $el.attr("srcset");
+      const width = Number.parseInt($el.attr("width") || "0", 10) || undefined;
+      const height =
+        Number.parseInt($el.attr("height") || "0", 10) || undefined;
+      const alt = $el.attr("alt");
 
       if (src) {
         const srcsetUrls = srcset
-          ? srcset.split(',').map(s => s.trim().split(' ')[0])
+          ? srcset.split(",").map((s) => s.trim().split(" ")[0])
           : [];
 
         candidates.push({
           url: src,
-          source: 'img',
+          source: "img",
           width,
           height,
           srcset: srcsetUrls.length > 0 ? srcsetUrls : undefined,
@@ -49,32 +53,32 @@ export async function executeExtractImageElements(
     });
 
     // Extract from <picture> tags
-    $('picture source').each((_, el) => {
+    $("picture source").each((_, el) => {
       const $el = $(el);
-      const srcset = $el.attr('srcset');
+      const srcset = $el.attr("srcset");
 
       if (srcset) {
-        const urls = srcset.split(',').map(s => s.trim().split(' ')[0]);
-        urls.forEach(url => {
+        const urls = srcset.split(",").map((s) => s.trim().split(" ")[0]);
+        for (const url of urls) {
           candidates.push({
             url,
-            source: 'picture',
+            source: "picture",
             srcset: urls,
           });
-        });
+        }
       }
     });
 
     // Extract from CSS background-image
     $('[style*="background-image"]').each((_, el) => {
       const $el = $(el);
-      const style = $el.attr('style');
+      const style = $el.attr("style");
       if (style) {
-        const match = style.match(/background-image:\s*url\(['"]?([^'")\s]+)['"]?\)/);
-        if (match && match[1]) {
+        const match = style.match(BACKGROUND_IMAGE_REGEX);
+        if (match?.[1]) {
           candidates.push({
             url: match[1],
-            source: 'background',
+            source: "background",
           });
         }
       }
@@ -83,7 +87,7 @@ export async function executeExtractImageElements(
     // Deduplicate by URL
     const uniqueCandidates = candidates.filter(
       (candidate, index, self) =>
-        index === self.findIndex(c => c.url === candidate.url)
+        index === self.findIndex((c) => c.url === candidate.url)
     );
 
     return {
@@ -91,7 +95,7 @@ export async function executeExtractImageElements(
       data: uniqueCandidates,
     };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : "Unknown error";
     return {
       success: false,
       error: `Failed to extract images: ${message}`,

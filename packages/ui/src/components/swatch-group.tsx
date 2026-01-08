@@ -1,9 +1,10 @@
 "use client";
 
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { cn } from "@repo/ui/utils/cn";
 import { focusRing } from "@repo/ui/utils/focus-ring";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import React, { createContext, useContext } from "react";
+import type React from "react";
+import { createContext, useContext } from "react";
 
 type SwatchSize = "sm" | "md" | "lg";
 
@@ -17,9 +18,13 @@ type SwatchGroupContextValue = {
   size: SwatchSize;
 };
 
-const SwatchGroupContext = createContext<SwatchGroupContextValue>({ size: "md" });
+const SwatchGroupContext = createContext<SwatchGroupContextValue>({
+  size: "md",
+});
 
-type SwatchGroupProps = React.ComponentProps<typeof RadioGroupPrimitive.Root> & {
+type SwatchGroupProps = React.ComponentProps<
+  typeof RadioGroupPrimitive.Root
+> & {
   size?: SwatchSize;
 };
 
@@ -61,7 +66,13 @@ type SwatchProps = Omit<
   size?: SwatchSize;
 };
 
-function Swatch({ className, color, children, size: sizeOverride, ...props }: SwatchProps) {
+function Swatch({
+  className,
+  color,
+  children,
+  size: sizeOverride,
+  ...props
+}: SwatchProps) {
   const { size } = useContext(SwatchGroupContext);
   const resolvedSize = sizeOverride ?? size;
 
@@ -69,15 +80,15 @@ function Swatch({ className, color, children, size: sizeOverride, ...props }: Sw
     <RadioGroupPrimitive.Item
       className={cn(
         // Layout & shape
-        "relative inline-flex shrink-0 items-center justify-center rounded-full border border-border overflow-hidden",
+        "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border",
         sizeMap[resolvedSize],
         // Focus styles
         focusRing,
         // Hover/active hints
         "bg-background transition-shadow hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50",
         // Selection rings (double ring using before/after)
-        "before:content-[''] before:absolute before:inset-[-2px] before:rounded-full before:border before:border-background before:opacity-0 data-[state=checked]:before:opacity-100",
-        "after:content-[''] after:absolute after:inset-[-5px] after:rounded-full after:border after:border-muted/60 after:opacity-0 data-[state=checked]:after:opacity-100",
+        "before:absolute before:inset-[-2px] before:rounded-full before:border before:border-background before:opacity-0 before:content-[''] data-[state=checked]:before:opacity-100",
+        "after:absolute after:inset-[-5px] after:rounded-full after:border after:border-muted/60 after:opacity-0 after:content-[''] data-[state=checked]:after:opacity-100",
         className
       )}
       data-component="swatch"
@@ -86,14 +97,17 @@ function Swatch({ className, color, children, size: sizeOverride, ...props }: Sw
     >
       {/* Color background */}
       <span
+        aria-hidden
         className="absolute inset-0 rounded-full"
         style={color ? { backgroundColor: color } : undefined}
-        aria-hidden
       />
 
       {/* Content layer (e.g., an Image component). Parent is relative and sized. */}
       {children ? (
-        <span className="absolute inset-0 rounded-full overflow-hidden" aria-hidden>
+        <span
+          aria-hidden
+          className="absolute inset-0 overflow-hidden rounded-full"
+        >
           {children}
         </span>
       ) : null}

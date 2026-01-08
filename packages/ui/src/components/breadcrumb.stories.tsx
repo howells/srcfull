@@ -2,18 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
 import {
   Breadcrumb,
-  BreadcrumbList,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 } from "./breadcrumb";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "./dropdown-menu";
 
 const meta = {
@@ -87,7 +87,8 @@ export const WithDropdown: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Use a dropdown menu with ellipsis to show collapsed breadcrumb items.",
+        story:
+          "Use a dropdown menu with ellipsis to show collapsed breadcrumb items.",
       },
     },
   },
@@ -110,7 +111,9 @@ export const LongPath: Story = {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/stone/marble/italian">Italian Marble</BreadcrumbLink>
+          <BreadcrumbLink href="/stone/marble/italian">
+            Italian Marble
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
@@ -122,7 +125,8 @@ export const LongPath: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Breadcrumbs automatically wrap to multiple lines when the path is too long.",
+        story:
+          "Breadcrumbs automatically wrap to multiple lines when the path is too long.",
       },
     },
   },

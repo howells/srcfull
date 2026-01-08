@@ -128,7 +128,7 @@ export const CustomLabel: Story = {
         <span className="flex items-center gap-2">
           <span>{item.getItemName()}</span>
           {meta.isFolder && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               ({meta.childrenCount})
             </span>
           )}

@@ -94,7 +94,7 @@ export const Default: Story = {
   },
   render: () => (
     <div className="flex min-h-[200px] items-center justify-center">
-      <ShimmeringText text="Welcome to Materia" startOnView={false} />
+      <ShimmeringText startOnView={false} text="Welcome to Materia" />
     </div>
   ),
 };
@@ -110,11 +110,11 @@ export const LargeHeading: Story = {
   },
   render: () => (
     <div className="flex min-h-[200px] items-center justify-center">
-      <h1 className="text-6xl font-bold">
+      <h1 className="font-bold text-6xl">
         <ShimmeringText
-          text="Beautiful Design"
           duration={3}
           startOnView={false}
+          text="Beautiful Design"
         />
       </h1>
     </div>
@@ -133,30 +133,30 @@ export const CustomDuration: Story = {
   render: () => (
     <div className="flex min-h-[300px] flex-col items-center justify-center gap-8">
       <div className="text-center">
-        <p className="mb-2 text-sm text-muted-foreground">Fast (1s)</p>
+        <p className="mb-2 text-muted-foreground text-sm">Fast (1s)</p>
         <ShimmeringText
-          text="Quick Shimmer"
+          className="font-semibold text-2xl"
           duration={1}
           startOnView={false}
-          className="text-2xl font-semibold"
+          text="Quick Shimmer"
         />
       </div>
       <div className="text-center">
-        <p className="mb-2 text-sm text-muted-foreground">Normal (2s)</p>
+        <p className="mb-2 text-muted-foreground text-sm">Normal (2s)</p>
         <ShimmeringText
-          text="Normal Shimmer"
+          className="font-semibold text-2xl"
           duration={2}
           startOnView={false}
-          className="text-2xl font-semibold"
+          text="Normal Shimmer"
         />
       </div>
       <div className="text-center">
-        <p className="mb-2 text-sm text-muted-foreground">Slow (4s)</p>
+        <p className="mb-2 text-muted-foreground text-sm">Slow (4s)</p>
         <ShimmeringText
-          text="Slow Shimmer"
+          className="font-semibold text-2xl"
           duration={4}
           startOnView={false}
-          className="text-2xl font-semibold"
+          text="Slow Shimmer"
         />
       </div>
     </div>
@@ -176,10 +176,10 @@ export const NoRepeat: Story = {
   render: () => (
     <div className="flex min-h-[200px] items-center justify-center">
       <ShimmeringText
-        text="One Time Only"
+        className="font-bold text-3xl"
         repeat={false}
         startOnView={false}
-        className="text-3xl font-bold"
+        text="One Time Only"
       />
     </div>
   ),
@@ -197,10 +197,10 @@ export const WithDelay: Story = {
   render: () => (
     <div className="flex min-h-[200px] items-center justify-center">
       <ShimmeringText
-        text="Delayed Start"
+        className="font-bold text-3xl"
         delay={1}
         startOnView={false}
-        className="text-3xl font-bold"
+        text="Delayed Start"
       />
     </div>
   ),
@@ -218,33 +218,33 @@ export const CustomColors: Story = {
   render: () => (
     <div className="flex min-h-[400px] flex-col items-center justify-center gap-8 bg-neutral-950 p-8">
       <div className="text-center">
-        <p className="mb-2 text-sm text-neutral-400">Blue Shimmer</p>
+        <p className="mb-2 text-neutral-400 text-sm">Blue Shimmer</p>
         <ShimmeringText
-          text="Ocean Waves"
+          className="font-bold text-3xl"
           color="#1e40af"
           shimmerColor="#3b82f6"
           startOnView={false}
-          className="text-3xl font-bold"
+          text="Ocean Waves"
         />
       </div>
       <div className="text-center">
-        <p className="mb-2 text-sm text-neutral-400">Purple Shimmer</p>
+        <p className="mb-2 text-neutral-400 text-sm">Purple Shimmer</p>
         <ShimmeringText
-          text="Cosmic Glow"
+          className="font-bold text-3xl"
           color="#6b21a8"
           shimmerColor="#a855f7"
           startOnView={false}
-          className="text-3xl font-bold"
+          text="Cosmic Glow"
         />
       </div>
       <div className="text-center">
-        <p className="mb-2 text-sm text-neutral-400">Green Shimmer</p>
+        <p className="mb-2 text-neutral-400 text-sm">Green Shimmer</p>
         <ShimmeringText
-          text="Forest Light"
+          className="font-bold text-3xl"
           color="#15803d"
           shimmerColor="#22c55e"
           startOnView={false}
-          className="text-3xl font-bold"
+          text="Forest Light"
         />
       </div>
     </div>
@@ -263,10 +263,10 @@ export const LongText: Story = {
   render: () => (
     <div className="flex min-h-[200px] max-w-2xl items-center justify-center p-8">
       <ShimmeringText
-        text="This is a much longer piece of text that demonstrates how the shimmer effect automatically scales to accommodate different text lengths while maintaining a smooth, elegant animation."
+        className="text-xl leading-relaxed"
         duration={3}
         startOnView={false}
-        className="text-xl leading-relaxed"
+        text="This is a much longer piece of text that demonstrates how the shimmer effect automatically scales to accommodate different text lengths while maintaining a smooth, elegant animation."
       />
     </div>
   ),
@@ -284,22 +284,22 @@ export const MultipleInstances: Story = {
   render: () => (
     <div className="flex min-h-[300px] flex-col items-center justify-center gap-4">
       <ShimmeringText
-        text="First Line"
+        className="font-semibold text-2xl"
         delay={0}
         startOnView={false}
-        className="text-2xl font-semibold"
+        text="First Line"
       />
       <ShimmeringText
-        text="Second Line"
+        className="font-semibold text-2xl"
         delay={0.3}
         startOnView={false}
-        className="text-2xl font-semibold"
+        text="Second Line"
       />
       <ShimmeringText
-        text="Third Line"
+        className="font-semibold text-2xl"
         delay={0.6}
         startOnView={false}
-        className="text-2xl font-semibold"
+        text="Third Line"
       />
     </div>
   ),
@@ -322,10 +322,10 @@ export const ViewportTrigger: Story = {
       </div>
       <div className="flex h-screen items-center justify-center">
         <ShimmeringText
-          text="I animate on scroll!"
-          startOnView={true}
+          className="font-bold text-4xl"
           once={true}
-          className="text-4xl font-bold"
+          startOnView={true}
+          text="I animate on scroll!"
         />
       </div>
     </div>

@@ -1,15 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
+import { cn } from "@repo/ui/utils/cn";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+} from "lucide-react";
 import { useState } from "react";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../card";
-import { Collapsible } from "./collapsible-root";
-import { CollapsibleContent } from "./collapsible-content";
-import { CollapsibleTrigger } from "./collapsible-trigger";
-import { cn } from "@repo/ui/utils/cn";
 import { Icon } from "../icon";
+import { CollapsibleContent } from "./collapsible-content";
+import { Collapsible } from "./collapsible-root";
+import { CollapsibleTrigger } from "./collapsible-trigger";
 
 const meta = {
   title: "Collapsible",
@@ -36,14 +42,12 @@ export const Base: Story = {
     return (
       <Collapsible
         className="flex w-[350px] flex-col gap-2"
+        defaultOpen={false}
         onOpenChange={setIsOpen}
         open={isOpen}
-        defaultOpen={false}
       >
         <div className="flex items-center justify-between gap-4 px-4">
-          <h4 className="font-semibold text-sm">
-            Recent Projects
-          </h4>
+          <h4 className="font-semibold text-sm">Recent Projects</h4>
           <CollapsibleTrigger asChild>
             <Button className="size-8" size="icon" variant="ghost">
               <ChevronsUpDown className="size-4" />
@@ -85,9 +89,9 @@ export const Controlled: Story = {
       <div className="flex flex-col gap-4">
         <Collapsible
           className="flex w-[350px] flex-col gap-2"
+          defaultOpen={false}
           onOpenChange={setIsOpen}
           open={isOpen}
-          defaultOpen={false}
         >
           <div className="flex items-center justify-between gap-4 px-4">
             <h4 className="font-semibold text-sm">
@@ -195,7 +199,7 @@ export const InlineExpansion: Story = {
       <div className="w-[500px] rounded-lg border p-4 text-foreground text-sm">
         Materia is an open-source collection of UI components and design
         patterns built with React, TypeScript, Tailwind CSS, and Motion.
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <Collapsible onOpenChange={setIsOpen} open={isOpen}>
           <CollapsibleContent>
             {" "}
             Pairs beautifully with modern design systems. Save time and build
@@ -228,12 +232,12 @@ export const StatsCard: Story = {
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
 
-    interface StatItem {
+    type StatItem = {
       label: string;
       value: number;
       change: string;
       changeType: "increase" | "decrease";
-    }
+    };
 
     const stats: StatItem[] = [
       {
@@ -258,18 +262,18 @@ export const StatsCard: Story = {
 
     return (
       <Card className="w-[350px]">
-        <Collapsible open={isOpen} onOpenChange={setIsOpen} defaultOpen={false}>
+        <Collapsible defaultOpen={false} onOpenChange={setIsOpen} open={isOpen}>
           <CardHeader>
             <CardTitle>
               <div className="flex flex-col gap-1">
-                <div className="text-muted-foreground font-medium text-sm">
+                <div className="font-medium text-muted-foreground text-sm">
                   Conversion Rate
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-foreground font-semibold text-xl">
+                  <span className="font-semibold text-foreground text-xl">
                     29.9%
                   </span>
-                  <Badge variant="default" size="sm">
+                  <Badge size="sm" variant="default">
                     +4.5%
                   </Badge>
                 </div>
@@ -287,22 +291,24 @@ export const StatsCard: Story = {
           <CollapsibleContent>
             <CardContent className="space-y-3 text-sm">
               {stats.map((stat, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div className="flex items-center justify-between" key={index}>
                   <span className="text-muted-foreground">{stat.label}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-foreground font-semibold">
+                    <span className="font-semibold text-foreground">
                       {stat.value.toLocaleString()}
                     </span>
                     <span
                       className={cn(
-                        "flex min-w-20 items-center justify-end gap-0.5 text-sm font-medium",
+                        "flex min-w-20 items-center justify-end gap-0.5 font-medium text-sm",
                         stat.changeType === "increase"
                           ? "text-emerald-600 dark:text-emerald-400"
                           : "text-red-600 dark:text-red-400"
                       )}
                     >
                       <Icon
-                        icon={stat.changeType === "increase" ? ArrowUp : ArrowDown}
+                        icon={
+                          stat.changeType === "increase" ? ArrowUp : ArrowDown
+                        }
                         size="2xs"
                       />
                       {stat.change}

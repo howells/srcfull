@@ -1,22 +1,32 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import { cn } from "@repo/ui/utils/cn";
 import { Check, ChevronRight, Circle } from "lucide-react";
-import { Icon } from "./icon";
 import type * as React from "react";
+import { Icon } from "./icon";
 
 function ContextMenu({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-  return <ContextMenuPrimitive.Root data-component="context-menu" data-slot="context-menu" {...props} />;
+  return (
+    <ContextMenuPrimitive.Root
+      data-component="context-menu"
+      data-slot="context-menu"
+      {...props}
+    />
+  );
 }
 
 function ContextMenuTrigger({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
   return (
-    <ContextMenuPrimitive.Trigger data-component="context-menu-trigger" data-slot="context-menu-trigger" {...props} />
+    <ContextMenuPrimitive.Trigger
+      data-component="context-menu-trigger"
+      data-slot="context-menu-trigger"
+      {...props}
+    />
   );
 }
 
@@ -24,7 +34,11 @@ function ContextMenuGroup({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Group>) {
   return (
-    <ContextMenuPrimitive.Group data-component="context-menu-group" data-slot="context-menu-group" {...props} />
+    <ContextMenuPrimitive.Group
+      data-component="context-menu-group"
+      data-slot="context-menu-group"
+      {...props}
+    />
   );
 }
 
@@ -32,14 +46,24 @@ function ContextMenuPortal({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) {
   return (
-    <ContextMenuPrimitive.Portal data-component="context-menu-portal" data-slot="context-menu-portal" {...props} />
+    <ContextMenuPrimitive.Portal
+      data-component="context-menu-portal"
+      data-slot="context-menu-portal"
+      {...props}
+    />
   );
 }
 
 function ContextMenuSub({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
-  return <ContextMenuPrimitive.Sub data-component="context-menu-sub" data-slot="context-menu-sub" {...props} />;
+  return (
+    <ContextMenuPrimitive.Sub
+      data-component="context-menu-sub"
+      data-slot="context-menu-sub"
+      {...props}
+    />
+  );
 }
 
 function ContextMenuRadioGroup({
@@ -68,13 +92,13 @@ function ContextMenuSubTrigger({
         "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
-      data-inset={inset}
       data-component="context-menu-sub-trigger"
+      data-inset={inset}
       data-slot="context-menu-sub-trigger"
       {...props}
     >
       {children}
-      <Icon icon={ChevronRight} size="xs" className="ml-auto" />
+      <Icon className="ml-auto" icon={ChevronRight} size="xs" />
     </ContextMenuPrimitive.SubTrigger>
   );
 }
@@ -130,8 +154,8 @@ function ContextMenuItem({
         "data-[variant=destructive]:*:[svg]:!text-destructive relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
-      data-inset={inset}
       data-component="context-menu-item"
+      data-inset={inset}
       data-slot="context-menu-item"
       data-variant={variant}
       {...props}
@@ -183,7 +207,7 @@ function ContextMenuRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <ContextMenuPrimitive.ItemIndicator>
-          <Icon icon={Circle} size="2xs" className="fill-current" />
+          <Icon className="fill-current" icon={Circle} size="2xs" />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -204,8 +228,8 @@ function ContextMenuLabel({
         "px-2 py-1.5 font-medium text-foreground text-sm data-[inset]:pl-8",
         className
       )}
-      data-inset={inset}
       data-component="context-menu-label"
+      data-inset={inset}
       data-slot="context-menu-label"
       {...props}
     />

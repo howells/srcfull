@@ -1,7 +1,7 @@
 "use client";
 
-import type { WithTestId } from "@repo/ui/utils/test-id";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import type { WithTestId } from "@repo/ui/utils/test-id";
 import type * as React from "react";
 
 function Select({

@@ -44,7 +44,8 @@ export const States: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "All checkbox states including unchecked, checked, indeterminate, and disabled.",
+        story:
+          "All checkbox states including unchecked, checked, indeterminate, and disabled.",
       },
     },
   },
@@ -55,23 +56,23 @@ export const States: Story = {
         <Label htmlFor="unchecked">Unchecked</Label>
       </div>
       <div className="flex items-center gap-2">
-        <Checkbox id="checked" defaultChecked />
+        <Checkbox defaultChecked id="checked" />
         <Label htmlFor="checked">Checked</Label>
       </div>
       <div className="flex items-center gap-2">
-        <Checkbox id="indeterminate" checked="indeterminate" />
+        <Checkbox checked="indeterminate" id="indeterminate" />
         <Label htmlFor="indeterminate">Indeterminate</Label>
       </div>
       <div className="flex items-center gap-2">
-        <Checkbox id="disabled" disabled />
+        <Checkbox disabled id="disabled" />
         <Label htmlFor="disabled">Disabled</Label>
       </div>
       <div className="flex items-center gap-2">
-        <Checkbox id="disabled-checked" disabled defaultChecked />
+        <Checkbox defaultChecked disabled id="disabled-checked" />
         <Label htmlFor="disabled-checked">Disabled & Checked</Label>
       </div>
       <div className="flex items-center gap-2">
-        <Checkbox id="error" aria-invalid={true} />
+        <Checkbox aria-invalid={true} id="error" />
         <Label htmlFor="error">Error state</Label>
       </div>
     </div>
@@ -112,7 +113,8 @@ export const WithLabel: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Checkbox paired with a label for better accessibility and usability.",
+        story:
+          "Checkbox paired with a label for better accessibility and usability.",
       },
     },
   },

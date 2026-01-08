@@ -1,5 +1,6 @@
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { useDataGrid } from "@repo/ui/components/data-grid";
+import { cn } from "@repo/ui/utils/cn";
 import {
   type Cell,
   type Column,
@@ -9,7 +10,6 @@ import {
   type Row,
 } from "@tanstack/react-table";
 import { cva } from "class-variance-authority";
-import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 import { type CSSProperties, Fragment, type ReactNode } from "react";
 
@@ -304,7 +304,7 @@ function DataGridTableBodyRow<TData>({
           ? "selected"
           : undefined
       }
-      onClick={() => props.onRowClick && props.onRowClick(row.original)}
+      onClick={() => props.onRowClick?.(row.original)}
       ref={dndRef}
       style={{ ...(dndStyle ? dndStyle : null) }}
     >

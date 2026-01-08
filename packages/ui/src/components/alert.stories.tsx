@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { AlertTriangle, Info, CheckCircle, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Icon } from "./icon";
 
@@ -52,7 +52,8 @@ export const WithIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Alerts can include icons to enhance visual communication. Icons are wrapped with the Icon component and automatically scale appropriately.",
+        story:
+          "Alerts can include icons to enhance visual communication. Icons are wrapped with the Icon component and automatically scale appropriately.",
       },
     },
   },
@@ -98,7 +99,8 @@ export const WithoutTitle: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Alerts can be used with just a description for simpler messages.",
+        story:
+          "Alerts can be used with just a description for simpler messages.",
       },
     },
   },

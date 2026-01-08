@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Fallback as AvatarFallbackPrimitive } from "@radix-ui/react-avatar";
+import { cn } from "@repo/ui/utils/cn";
 import type { ComponentProps } from "react";
 import {
   getColorFromName,

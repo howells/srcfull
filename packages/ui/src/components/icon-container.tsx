@@ -19,10 +19,13 @@ const iconContainerVariants = cva(
         muted: "bg-muted",
         primary: "bg-primary/10 text-primary",
         secondary: "bg-secondary/20",
-        success: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
+        success:
+          "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
         info: "bg-sky-100 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400",
-        warning: "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
-        destructive: "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400",
+        warning:
+          "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
+        destructive:
+          "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400",
       },
     },
     defaultVariants: {
@@ -65,7 +68,7 @@ export function IconContainer({
       data-component="icon-container"
       {...props}
     >
-      <Icon icon={icon} size={iconSize} className={iconClassName} />
+      <Icon className={iconClassName} icon={icon} size={iconSize} />
     </div>
   );
 }

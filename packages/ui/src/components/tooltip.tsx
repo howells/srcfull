@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import {
   Arrow as TooltipArrow,
   Content as TooltipContentPrimitive,
@@ -9,6 +8,7 @@ import {
   Root as TooltipRoot,
   Trigger as TooltipTriggerPrimitive,
 } from "@radix-ui/react-tooltip";
+import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
 
 function TooltipProvider({
@@ -36,7 +36,13 @@ function Tooltip({ ...props }: React.ComponentProps<typeof TooltipRoot>) {
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipTriggerPrimitive>) {
-  return <TooltipTriggerPrimitive data-component="tooltip-trigger" data-slot="tooltip-trigger" {...props} />;
+  return (
+    <TooltipTriggerPrimitive
+      data-component="tooltip-trigger"
+      data-slot="tooltip-trigger"
+      {...props}
+    />
+  );
 }
 
 function TooltipContent({

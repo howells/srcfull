@@ -45,7 +45,7 @@ export const Shapes: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <div className="mb-2 text-sm font-medium">Text lines</div>
+        <div className="mb-2 font-medium text-sm">Text lines</div>
         <div className="space-y-2">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-5/6" />
@@ -53,15 +53,15 @@ export const Shapes: Story = {
         </div>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Avatar</div>
+        <div className="mb-2 font-medium text-sm">Avatar</div>
         <Skeleton className="h-12 w-12 rounded-full" />
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Button</div>
+        <div className="mb-2 font-medium text-sm">Button</div>
         <Skeleton className="h-10 w-24 rounded-md" />
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Image</div>
+        <div className="mb-2 font-medium text-sm">Image</div>
         <Skeleton className="h-48 w-full rounded-lg" />
       </div>
     </div>

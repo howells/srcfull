@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { ArrowRight, ChevronDown, Copy, Download, Search, Share } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Copy,
+  Download,
+  Search,
+  Share,
+} from "lucide-react";
 import { Button } from "./button";
 import {
   ButtonGroup,
@@ -15,7 +22,13 @@ import {
 } from "./dropdown-menu";
 import { Icon } from "./icon";
 import { Input } from "./input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 const meta = {
   title: "Button Group",
@@ -67,7 +80,8 @@ export const WithSeparators: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Use ButtonGroupSeparator to add visual dividers between buttons.",
+        story:
+          "Use ButtonGroupSeparator to add visual dividers between buttons.",
       },
     },
   },
@@ -87,7 +101,8 @@ export const WithText: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "ButtonGroupText displays non-interactive content within the group.",
+        story:
+          "ButtonGroupText displays non-interactive content within the group.",
       },
     },
   },
@@ -107,18 +122,19 @@ export const NestedGroups: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Multiple button groups can be nested with spacing between clusters.",
+        story:
+          "Multiple button groups can be nested with spacing between clusters.",
       },
     },
   },
   render: () => (
     <ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline" icon={Copy} />
-        <Button variant="outline" icon={Download} />
+        <Button icon={Copy} variant="outline" />
+        <Button icon={Download} variant="outline" />
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline" icon={Share} />
+        <Button icon={Share} variant="outline" />
       </ButtonGroup>
     </ButtonGroup>
   ),
@@ -129,14 +145,15 @@ export const WithInput: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Combine Input with Button for search interfaces and similar patterns.",
+        story:
+          "Combine Input with Button for search interfaces and similar patterns.",
       },
     },
   },
   render: () => (
     <ButtonGroup>
-      <Input placeholder="Search..." className="w-64" />
-      <Button variant="outline" icon={Search}>
+      <Input className="w-64" placeholder="Search..." />
+      <Button icon={Search} variant="outline">
         Search
       </Button>
     </ButtonGroup>
@@ -148,7 +165,8 @@ export const WithSelect: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Pair Select with Button for currency selectors or multi-control interfaces.",
+        story:
+          "Pair Select with Button for currency selectors or multi-control interfaces.",
       },
     },
   },
@@ -175,7 +193,8 @@ export const SplitButton: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Create split buttons by combining a primary action with a dropdown menu.",
+        story:
+          "Create split buttons by combining a primary action with a dropdown menu.",
       },
     },
   },
@@ -201,32 +220,33 @@ export const ActionToolbar: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Combine multiple button groups for complex toolbars and action bars.",
+        story:
+          "Combine multiple button groups for complex toolbars and action bars.",
       },
     },
   },
   render: () => (
     <div className="flex gap-2">
       <ButtonGroup>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Bold
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Italic
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Underline
         </Button>
       </ButtonGroup>
       <ButtonGroupSeparator orientation="vertical" />
       <ButtonGroup>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Left
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Center
         </Button>
-        <Button variant="outline" size="sm">
+        <Button size="sm" variant="outline">
           Right
         </Button>
       </ButtonGroup>
@@ -245,7 +265,7 @@ export const Pagination: Story = {
   },
   render: () => (
     <ButtonGroup>
-      <Button variant="outline" disabled>
+      <Button disabled variant="outline">
         Previous
       </Button>
       <ButtonGroupSeparator />

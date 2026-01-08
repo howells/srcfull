@@ -8,7 +8,9 @@ type ContentChangePluginProps = {
   onContentChange?: (hasContent: boolean) => void;
 };
 
-export function ContentChangePlugin({ onContentChange }: ContentChangePluginProps) {
+export function ContentChangePlugin({
+  onContentChange,
+}: ContentChangePluginProps) {
   const [editor] = useLexicalComposerContext();
   const previousValueRef = useRef<boolean | null>(null);
 
@@ -25,10 +27,16 @@ export function ContentChangePlugin({ onContentChange }: ContentChangePluginProp
         // Check if there's any text content
         let hasTextContent = false;
         for (const child of children) {
-          if ("getChildren" in child && typeof child.getChildren === "function") {
+          if (
+            "getChildren" in child &&
+            typeof child.getChildren === "function"
+          ) {
             const grandchildren = child.getChildren();
             for (const grandchild of grandchildren) {
-              if ($isTextNode(grandchild) && grandchild.getTextContent().trim()) {
+              if (
+                $isTextNode(grandchild) &&
+                grandchild.getTextContent().trim()
+              ) {
                 hasTextContent = true;
                 break;
               }

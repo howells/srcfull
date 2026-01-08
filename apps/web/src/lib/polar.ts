@@ -1,10 +1,21 @@
-import { Polar } from '@polar-sh/sdk';
+import { Polar } from "@polar-sh/sdk";
+import { requireEnv } from "./env";
 
-if (!process.env.POLAR_ACCESS_TOKEN) {
-  throw new Error('POLAR_ACCESS_TOKEN environment variable is required');
+let polarClient: Polar | null = null;
+
+export function getPolarClient(): Polar {
+  if (polarClient) {
+    return polarClient;
+  }
+
+  polarClient = new Polar({
+    accessToken: requireEnv("POLAR_ACCESS_TOKEN"),
+    server: process.env.NODE_ENV === "production" ? "production" : "sandbox",
+  });
+
+  return polarClient;
 }
 
-export const polar = new Polar({
-  accessToken: process.env.POLAR_ACCESS_TOKEN,
-  server: 'production',
-});
+export function getPolarWebhookSecret(): string {
+  return requireEnv("POLAR_WEBHOOK_SECRET");
+}

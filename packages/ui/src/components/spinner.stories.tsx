@@ -38,7 +38,8 @@ export const AllSizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Spinners support the full component size scale from 2xs to 2xl.",
+        story:
+          "Spinners support the full component size scale from 2xs to 2xl.",
       },
     },
   },
@@ -61,7 +62,8 @@ export const InContext: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Example of spinners used in context with labels and descriptions.",
+        story:
+          "Example of spinners used in context with labels and descriptions.",
       },
     },
   },
@@ -69,7 +71,7 @@ export const InContext: Story = {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
         <Spinner size="sm" />
-        <span className="text-sm text-muted-foreground">Loading…</span>
+        <span className="text-muted-foreground text-sm">Loading…</span>
       </div>
       <div className="flex items-center gap-3">
         <Spinner size="base" />
@@ -78,8 +80,10 @@ export const InContext: Story = {
       <div className="flex items-center gap-3">
         <Spinner size="lg" />
         <div className="flex flex-col gap-1">
-          <span className="text-base font-medium">Uploading files</span>
-          <span className="text-xs text-muted-foreground">This may take a few moments</span>
+          <span className="font-medium text-base">Uploading files</span>
+          <span className="text-muted-foreground text-xs">
+            This may take a few moments
+          </span>
         </div>
       </div>
     </div>

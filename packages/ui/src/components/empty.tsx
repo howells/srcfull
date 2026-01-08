@@ -60,15 +60,15 @@ function EmptyMedia({
   if (variant === "icon" && icon) {
     return (
       <IconContainer
-        icon={icon}
-        size={size}
-        variant="default"
-        iconSize={iconSize}
-        iconClassName={iconClassName}
         className={cn(emptyMediaVariants({ variant }), className)}
         data-component="empty-icon"
         data-slot="empty-icon"
         data-variant={variant}
+        icon={icon}
+        iconClassName={iconClassName}
+        iconSize={iconSize}
+        size={size}
+        variant="default"
       />
     );
   }

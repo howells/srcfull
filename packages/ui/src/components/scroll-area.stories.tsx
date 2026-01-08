@@ -15,8 +15,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "Custom-styled scrollbars that match your design system.",
+        component: "Custom-styled scrollbars that match your design system.",
       },
     },
   },
@@ -97,7 +96,8 @@ export const BothDirections: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "ScrollArea can handle both vertical and horizontal scrolling simultaneously.",
+        story:
+          "ScrollArea can handle both vertical and horizontal scrolling simultaneously.",
       },
     },
   },

@@ -10,8 +10,8 @@ import {
 import { cn } from "@repo/ui/utils/cn";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
-import { Icon } from "./icon";
 import type * as React from "react";
+import { Icon } from "./icon";
 
 function Command({
   className,
@@ -71,7 +71,7 @@ function CommandInput({
       data-component="command-input-wrapper"
       data-slot="command-input-wrapper"
     >
-      <Icon icon={Search} size="xs" className="shrink-0 opacity-50" />
+      <Icon className="shrink-0 opacity-50" icon={Search} size="xs" />
       <CommandPrimitive.Input
         className={cn(
           "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",

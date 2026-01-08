@@ -29,7 +29,7 @@ export const Base: Story = {
       },
     },
   },
-  render: () => <Slider defaultValue={[50]} className="w-80" />,
+  render: () => <Slider className="w-80" defaultValue={[50]} />,
 };
 
 export const Range: Story = {
@@ -41,7 +41,7 @@ export const Range: Story = {
       },
     },
   },
-  render: () => <Slider defaultValue={[25, 75]} className="w-80" />,
+  render: () => <Slider className="w-80" defaultValue={[25, 75]} />,
 };
 
 export const WithSteps: Story = {
@@ -53,7 +53,7 @@ export const WithSteps: Story = {
       },
     },
   },
-  render: () => <Slider defaultValue={[50]} step={10} className="w-80" />,
+  render: () => <Slider className="w-80" defaultValue={[50]} step={10} />,
 };
 
 export const MinMaxRange: Story = {
@@ -66,7 +66,13 @@ export const MinMaxRange: Story = {
     },
   },
   render: () => (
-    <Slider defaultValue={[500]} min={0} max={1000} step={50} className="w-80" />
+    <Slider
+      className="w-80"
+      defaultValue={[500]}
+      max={1000}
+      min={0}
+      step={50}
+    />
   ),
 };
 
@@ -83,8 +89,8 @@ export const Controlled: Story = {
     const [value, setValue] = useState([50]);
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-sm text-muted-foreground">Value: {value[0]}</div>
-        <Slider value={value} onValueChange={setValue} className="w-80" />
+        <div className="text-muted-foreground text-sm">Value: {value[0]}</div>
+        <Slider className="w-80" onValueChange={setValue} value={value} />
       </div>
     );
   },
@@ -103,10 +109,10 @@ export const ControlledRange: Story = {
     const [value, setValue] = useState([25, 75]);
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           Range: {value[0]} - {value[1]}
         </div>
-        <Slider value={value} onValueChange={setValue} className="w-80" />
+        <Slider className="w-80" onValueChange={setValue} value={value} />
       </div>
     );
   },

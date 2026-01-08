@@ -1,10 +1,10 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Header, Item, Trigger } from "@radix-ui/react-accordion";
+import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useContext } from "react";
 import type { ComponentPropsWithoutRef, MouseEventHandler } from "react";
+import { useContext } from "react";
 import { AccordionMenuContext } from "./accordion-menu-context";
 
 const itemVariants = cva(
@@ -50,12 +50,12 @@ export function AccordionMenuItem({
         <Trigger
           asChild={asChild}
           className={cn(itemVariants({ variant }), classNames?.item, className)}
+          data-component="accordion-menu-item"
           data-selected={
             matchPath(props.value as string) || selectedValue === props.value
               ? "true"
               : undefined
           }
-          data-component="accordion-menu-item"
           data-slot="accordion-menu-item"
           onClick={(e) => {
             if (onItemClick) {

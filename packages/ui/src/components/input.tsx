@@ -1,11 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@repo/ui/utils/cn";
 import { focusInput } from "@repo/ui/utils/focus-input";
 import { hasErrorInput } from "@repo/ui/utils/has-error-input";
 import type { WithTestId } from "@repo/ui/utils/test-id";
-import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Copy, X } from "lucide-react";
-import type { ComponentSize } from "../lib/size";
+import * as React from "react";
 
 const inputVariants = cva(
   "w-full min-w-0 border border-border bg-input-bg outline-none transition-colors selection:bg-primary selection:text-primary-foreground file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
@@ -33,7 +32,7 @@ const inputVariants = cva(
 );
 
 const inputGroupVariants = cva(
-  "relative flex items-center w-full border border-border bg-input-bg transition-colors",
+  "relative flex w-full items-center border border-border bg-input-bg transition-colors",
   {
     variants: {
       size: {
@@ -58,7 +57,7 @@ const inputGroupVariants = cva(
 );
 
 const inputInGroupVariants = cva(
-  "flex-1 min-w-0 border-0 bg-transparent shadow-none outline-none ring-0 focus-visible:ring-0 focus-visible:border-0 selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+  "min-w-0 flex-1 border-0 bg-transparent shadow-none outline-none ring-0 selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-0 focus-visible:ring-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
   {
     variants: {
       size: {
@@ -82,8 +81,8 @@ const addonVariants = cva(
   {
     variants: {
       position: {
-        left: "border-r rounded-l-md",
-        right: "border-l rounded-r-md",
+        left: "rounded-l-md border-r",
+        right: "rounded-r-md border-l",
       },
       size: {
         "2xs": "h-6 px-2 text-xs",
@@ -102,32 +101,42 @@ const addonVariants = cva(
   }
 );
 
-const iconWrapperVariants = cva("absolute flex items-center justify-center pointer-events-none", {
-  variants: {
-    position: {
-      left: "left-3",
-      right: "right-3",
+const iconWrapperVariants = cva(
+  "pointer-events-none absolute flex items-center justify-center",
+  {
+    variants: {
+      position: {
+        left: "left-3",
+        right: "right-3",
+      },
+      size: {
+        "2xs": "h-3 w-3",
+        xs: "h-3.5 w-3.5",
+        sm: "h-4 w-4",
+        base: "h-4 w-4",
+        lg: "h-5 w-5",
+        xl: "h-5 w-5",
+        "2xl": "h-6 w-6",
+      },
     },
-    size: {
-      "2xs": "w-3 h-3",
-      xs: "w-3.5 h-3.5",
-      sm: "w-4 h-4",
-      base: "w-4 h-4",
-      lg: "w-5 h-5",
-      xl: "w-5 h-5",
-      "2xl": "w-6 h-6",
+    defaultVariants: {
+      position: "left",
+      size: "base",
     },
-  },
-  defaultVariants: {
-    position: "left",
-    size: "base",
-  },
-});
+  }
+);
 
 type InputProps = WithTestId<Omit<React.ComponentProps<"input">, "size">> &
   VariantProps<typeof inputVariants>;
 
-function Input({ className, type, testId, size, radius, ...props }: InputProps) {
+function Input({
+  className,
+  type,
+  testId,
+  size,
+  radius,
+  ...props
+}: InputProps) {
   return (
     <input
       className={cn(
@@ -165,7 +174,7 @@ function InputGroup({
         inputGroupVariants({ size, radius }),
         focusInput,
         hasError && hasErrorInput,
-        "focus-within:ring-1 focus-within:ring-ring/30 focus-within:border-ring/50",
+        "focus-within:border-ring/50 focus-within:ring-1 focus-within:ring-ring/30",
         className
       )}
       data-component="input-group"
@@ -252,14 +261,14 @@ function InputClear({ onClear, size = "base", className }: InputClearProps) {
 
   return (
     <button
-      type="button"
-      onClick={onClear}
+      aria-label="Clear input"
       className={cn(
-        "absolute right-2 flex items-center justify-center rounded-sm p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-auto",
+        "pointer-events-auto absolute right-2 flex items-center justify-center rounded-sm p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
         className
       )}
       data-component="input-clear"
-      aria-label="Clear input"
+      onClick={onClear}
+      type="button"
     >
       <X size={iconSize} />
     </button>
@@ -296,18 +305,18 @@ function InputCopy({
 
   return (
     <button
-      type="button"
-      onClick={handleCopy}
+      aria-label={copied ? "Copied!" : "Copy to clipboard"}
       className={cn(
-        "absolute right-2 flex items-center justify-center rounded-sm p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-auto",
+        "pointer-events-auto absolute right-2 flex items-center justify-center rounded-sm p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
         className
       )}
       data-component="input-copy"
-      aria-label={copied ? "Copied!" : "Copy to clipboard"}
+      onClick={handleCopy}
+      type="button"
     >
       <Copy size={iconSize} />
       {copied && (
-        <span className="ml-1 text-xs text-green-600 dark:text-green-400">
+        <span className="ml-1 text-green-600 text-xs dark:text-green-400">
           Copied!
         </span>
       )}
@@ -315,5 +324,14 @@ function InputCopy({
   );
 }
 
-export { Input, InputGroup, InputInGroup, InputAddon, InputIcon, InputClear, InputCopy };
-export type { ComponentSize as InputSize, InputProps };
+export {
+  Input,
+  InputGroup,
+  InputInGroup,
+  InputAddon,
+  InputIcon,
+  InputClear,
+  InputCopy,
+};
+export type { InputProps };
+export type { ComponentSize as InputSize } from "../lib/size";

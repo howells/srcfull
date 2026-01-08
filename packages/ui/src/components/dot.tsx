@@ -1,6 +1,6 @@
 import { cn } from "@repo/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 
 const dotVariants = cva("inline-block shrink-0 rounded-full", {
   variants: {
@@ -40,8 +40,8 @@ export function Dot({ className, size, color, style, ...props }: DotProps) {
   return (
     <span
       className={cn(dotVariants({ size }), className)}
-      style={{ backgroundColor: color, ...style }}
       data-component="dot"
+      style={{ backgroundColor: color, ...style }}
       {...props}
     />
   );

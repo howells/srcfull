@@ -5,12 +5,12 @@ import { cn } from "@repo/ui/utils/cn";
 import type { Row } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 
-export interface DataGridExpandToggleProps<TData> {
+export type DataGridExpandToggleProps<TData> = {
   row: Row<TData>;
   className?: string;
   expandedIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   collapsedIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-}
+};
 
 /**
  * Toggle button for expanding/collapsing rows in a DataGrid.

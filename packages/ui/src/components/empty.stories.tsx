@@ -33,7 +33,7 @@ export const Base: Story = {
   render: () => (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="icon" icon={Inbox} />
+        <EmptyMedia icon={Inbox} variant="icon" />
         <EmptyTitle>No messages</EmptyTitle>
         <EmptyDescription>
           Get started by creating a new conversation.
@@ -52,17 +52,19 @@ export const NoSearchResults: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Empty state for search results with guidance on refining the search.",
+        story:
+          "Empty state for search results with guidance on refining the search.",
       },
     },
   },
   render: () => (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="icon" icon={Search} />
+        <EmptyMedia icon={Search} variant="icon" />
         <EmptyTitle>No results found</EmptyTitle>
         <EmptyDescription>
-          Try adjusting your search terms or filters to find what you're looking for.
+          Try adjusting your search terms or filters to find what you're looking
+          for.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
@@ -77,14 +79,15 @@ export const NoFiles: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Empty state for file or document lists encouraging users to upload content.",
+        story:
+          "Empty state for file or document lists encouraging users to upload content.",
       },
     },
   },
   render: () => (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="icon" icon={FileX} />
+        <EmptyMedia icon={FileX} variant="icon" />
         <EmptyTitle>No files yet</EmptyTitle>
         <EmptyDescription>
           Upload your first file to get started.
@@ -102,14 +105,15 @@ export const NoTeamMembers: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Empty state for team or user lists with action to invite members.",
+        story:
+          "Empty state for team or user lists with action to invite members.",
       },
     },
   },
   render: () => (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="icon" icon={Users} />
+        <EmptyMedia icon={Users} variant="icon" />
         <EmptyTitle>No team members</EmptyTitle>
         <EmptyDescription>
           Invite people to collaborate on your projects.
@@ -127,18 +131,17 @@ export const WithoutAction: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Empty states don't always require an action button. Sometimes informational context is sufficient.",
+        story:
+          "Empty states don't always require an action button. Sometimes informational context is sufficient.",
       },
     },
   },
   render: () => (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="icon" icon={Inbox} />
+        <EmptyMedia icon={Inbox} variant="icon" />
         <EmptyTitle>All caught up</EmptyTitle>
-        <EmptyDescription>
-          You have no pending notifications.
-        </EmptyDescription>
+        <EmptyDescription>You have no pending notifications.</EmptyDescription>
       </EmptyHeader>
     </Empty>
   ),

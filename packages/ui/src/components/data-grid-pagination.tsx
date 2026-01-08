@@ -1,16 +1,16 @@
 import { Button } from "@repo/ui/components/button";
 import { useDataGrid } from "@repo/ui/components/data-grid";
-import { Select } from "@repo/ui/components/select/select-root";
 import { SelectContent } from "@repo/ui/components/select/select-content";
 import { SelectItem } from "@repo/ui/components/select/select-item";
+import { Select } from "@repo/ui/components/select/select-root";
 import { SelectTrigger } from "@repo/ui/components/select/select-trigger";
 import { SelectValue } from "@repo/ui/components/select/select-value";
 import { Skeleton } from "@repo/ui/components/skeleton";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { cn } from "@repo/ui/utils/cn";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-interface DataGridPaginationProps {
+type DataGridPaginationProps = {
   sizes?: number[];
   sizesInfo?: string;
   sizesLabel?: string;
@@ -25,7 +25,7 @@ interface DataGridPaginationProps {
   previousPageLabel?: string;
   nextPageLabel?: string;
   ellipsisText?: string;
-}
+};
 
 function DataGridPagination(props: DataGridPaginationProps) {
   const { table, recordCount, isLoading } = useDataGrid();
@@ -48,7 +48,7 @@ function DataGridPagination(props: DataGridPaginationProps) {
   const mergedProps: DataGridPaginationProps = { ...defaultProps, ...props };
 
   const btnBaseClasses = "size-7 p-0 text-sm";
-  const btnArrowClasses = btnBaseClasses + " rtl:transform rtl:rotate-180";
+  const btnArrowClasses = `${btnBaseClasses} rtl:transform rtl:rotate-180`;
   const pageIndex = table.getState().pagination.pageIndex;
   const pageSize = table.getState().pagination.pageSize;
   const from = pageIndex * pageSize + 1;

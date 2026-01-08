@@ -1,8 +1,7 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Slot } from "@radix-ui/react-slot";
-import { forwardRef } from "react";
+import { cn } from "@repo/ui/utils/cn";
 
 const inputCardBaseStyles = cn(
   "relative rounded-2xl border border-border/70 bg-background",
@@ -24,21 +23,26 @@ type InputCardProps = {
   disabled?: boolean;
 } & React.ComponentPropsWithoutRef<"div">;
 
-const InputCard = forwardRef<HTMLDivElement, InputCardProps>(
-  ({ asChild = false, selected, disabled, className, ...props }, ref) => {
-    const Comp = asChild ? Slot : "div";
-    return (
-      <Comp
-        className={cn(inputCardBaseStyles, inputCardSelectedStyles, className)}
-        data-disabled={disabled ? "true" : undefined}
-        data-selected={selected ? "true" : undefined}
-        ref={ref}
-        {...props}
-        {...(disabled !== undefined ? { disabled } : {})}
-      />
-    );
-  }
-);
+const InputCard = ({
+  asChild = false,
+  selected,
+  disabled,
+  className,
+  ref,
+  ...props
+}: InputCardProps & { ref?: RefObject<HTMLDivElement | null> }) => {
+  const Comp = asChild ? Slot : "div";
+  return (
+    <Comp
+      className={cn(inputCardBaseStyles, inputCardSelectedStyles, className)}
+      data-disabled={disabled ? "true" : undefined}
+      data-selected={selected ? "true" : undefined}
+      ref={ref}
+      {...props}
+      {...(disabled !== undefined ? { disabled } : {})}
+    />
+  );
+};
 
 InputCard.displayName = "InputCard";
 

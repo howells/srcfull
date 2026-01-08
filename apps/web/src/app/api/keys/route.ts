@@ -1,10 +1,10 @@
-import { eq } from 'drizzle-orm';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { db } from '@/db/client';
-import { apiKeys } from '@/db/schema';
-import { requireSession } from '@/lib/session';
-import { generateApiKey, hashApiKey, getKeyPrefix } from '@/lib/api-keys';
+import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { db } from "@/db/client";
+import { apiKeys } from "@/db/schema";
+import { generateApiKey, getKeyPrefix, hashApiKey } from "@/lib/api-keys";
+import { requireSession } from "@/lib/session";
 
 const CreateKeySchema = z.object({
   name: z.string().min(1).max(50).optional(),
@@ -28,7 +28,7 @@ export async function GET() {
     return NextResponse.json({ keys });
   } catch {
     return NextResponse.json(
-      { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+      { error: "Unauthorized", code: "UNAUTHORIZED" },
       { status: 401 }
     );
   }
@@ -37,6 +37,16 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const user = await requireSession();
+    if (user.plan !== "pro") {
+      return NextResponse.json(
+        {
+          error: "Subscription required",
+          code: "PAYMENT_REQUIRED",
+        },
+        { status: 402 }
+      );
+    }
+
     const body = await request.json().catch(() => ({}));
     const { name } = CreateKeySchema.parse(body);
 
@@ -50,7 +60,7 @@ export async function POST(request: Request) {
         userId: user.id,
         keyHash,
         keyPrefix,
-        name: name ?? 'Default',
+        name: name ?? "Default",
       })
       .returning();
 
@@ -65,12 +75,12 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid name', code: 'INVALID_NAME' },
+        { error: "Invalid name", code: "INVALID_NAME" },
         { status: 400 }
       );
     }
     return NextResponse.json(
-      { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+      { error: "Unauthorized", code: "UNAUTHORIZED" },
       { status: 401 }
     );
   }

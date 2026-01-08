@@ -8,7 +8,11 @@ function Table({
   ...props
 }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="relative w-full overflow-auto" data-component="table-wrapper" data-slot="table-wrapper">
+    <div
+      className="relative w-full overflow-auto"
+      data-component="table-wrapper"
+      data-slot="table-wrapper"
+    >
       <table
         className={cn(
           "w-full caption-bottom text-foreground text-sm",

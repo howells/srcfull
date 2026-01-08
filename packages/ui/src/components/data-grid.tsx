@@ -11,13 +11,13 @@ import { createContext, type ReactNode, useContext } from "react";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ColumnMeta<TData extends RowData, TValue> {
+  type ColumnMeta<TData extends RowData, _TValue> = {
     headerTitle?: string;
     headerClassName?: string;
     cellClassName?: string;
     skeleton?: ReactNode;
     expandedContent?: (row: TData) => ReactNode;
-  }
+  };
 }
 
 export type DataGridApiFetchParams = {
@@ -37,12 +37,12 @@ export type DataGridApiResponse<T> = {
   };
 };
 
-export interface DataGridContextProps<TData extends object> {
+export type DataGridContextProps<TData extends object> = {
   props: DataGridProps<TData>;
   table: Table<TData>;
   recordCount: number;
   isLoading: boolean;
-}
+};
 
 export type DataGridRequestParams = {
   pageIndex: number;
@@ -51,7 +51,7 @@ export type DataGridRequestParams = {
   columnFilters?: ColumnFiltersState;
 };
 
-export interface DataGridProps<TData extends object> {
+export type DataGridProps<TData extends object> = {
   className?: string;
   table?: Table<TData>;
   recordCount: number;
@@ -88,7 +88,7 @@ export interface DataGridProps<TData extends object> {
     footer?: string;
     edgeCell?: string;
   };
-}
+};
 
 const DataGridContext = createContext<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

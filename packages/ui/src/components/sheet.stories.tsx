@@ -51,7 +51,8 @@ export const Sides: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Sheets can slide in from any side: right (default), left, top, or bottom.",
+        story:
+          "Sheets can slide in from any side: right (default), left, top, or bottom.",
       },
     },
   },
@@ -131,7 +132,7 @@ export const WithForm: Story = {
         </SheetHeader>
         <div className="mt-4 space-y-4">
           <div>
-            <label className="text-sm font-medium" htmlFor="name">
+            <label className="font-medium text-sm" htmlFor="name">
               Name
             </label>
             <input
@@ -142,7 +143,7 @@ export const WithForm: Story = {
             />
           </div>
           <div>
-            <label className="text-sm font-medium" htmlFor="email">
+            <label className="font-medium text-sm" htmlFor="email">
               Email
             </label>
             <input
@@ -164,7 +165,8 @@ export const WithScrollableContent: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Sheets handle long content with internal scrolling while keeping the header fixed.",
+        story:
+          "Sheets handle long content with internal scrolling while keeping the header fixed.",
       },
     },
   },

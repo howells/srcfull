@@ -64,7 +64,8 @@ export const WithDescription: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Toasts can include additional description text for more context.",
+        story:
+          "Toasts can include additional description text for more context.",
       },
     },
   },
@@ -138,7 +139,8 @@ export const Loading: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Show loading state with promise-based toasts that update automatically.",
+        story:
+          "Show loading state with promise-based toasts that update automatically.",
       },
     },
   },
@@ -146,14 +148,11 @@ export const Loading: Story = {
     <div>
       <Button
         onClick={() =>
-          toast.promise(
-            new Promise((resolve) => setTimeout(resolve, 2000)),
-            {
-              loading: "Uploading file…",
-              success: "File uploaded successfully",
-              error: "Upload failed",
-            },
-          )
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
+            loading: "Uploading file…",
+            success: "File uploaded successfully",
+            error: "Upload failed",
+          })
         }
       >
         Upload with Promise
@@ -190,7 +189,8 @@ export const Duration: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Control how long toasts remain visible with the duration option.",
+        story:
+          "Control how long toasts remain visible with the duration option.",
       },
     },
   },
@@ -203,7 +203,9 @@ export const Duration: Story = {
         3 seconds
       </Button>
       <Button
-        onClick={() => toast("Persistent toast", { duration: Number.POSITIVE_INFINITY })}
+        onClick={() =>
+          toast("Persistent toast", { duration: Number.POSITIVE_INFINITY })
+        }
       >
         Infinite (must dismiss)
       </Button>

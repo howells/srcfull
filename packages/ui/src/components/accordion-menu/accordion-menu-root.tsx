@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import { Root as AccordionPrimitive } from "@radix-ui/react-accordion";
-import { Children, isValidElement, useEffect, useMemo, useState } from "react";
+import { cn } from "@repo/ui/utils/cn";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import { Children, isValidElement, useEffect, useMemo, useState } from "react";
 import {
-  AccordionMenuContext,
   type AccordionMenuClassNames,
+  AccordionMenuContext,
 } from "./accordion-menu-context";
 
 /**
@@ -15,7 +15,7 @@ import {
  * A flexible accordion menu that supports multi-level navigation and integrates
  * with your router to manage active states based on the current route.
  */
-export interface AccordionMenuProps {
+export type AccordionMenuProps = {
   /** Sets the default selected accordion item by value */
   selectedValue?: string;
   /** Callback to integrate with a router, determining if a given path matches the current route */
@@ -25,7 +25,7 @@ export interface AccordionMenuProps {
   /** Callback fired when an item is clicked */
   onItemClick?: (value: string, event: React.MouseEvent) => void;
   children: ReactNode;
-}
+};
 
 export function AccordionMenu({
   className,
@@ -76,9 +76,9 @@ export function AccordionMenu({
     const mapping: Record<string, string | string[]> = {};
     if (trimmedChain.length > 0) {
       if (props.type === "multiple") {
-        mapping["root"] = trimmedChain;
+        mapping.root = trimmedChain;
       } else {
-        mapping["root"] = trimmedChain[0];
+        mapping.root = trimmedChain[0];
         for (let i = 0; i < trimmedChain.length - 1; i++) {
           mapping[trimmedChain[i]] = trimmedChain[i + 1];
         }
@@ -91,14 +91,14 @@ export function AccordionMenu({
     useState<Record<string, string | string[]>>(initialNestedStates);
 
   const multipleValue = (
-    Array.isArray(nestedStates["root"])
-      ? nestedStates["root"]
-      : typeof nestedStates["root"] === "string"
-        ? [nestedStates["root"]]
+    Array.isArray(nestedStates.root)
+      ? nestedStates.root
+      : typeof nestedStates.root === "string"
+        ? [nestedStates.root]
         : []
   ) as string[];
 
-  const singleValue = (nestedStates["root"] ?? "") as string;
+  const singleValue = (nestedStates.root ?? "") as string;
 
   return (
     <AccordionMenuContext.Provider

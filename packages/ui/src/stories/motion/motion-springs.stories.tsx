@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { useState } from "react";
+import { type SpringType, springs } from "@repo/ui/lib/motion";
 import { motion } from "motion/react";
-import { springs, type SpringType } from "@repo/ui/lib/motion";
+import { useState } from "react";
 
 const meta = {
   title: "Motion/Springs",
@@ -19,9 +19,9 @@ type Story = StoryObj<typeof meta>;
 export const AllSprings: Story = {
   render: () => {
     const springKeys = Object.keys(springs) as SpringType[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(springKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(springKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -37,18 +37,18 @@ export const AllSprings: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-4xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Spring Configurations</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Spring Configurations</h2>
+          <p className="mb-8 text-neutral-600">
             Click "Trigger Animation" to see spring physics in action. Springs
             create natural, bouncy animations with different personalities. The
             animation will repeat when triggered again.
           </p>
 
           <button
+            className="mb-8 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg mb-8 hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Stop" : "Trigger"} Animation
           </button>
@@ -60,12 +60,12 @@ export const AllSprings: Story = {
 
             return (
               <div
+                className="space-y-4 rounded-lg border border-neutral-200 p-6"
                 key={key}
-                className="border border-neutral-200 rounded-lg p-6 space-y-4"
               >
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium capitalize">{key}</h3>
-                  <div className="grid grid-cols-2 gap-2 text-xs text-neutral-600">
+                  <h3 className="font-medium text-lg capitalize">{key}</h3>
+                  <div className="grid grid-cols-2 gap-2 text-neutral-600 text-xs">
                     <p>
                       <span className="font-medium">Stiffness:</span>{" "}
                       {spring.stiffness}
@@ -80,18 +80,16 @@ export const AllSprings: Story = {
                   </div>
                 </div>
 
-                <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-start h-24 overflow-hidden">
+                <div className="flex h-24 items-center justify-start overflow-hidden rounded-lg bg-neutral-50 p-8">
                   <motion.div
-                    className="w-12 h-12 bg-primary rounded-lg cursor-pointer transition-shadow hover:shadow-lg"
+                    animate={animatingBoxes[key] ? { x: 300 } : { x: 0 }}
+                    className="h-12 w-12 cursor-pointer rounded-lg bg-primary transition-shadow hover:shadow-lg"
                     onClick={() => toggleBox(key)}
-                    animate={
-                      animatingBoxes[key] ? { x: 300 } : { x: 0 }
-                    }
                     transition={spring}
                   />
                 </div>
 
-                <p className="text-xs text-neutral-500">
+                <p className="text-neutral-500 text-xs">
                   {key === "subtle" &&
                     "Barely noticeable bounce - professional and polished"}
                   {key === "natural" &&
@@ -106,8 +104,8 @@ export const AllSprings: Story = {
           })}
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-sm text-blue-900">
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <p className="text-blue-900 text-sm">
             <strong>About Springs:</strong> Spring physics use stiffness
             (strength), damping (resistance), and mass to create natural motion.
             Higher stiffness = faster, quicker response. Higher damping =
@@ -126,9 +124,9 @@ export const AllSprings: Story = {
 export const SpringComparison: Story = {
   render: () => {
     const springKeys = Object.keys(springs) as SpringType[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(springKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(springKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -144,40 +142,40 @@ export const SpringComparison: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-8">
+      <div className="mx-auto w-full max-w-6xl space-y-8 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Spring Comparison</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Spring Comparison</h2>
+          <p className="mb-8 text-neutral-600">
             Compare all spring configurations side-by-side. Watch the
             differences in bounce and responsiveness.
           </p>
 
           <button
+            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Reset" : "Animate"}
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {springKeys.map((key) => {
             const spring = springs[key];
 
             return (
-              <div key={key} className="space-y-3">
-                <div className="border border-neutral-200 rounded-lg p-4 bg-neutral-50 h-24 flex items-center overflow-hidden">
+              <div className="space-y-3" key={key}>
+                <div className="flex h-24 items-center overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-4">
                   <motion.div
-                    className="w-6 h-6 bg-primary rounded cursor-pointer transition-shadow hover:shadow-lg"
-                    onClick={() => toggleBox(key)}
                     animate={animatingBoxes[key] ? { x: 120 } : { x: 0 }}
+                    className="h-6 w-6 cursor-pointer rounded bg-primary transition-shadow hover:shadow-lg"
+                    onClick={() => toggleBox(key)}
                     transition={spring}
                   />
                 </div>
 
                 <div className="space-y-1">
                   <p className="font-medium text-sm capitalize">{key}</p>
-                  <div className="text-xs text-neutral-600 space-y-0.5">
+                  <div className="space-y-0.5 text-neutral-600 text-xs">
                     <p>S: {spring.stiffness}</p>
                     <p>D: {spring.damping}</p>
                     <p>M: {spring.mass}</p>
@@ -201,17 +199,17 @@ export const SpringParameters: Story = {
     const [isAnimating, setIsAnimating] = useState(false);
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-6xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Spring Parameters</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Spring Parameters</h2>
+          <p className="mb-8 text-neutral-600">
             Understanding stiffness and damping helps you create the right feel
             for your animations.
           </p>
 
           <button
+            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={() => setIsAnimating(!isAnimating)}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             {isAnimating ? "Reset" : "Animate"}
           </button>
@@ -221,8 +219,8 @@ export const SpringParameters: Story = {
           {/* Stiffness explanation */}
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-medium mb-2">Stiffness</h3>
-              <p className="text-sm text-neutral-600">
+              <h3 className="mb-2 font-medium text-lg">Stiffness</h3>
+              <p className="text-neutral-600 text-sm">
                 Controls how aggressively the spring pulls toward its target.
                 Higher values = faster, snappier response.
               </p>
@@ -235,12 +233,12 @@ export const SpringParameters: Story = {
                 { label: "High (300)", value: 300 },
                 { label: "Very High (400)", value: 400 },
               ].map((item) => (
-                <div key={item.value} className="space-y-2">
-                  <p className="text-sm font-medium">{item.label}</p>
-                  <div className="bg-neutral-50 rounded-lg p-4 h-20 flex items-center overflow-hidden">
+                <div className="space-y-2" key={item.value}>
+                  <p className="font-medium text-sm">{item.label}</p>
+                  <div className="flex h-20 items-center overflow-hidden rounded-lg bg-neutral-50 p-4">
                     <motion.div
-                      className="w-6 h-6 bg-primary rounded"
                       animate={isAnimating ? { x: 180 } : { x: 0 }}
+                      className="h-6 w-6 rounded bg-primary"
                       transition={{
                         type: "spring",
                         stiffness: item.value,
@@ -257,8 +255,8 @@ export const SpringParameters: Story = {
           {/* Damping explanation */}
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-medium mb-2">Damping</h3>
-              <p className="text-sm text-neutral-600">
+              <h3 className="mb-2 font-medium text-lg">Damping</h3>
+              <p className="text-neutral-600 text-sm">
                 Controls resistance to motion. Higher values = less bounce, more
                 controlled.
               </p>
@@ -271,12 +269,12 @@ export const SpringParameters: Story = {
                 { label: "High (28)", value: 28 },
                 { label: "Very High (30)", value: 30 },
               ].map((item) => (
-                <div key={item.value} className="space-y-2">
-                  <p className="text-sm font-medium">{item.label}</p>
-                  <div className="bg-neutral-50 rounded-lg p-4 h-20 flex items-center overflow-hidden">
+                <div className="space-y-2" key={item.value}>
+                  <p className="font-medium text-sm">{item.label}</p>
+                  <div className="flex h-20 items-center overflow-hidden rounded-lg bg-neutral-50 p-4">
                     <motion.div
-                      className="w-6 h-6 bg-primary rounded"
                       animate={isAnimating ? { x: 180 } : { x: 0 }}
+                      className="h-6 w-6 rounded bg-primary"
                       transition={{
                         type: "spring",
                         stiffness: 200,
@@ -316,11 +314,11 @@ export const SpringParameters: Story = {
             },
           ].map((item) => (
             <div
+              className="rounded-lg border border-neutral-200 p-4"
               key={item.key}
-              className="border border-neutral-200 rounded-lg p-4"
             >
-              <p className="font-medium text-sm mb-1">{item.title}</p>
-              <p className="text-xs text-neutral-600">{item.use}</p>
+              <p className="mb-1 font-medium text-sm">{item.title}</p>
+              <p className="text-neutral-600 text-xs">{item.use}</p>
             </div>
           ))}
         </div>
@@ -341,68 +339,66 @@ export const SpringInPractice: Story = {
     });
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-6xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Springs in Practice</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Springs in Practice</h2>
+          <p className="mb-8 text-neutral-600">
             Interactive examples using springs for real UI patterns.
           </p>
         </div>
 
         {/* Hover effect */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Hover Lift (Snappy Spring)</h3>
-          <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-center h-32">
+          <h3 className="font-medium text-lg">Hover Lift (Snappy Spring)</h3>
+          <div className="flex h-32 items-center justify-center rounded-lg bg-neutral-50 p-8">
             <motion.div
-              className="w-20 h-20 bg-primary rounded-lg cursor-pointer shadow-md"
+              animate={clicked.button ? { y: -8 } : { y: 0 }}
+              className="h-20 w-20 cursor-pointer rounded-lg bg-primary shadow-md"
               onMouseEnter={() => setClicked({ ...clicked, button: true })}
               onMouseLeave={() => setClicked({ ...clicked, button: false })}
-              animate={clicked.button ? { y: -8 } : { y: 0 }}
               transition={springs.snappy}
             />
           </div>
-          <p className="text-sm text-neutral-600">
+          <p className="text-neutral-600 text-sm">
             Hover over the box to see the spring lift effect
           </p>
         </div>
 
         {/* Card interaction */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">
+          <h3 className="font-medium text-lg">
             Card Interaction (Natural Spring)
           </h3>
-          <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-center h-40">
+          <div className="flex h-40 items-center justify-center rounded-lg bg-neutral-50 p-8">
             <motion.div
-              className="w-32 h-32 bg-secondary rounded-xl cursor-pointer shadow-lg"
-              onClick={() => setClicked({ ...clicked, card: !clicked.card })}
               animate={
                 clicked.card
                   ? { scale: 1.05, rotateZ: 2 }
                   : { scale: 1, rotateZ: 0 }
               }
+              className="h-32 w-32 cursor-pointer rounded-xl bg-secondary shadow-lg"
+              onClick={() => setClicked({ ...clicked, card: !clicked.card })}
               transition={springs.natural}
             />
           </div>
-          <p className="text-sm text-neutral-600">
+          <p className="text-neutral-600 text-sm">
             Click the card to see the natural spring effect
           </p>
         </div>
 
         {/* Button press */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">
-            Button Press (Subtle Spring)
-          </h3>
-          <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-center h-24">
+          <h3 className="font-medium text-lg">Button Press (Subtle Spring)</h3>
+          <div className="flex h-24 items-center justify-center rounded-lg bg-neutral-50 p-8">
             <motion.button
-              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg"
-              whilePress={{ scale: 0.98 }}
+              className="rounded-lg bg-primary px-6 py-2 text-primary-foreground"
               transition={springs.subtle}
+              whilePress={{ scale: 0.98 }}
             >
               Press me
             </motion.button>
           </div>
-          <p className="text-sm text-neutral-600">
+          <p className="text-neutral-600 text-sm">
             Press the button to feel the subtle spring effect
           </p>
         </div>

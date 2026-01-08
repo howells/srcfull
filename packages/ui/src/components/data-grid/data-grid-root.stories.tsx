@@ -428,7 +428,7 @@ export const Loading: Story = {
                 ))}
               </thead>
               <tbody>
-                {[...Array(3)].map((_, i) => (
+                {[...new Array(3)].map((_, i) => (
                   <tr className="border-border border-b" key={i}>
                     {basicColumns.map((_, j) => (
                       <td className="px-4 py-3" key={j}>

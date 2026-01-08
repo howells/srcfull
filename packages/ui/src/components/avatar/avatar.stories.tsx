@@ -10,11 +10,11 @@ import {
   AVATAR_IMAGE_OPTIONS,
   avatarImageControlArgType,
 } from "../../stories/controls/avatar-control";
-import { AvatarRoot } from "./avatar-root";
 import { AvatarBadge } from "./avatar-badge";
 import { AvatarFallback } from "./avatar-fallback";
 import { AvatarGroup } from "./avatar-group";
 import { AvatarImage } from "./avatar-image";
+import { AvatarRoot } from "./avatar-root";
 import { AvatarStatus } from "./avatar-status";
 
 const meta = {
@@ -87,7 +87,7 @@ export const Base: Story = {
     const hasImage = imageSrc && imageSrc.trim() !== "";
 
     return (
-      <AvatarRoot size={size} shape={args.shape} withRing={args.withRing}>
+      <AvatarRoot shape={args.shape} size={size} withRing={args.withRing}>
         {hasImage && <AvatarImage alt={name} key={imageSrc} src={imageSrc} />}
         <AvatarFallback name={name} size={size} />
       </AvatarRoot>
@@ -213,11 +213,8 @@ export const Shapes: Story = {
       <div className="flex items-center gap-6">
         {shapes.map(({ shape, label }) => (
           <div className="flex flex-col items-center gap-2" key={shape}>
-            <AvatarRoot size="lg" shape={shape}>
-              <AvatarImage
-                alt="User"
-                src="https://i.pravatar.cc/128?img=10"
-              />
+            <AvatarRoot shape={shape} size="lg">
+              <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=10" />
               <AvatarFallback name="Jane Doe" size="lg" />
             </AvatarRoot>
             <span className="text-muted-foreground text-xs">{label}</span>
@@ -238,24 +235,22 @@ export const WithRing: Story = {
       },
     },
   },
-  render: () => {
-    return (
-      <div className="flex items-center gap-4">
-        <AvatarRoot size="lg" withRing>
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=11" />
-          <AvatarFallback name="Sam Green" size="lg" />
-        </AvatarRoot>
-        <AvatarRoot size="lg" withRing ringColor="ring-blue-500">
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=12" />
-          <AvatarFallback name="Alex Blue" size="lg" />
-        </AvatarRoot>
-        <AvatarRoot size="lg" withRing ringColor="ring-purple-500">
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=13" />
-          <AvatarFallback name="Kim Purple" size="lg" />
-        </AvatarRoot>
-      </div>
-    );
-  },
+  render: () => (
+    <div className="flex items-center gap-4">
+      <AvatarRoot size="lg" withRing>
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=11" />
+        <AvatarFallback name="Sam Green" size="lg" />
+      </AvatarRoot>
+      <AvatarRoot ringColor="ring-blue-500" size="lg" withRing>
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=12" />
+        <AvatarFallback name="Alex Blue" size="lg" />
+      </AvatarRoot>
+      <AvatarRoot ringColor="ring-purple-500" size="lg" withRing>
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=13" />
+        <AvatarFallback name="Kim Purple" size="lg" />
+      </AvatarRoot>
+    </div>
+  ),
 };
 
 // Status Indicators
@@ -288,7 +283,7 @@ export const WithStatus: Story = {
                 src={`https://i.pravatar.cc/128?img=${img}`}
               />
               <AvatarFallback name={name} size="lg" />
-              <AvatarStatus status={status} size="lg" />
+              <AvatarStatus size="lg" status={status} />
             </AvatarRoot>
             <span className="text-muted-foreground text-xs capitalize">
               {status}
@@ -310,47 +305,45 @@ export const WithBadge: Story = {
       },
     },
   },
-  render: () => {
-    return (
-      <div className="flex items-center gap-6">
-        <div className="flex flex-col items-center gap-2">
-          <AvatarRoot size="lg">
-            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=20" />
-            <AvatarFallback name="User One" size="lg" />
-            <AvatarBadge count={3} size="lg" />
-          </AvatarRoot>
-          <span className="text-muted-foreground text-xs">Count: 3</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <AvatarRoot size="lg">
-            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=21" />
-            <AvatarFallback name="User Two" size="lg" />
-            <AvatarBadge count={25} size="lg" />
-          </AvatarRoot>
-          <span className="text-muted-foreground text-xs">Count: 25</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <AvatarRoot size="lg">
-            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=22" />
-            <AvatarFallback name="User Three" size="lg" />
-            <AvatarBadge count={150} size="lg" />
-          </AvatarRoot>
-          <span className="text-muted-foreground text-xs">Count: 150 (99+)</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <AvatarRoot size="lg">
-            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=23" />
-            <AvatarFallback name="User Four" size="lg" />
-            <AvatarBadge dot size="lg" />
-          </AvatarRoot>
-          <span className="text-muted-foreground text-xs">Dot indicator</span>
-        </div>
+  render: () => (
+    <div className="flex items-center gap-6">
+      <div className="flex flex-col items-center gap-2">
+        <AvatarRoot size="lg">
+          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=20" />
+          <AvatarFallback name="User One" size="lg" />
+          <AvatarBadge count={3} size="lg" />
+        </AvatarRoot>
+        <span className="text-muted-foreground text-xs">Count: 3</span>
       </div>
-    );
-  },
+
+      <div className="flex flex-col items-center gap-2">
+        <AvatarRoot size="lg">
+          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=21" />
+          <AvatarFallback name="User Two" size="lg" />
+          <AvatarBadge count={25} size="lg" />
+        </AvatarRoot>
+        <span className="text-muted-foreground text-xs">Count: 25</span>
+      </div>
+
+      <div className="flex flex-col items-center gap-2">
+        <AvatarRoot size="lg">
+          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=22" />
+          <AvatarFallback name="User Three" size="lg" />
+          <AvatarBadge count={150} size="lg" />
+        </AvatarRoot>
+        <span className="text-muted-foreground text-xs">Count: 150 (99+)</span>
+      </div>
+
+      <div className="flex flex-col items-center gap-2">
+        <AvatarRoot size="lg">
+          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=23" />
+          <AvatarFallback name="User Four" size="lg" />
+          <AvatarBadge dot size="lg" />
+        </AvatarRoot>
+        <span className="text-muted-foreground text-xs">Dot indicator</span>
+      </div>
+    </div>
+  ),
 };
 
 // Combined Status and Badge
@@ -363,32 +356,30 @@ export const StatusAndBadge: Story = {
       },
     },
   },
-  render: () => {
-    return (
-      <div className="flex items-center gap-6">
-        <AvatarRoot size="xl">
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=30" />
-          <AvatarFallback name="Active User" size="xl" />
-          <AvatarStatus status="online" size="xl" position="bottom-right" />
-          <AvatarBadge count={5} size="xl" position="top-right" />
-        </AvatarRoot>
+  render: () => (
+    <div className="flex items-center gap-6">
+      <AvatarRoot size="xl">
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=30" />
+        <AvatarFallback name="Active User" size="xl" />
+        <AvatarStatus position="bottom-right" size="xl" status="online" />
+        <AvatarBadge count={5} position="top-right" size="xl" />
+      </AvatarRoot>
 
-        <AvatarRoot size="xl">
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=31" />
-          <AvatarFallback name="Busy User" size="xl" />
-          <AvatarStatus status="busy" size="xl" position="bottom-right" />
-          <AvatarBadge count={12} size="xl" position="top-right" />
-        </AvatarRoot>
+      <AvatarRoot size="xl">
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=31" />
+        <AvatarFallback name="Busy User" size="xl" />
+        <AvatarStatus position="bottom-right" size="xl" status="busy" />
+        <AvatarBadge count={12} position="top-right" size="xl" />
+      </AvatarRoot>
 
-        <AvatarRoot size="xl">
-          <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=32" />
-          <AvatarFallback name="Away User" size="xl" />
-          <AvatarStatus status="away" size="xl" position="bottom-right" />
-          <AvatarBadge dot size="xl" position="top-right" />
-        </AvatarRoot>
-      </div>
-    );
-  },
+      <AvatarRoot size="xl">
+        <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=32" />
+        <AvatarFallback name="Away User" size="xl" />
+        <AvatarStatus position="bottom-right" size="xl" status="away" />
+        <AvatarBadge dot position="top-right" size="xl" />
+      </AvatarRoot>
+    </div>
+  ),
 };
 
 // Avatar Group
@@ -414,7 +405,7 @@ export const Group: Story = {
     return (
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">Normal spacing</h4>
+          <h4 className="font-medium text-sm">Normal spacing</h4>
           <AvatarGroup>
             {users.map((user) => (
               <AvatarRoot key={user.name}>
@@ -426,7 +417,7 @@ export const Group: Story = {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">With max count (3 visible)</h4>
+          <h4 className="font-medium text-sm">With max count (3 visible)</h4>
           <AvatarGroup max={3}>
             {users.map((user) => (
               <AvatarRoot key={user.name}>
@@ -438,8 +429,8 @@ export const Group: Story = {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">Large size with animation</h4>
-          <AvatarGroup size="lg" animate>
+          <h4 className="font-medium text-sm">Large size with animation</h4>
+          <AvatarGroup animate size="lg">
             {users.map((user) => (
               <AvatarRoot key={user.name}>
                 <AvatarImage alt={user.name} src={user.img} />
@@ -450,8 +441,8 @@ export const Group: Story = {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">Tight spacing</h4>
-          <AvatarGroup spacing="tight" max={4}>
+          <h4 className="font-medium text-sm">Tight spacing</h4>
+          <AvatarGroup max={4} spacing="tight">
             {users.map((user) => (
               <AvatarRoot key={user.name}>
                 <AvatarImage alt={user.name} src={user.img} />
@@ -498,7 +489,7 @@ export const ColorsFromNames: Story = {
                 </AvatarFallback>
               </AvatarRoot>
               <div className="flex flex-col">
-                <span className="text-sm font-medium">{n}</span>
+                <span className="font-medium text-sm">{n}</span>
                 <span className="text-muted-foreground text-xs">
                   BG: {bg} / FG: {fg}
                 </span>
@@ -521,49 +512,47 @@ export const KitchenSink: Story = {
       },
     },
   },
-  render: () => {
-    return (
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">Individual Features</h4>
-          <div className="flex flex-wrap items-center gap-6">
-            <AvatarRoot size="xl" withRing>
-              <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=40" />
-              <AvatarFallback name="Ring User" size="xl" />
-              <AvatarStatus status="online" size="xl" />
-            </AvatarRoot>
+  render: () => (
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
+        <h4 className="font-medium text-sm">Individual Features</h4>
+        <div className="flex flex-wrap items-center gap-6">
+          <AvatarRoot size="xl" withRing>
+            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=40" />
+            <AvatarFallback name="Ring User" size="xl" />
+            <AvatarStatus size="xl" status="online" />
+          </AvatarRoot>
 
-            <AvatarRoot size="xl" shape="rounded">
-              <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=41" />
-              <AvatarFallback name="Rounded User" size="xl" />
-              <AvatarBadge count={7} size="xl" />
-            </AvatarRoot>
+          <AvatarRoot shape="rounded" size="xl">
+            <AvatarImage alt="User" src="https://i.pravatar.cc/128?img=41" />
+            <AvatarFallback name="Rounded User" size="xl" />
+            <AvatarBadge count={7} size="xl" />
+          </AvatarRoot>
 
-            <AvatarRoot size="xl">
-              <AvatarFallback name="Color User" size="xl" />
-              <AvatarStatus status="busy" size="xl" />
-              <AvatarBadge dot size="xl" position="top-right" />
-            </AvatarRoot>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h4 className="text-sm font-medium">Team Group</h4>
-          <AvatarGroup size="lg" max={5} animate>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <AvatarRoot key={i}>
-                <AvatarImage
-                  alt={`User ${i + 1}`}
-                  src={`https://i.pravatar.cc/128?img=${50 + i}`}
-                />
-                <AvatarFallback name={`User ${i + 1}`} />
-                {i === 0 && <AvatarStatus status="online" />}
-                {i === 1 && <AvatarBadge count={3} />}
-              </AvatarRoot>
-            ))}
-          </AvatarGroup>
+          <AvatarRoot size="xl">
+            <AvatarFallback name="Color User" size="xl" />
+            <AvatarStatus size="xl" status="busy" />
+            <AvatarBadge dot position="top-right" size="xl" />
+          </AvatarRoot>
         </div>
       </div>
-    );
-  },
+
+      <div className="flex flex-col gap-3">
+        <h4 className="font-medium text-sm">Team Group</h4>
+        <AvatarGroup animate max={5} size="lg">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <AvatarRoot key={i}>
+              <AvatarImage
+                alt={`User ${i + 1}`}
+                src={`https://i.pravatar.cc/128?img=${50 + i}`}
+              />
+              <AvatarFallback name={`User ${i + 1}`} />
+              {i === 0 && <AvatarStatus status="online" />}
+              {i === 1 && <AvatarBadge count={3} />}
+            </AvatarRoot>
+          ))}
+        </AvatarGroup>
+      </div>
+    </div>
+  ),
 };

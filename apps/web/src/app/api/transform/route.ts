@@ -1,7 +1,8 @@
 // apps/web/src/app/api/transform/route.ts
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { resolve } from '@/lib/resolver';
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { resolve } from "@/lib/resolver";
+import { requireSession } from "@/lib/session";
 
 const TransformRequestSchema = z.object({
   url: z.string().url(),
@@ -9,6 +10,14 @@ const TransformRequestSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const user = await requireSession();
+    if (user.plan !== "pro") {
+      return NextResponse.json(
+        { error: "Subscription required", code: "PAYMENT_REQUIRED" },
+        { status: 402 }
+      );
+    }
+
     const body = await request.json();
     const { url } = TransformRequestSchema.parse(body);
 
@@ -18,14 +27,14 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid URL', code: 'INVALID_URL' },
+        { error: "Invalid URL", code: "INVALID_URL" },
         { status: 400 }
       );
     }
 
-    console.error('Transform error:', error);
+    console.error("Transform error:", error);
     return NextResponse.json(
-      { error: 'Failed to transform URL', code: 'TRANSFORM_FAILED' },
+      { error: "Failed to transform URL", code: "TRANSFORM_FAILED" },
       { status: 500 }
     );
   }

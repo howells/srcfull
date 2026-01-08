@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
-import type { ComponentSize } from "@repo/ui/lib/size";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import type { ComponentSize } from "@repo/ui/lib/size";
+import { cn } from "@repo/ui/utils/cn";
 import { TabsContext } from "./tabs-context";
 
 export function Tabs({

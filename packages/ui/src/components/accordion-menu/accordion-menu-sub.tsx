@@ -1,16 +1,16 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import {
+  Root as AccordionPrimitive,
   Content,
   Header,
   Item,
-  Root as AccordionPrimitive,
   Trigger,
 } from "@radix-ui/react-accordion";
+import { cn } from "@repo/ui/utils/cn";
 import { ChevronDown } from "lucide-react";
-import { useContext } from "react";
 import type { ComponentPropsWithoutRef } from "react";
+import { useContext } from "react";
 import { AccordionMenuContext } from "./accordion-menu-context";
 
 /**
@@ -63,17 +63,15 @@ export function AccordionMenuSubTrigger({
         data-component="accordion-menu-sub-trigger"
         data-slot="accordion-menu-sub-trigger"
       >
-        <>
-          {children}
-          <ChevronDown
-            className={cn(
-              "ms-auto size-3.5! shrink-0 text-muted-foreground transition-transform duration-200",
-              "[[data-state=open]>&]:-rotate-180"
-            )}
-            data-component="accordion-menu-sub-indicator"
-            data-slot="accordion-menu-sub-indicator"
-          />
-        </>
+        {children}
+        <ChevronDown
+          className={cn(
+            "ms-auto size-3.5! shrink-0 text-muted-foreground transition-transform duration-200",
+            "[[data-state=open]>&]:-rotate-180"
+          )}
+          data-component="accordion-menu-sub-indicator"
+          data-slot="accordion-menu-sub-indicator"
+        />
       </Trigger>
     </Header>
   );

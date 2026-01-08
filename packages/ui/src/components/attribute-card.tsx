@@ -20,7 +20,11 @@ function AttributeCard({
   className,
 }: AttributeCardProps) {
   return (
-    <Card className={cn("relative", className)} data-component="attribute-card" variant="card">
+    <Card
+      className={cn("relative", className)}
+      data-component="attribute-card"
+      variant="card"
+    >
       <CardContent>
         <div className="flex flex-col gap-2.5">
           <div className="flex items-start justify-between">

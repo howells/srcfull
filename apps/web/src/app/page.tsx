@@ -1,140 +1,109 @@
-// apps/web/src/app/page.tsx
-'use client';
-
-import { useState } from 'react';
-import { UrlInput } from '@/components/url-input';
-import { ComparisonView } from '@/components/comparison-view';
-import { ImageGrid } from '@/components/image-grid';
-import type { ResolveResult } from '@/lib/resolver';
-
-type Mode = 'transform' | 'scrape';
+import Link from "next/link";
 
 export default function Home() {
-  const [mode, setMode] = useState<Mode>('transform');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [transformResult, setTransformResult] = useState<ResolveResult | null>(null);
-  const [scrapeResults, setScrapeResults] = useState<ResolveResult[]>([]);
-
-  const handleTransform = async (url: string) => {
-    setIsLoading(true);
-    setError(null);
-    setTransformResult(null);
-
-    try {
-      const response = await fetch('/api/transform', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to transform URL');
-      }
-
-      setTransformResult(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleScrape = async (url: string) => {
-    setIsLoading(true);
-    setError(null);
-    setScrapeResults([]);
-
-    try {
-      const response = await fetch('/api/scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to scrape page');
-      }
-
-      setScrapeResults(data.images);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const proProductId = process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID;
+  const checkoutUrl = proProductId
+    ? `/api/checkout?products=${proProductId}`
+    : null;
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-2">Beeline</h1>
-          <p className="text-[var(--text-muted)]">
-            Get the source. Skip the resizing.
-          </p>
-        </header>
+      <div className="hex-grid" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-gradient-radial" />
 
-        <div className="space-y-6">
-          {/* Mode Toggle */}
-          <div className="flex justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setMode('transform')}
-              aria-pressed={mode === 'transform'}
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                mode === 'transform'
-                  ? 'bg-[var(--accent)] text-black'
-                  : 'bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Single URL
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode('scrape')}
-              aria-pressed={mode === 'scrape'}
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                mode === 'scrape'
-                  ? 'bg-[var(--accent)] text-black'
-                  : 'bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Scrape Page
-            </button>
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-16">
+        <header className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] font-black text-black text-lg">
+              B
+            </div>
+            <div>
+              <div className="font-semibold leading-tight">Beeline</div>
+              <div className="text-[var(--text-muted)] text-xs leading-tight">
+                Image source resolver API
+              </div>
+            </div>
           </div>
 
-          {/* Input */}
-          <UrlInput
-            onSubmit={mode === 'transform' ? handleTransform : handleScrape}
-            isLoading={isLoading}
-            placeholder={
-              mode === 'transform'
-                ? 'Paste an image URL...'
-                : 'Paste a webpage URL...'
-            }
-            buttonText={mode === 'transform' ? 'Get Source' : 'Extract All'}
-          />
+          <div className="flex items-center gap-2">
+            <Link
+              className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm transition-colors hover:border-[var(--border-hover)]"
+              href="/dashboard"
+            >
+              Dashboard
+            </Link>
+            {checkoutUrl && (
+              <a
+                className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-black text-sm transition-opacity hover:opacity-90"
+                href={checkoutUrl}
+              >
+                Subscribe
+              </a>
+            )}
+          </div>
+        </header>
 
-          {/* Error */}
-          {error && (
-            <div role="alert" className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
-              {error}
-            </div>
-          )}
+        <section className="mt-16 max-w-3xl">
+          <h1 className="font-bold text-5xl tracking-tight">
+            Get the source.
+            <span className="text-[var(--text-secondary)]">
+              {" "}
+              Skip the resizing.
+            </span>
+          </h1>
+          <p className="mt-5 text-[var(--text-secondary)] leading-relaxed">
+            Beeline resolves image URLs to their highest-quality source versions
+            using curated patterns, learned transformations, and probing. It’s
+            built for production pipelines where “close enough” is not enough.
+          </p>
 
-          {/* Results */}
-          {mode === 'transform' && transformResult && (
-            <ComparisonView result={transformResult} />
-          )}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] px-5 py-3 font-medium transition-colors hover:border-[var(--border-hover)]"
+              href="/dashboard"
+            >
+              Get an API key
+            </Link>
+            {checkoutUrl ? (
+              <a
+                className="rounded-xl bg-[var(--accent)] px-5 py-3 font-medium text-black transition-opacity hover:opacity-90"
+                href={checkoutUrl}
+              >
+                Subscribe now
+              </a>
+            ) : (
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] px-5 py-3 text-[var(--text-muted)] text-sm">
+                Set `NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID` to enable checkout.
+              </div>
+            )}
+          </div>
+        </section>
 
-          {mode === 'scrape' && scrapeResults.length > 0 && (
-            <ImageGrid results={scrapeResults} />
-          )}
-        </div>
+        <section className="mt-16 grid gap-6 md:grid-cols-2">
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-6">
+            <h2 className="font-semibold text-lg">Transform</h2>
+            <p className="mt-2 text-[var(--text-muted)] text-sm">
+              Resolve a single image URL to its best-known source URL.
+            </p>
+            <pre className="mt-4 overflow-auto rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] p-4 text-xs leading-relaxed">
+              <code>{`curl -X POST https://YOUR_DOMAIN/api/v1/transform \\\n  -H "Authorization: Bearer sk_live_…" \\\n  -H "Content-Type: application/json" \\\n  -d '{"url":"https://example.com/image.jpg"}'`}</code>
+            </pre>
+          </div>
+
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-6">
+            <h2 className="font-semibold text-lg">Scrape</h2>
+            <p className="mt-2 text-[var(--text-muted)] text-sm">
+              Scrape a webpage and return resolved image URLs (with metadata).
+            </p>
+            <pre className="mt-4 overflow-auto rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] p-4 text-xs leading-relaxed">
+              <code>{`curl -X POST https://YOUR_DOMAIN/api/v1/scrape \\\n  -H "Authorization: Bearer sk_live_…" \\\n  -H "Content-Type: application/json" \\\n  -d '{"url":"https://example.com"}'`}</code>
+            </pre>
+          </div>
+        </section>
+
+        <footer className="mt-16 text-[var(--text-muted)] text-sm">
+          © {new Date().getFullYear()} Beeline. All rights reserved.
+        </footer>
       </div>
     </main>
   );

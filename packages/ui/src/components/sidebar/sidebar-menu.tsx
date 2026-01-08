@@ -1,5 +1,6 @@
 "use client";
 
+import { Slot } from "@radix-ui/react-slot";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import {
   Tooltip,
@@ -7,9 +8,9 @@ import {
   TooltipTrigger,
 } from "@repo/ui/components/tooltip";
 import { cn } from "@repo/ui/utils/cn";
-import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import React, { useMemo } from "react";
+import type React from "react";
+import { useMemo } from "react";
 import { useSidebar } from "./sidebar-provider";
 
 const sidebarMenuButtonVariants = cva(
@@ -41,8 +42,8 @@ export function SidebarMenu({
   return (
     <ul
       className={cn("flex w-full min-w-0 flex-col gap-1", className)}
-      data-sidebar="menu"
       data-component="sidebar-menu"
+      data-sidebar="menu"
       data-slot="sidebar-menu"
       {...props}
     />
@@ -56,8 +57,8 @@ export function SidebarMenuItem({
   return (
     <li
       className={cn("group/menu-item relative", className)}
-      data-sidebar="menu-item"
       data-component="sidebar-menu-item"
+      data-sidebar="menu-item"
       data-slot="sidebar-menu-item"
       {...props}
     />
@@ -84,9 +85,9 @@ export function SidebarMenuButton({
     <Comp
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       data-active={isActive}
+      data-component="sidebar-menu-button"
       data-sidebar="menu-button"
       data-size={size}
-      data-component="sidebar-menu-button"
       data-slot="sidebar-menu-button"
       {...props}
     />
@@ -140,8 +141,8 @@ export function SidebarMenuAction({
           "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
-      data-sidebar="menu-action"
       data-component="sidebar-menu-action"
+      data-sidebar="menu-action"
       data-slot="sidebar-menu-action"
       {...props}
     />
@@ -163,8 +164,8 @@ export function SidebarMenuBadge({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
-      data-sidebar="menu-badge"
       data-component="sidebar-menu-badge"
+      data-sidebar="menu-badge"
       data-slot="sidebar-menu-badge"
       {...props}
     />
@@ -190,8 +191,8 @@ export function SidebarMenuSkeleton({
   return (
     <div
       className={cn("flex h-8 items-center gap-2 rounded-md px-2", className)}
-      data-sidebar="menu-skeleton"
       data-component="sidebar-menu-skeleton"
+      data-sidebar="menu-skeleton"
       data-slot="sidebar-menu-skeleton"
       {...props}
     >
@@ -225,8 +226,8 @@ export function SidebarMenuSub({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
-      data-sidebar="menu-sub"
       data-component="sidebar-menu-sub"
+      data-sidebar="menu-sub"
       data-slot="sidebar-menu-sub"
       {...props}
     />
@@ -240,8 +241,8 @@ export function SidebarMenuSubItem({
   return (
     <li
       className={cn("group/menu-sub-item relative", className)}
-      data-sidebar="menu-sub-item"
       data-component="sidebar-menu-sub-item"
+      data-sidebar="menu-sub-item"
       data-slot="sidebar-menu-sub-item"
       {...props}
     />
@@ -272,9 +273,9 @@ export function SidebarMenuSubButton({
         className
       )}
       data-active={isActive}
+      data-component="sidebar-menu-sub-button"
       data-sidebar="menu-sub-button"
       data-size={size}
-      data-component="sidebar-menu-sub-button"
       data-slot="sidebar-menu-sub-button"
       {...props}
     />

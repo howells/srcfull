@@ -25,7 +25,7 @@ export function replaceKeywordWithNode(
     console.log("[replaceKeywordWithNode] Could not find keyword", {
       searchText,
       textBeforeCursor,
-      anchorOffset
+      anchorOffset,
     });
     return;
   }

@@ -47,7 +47,13 @@ export const springs = {
 } as const;
 
 // Animation presets
-export type Preset = "fadeIn" | "fadeOut" | "slideIn" | "slideOut" | "scaleIn" | "scaleOut";
+export type Preset =
+  | "fadeIn"
+  | "fadeOut"
+  | "slideIn"
+  | "slideOut"
+  | "scaleIn"
+  | "scaleOut";
 
 export const presets = {
   fadeIn: {

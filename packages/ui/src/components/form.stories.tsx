@@ -117,7 +117,11 @@ export const MultiField: Story = {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="you@example.com" {...field} />
+                  <Input
+                    placeholder="you@example.com"
+                    type="email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>We'll never share it.</FormDescription>
                 <FormMessage />
@@ -252,7 +256,9 @@ export const FormLayouts: Story = {
     return (
       <div className="flex flex-col gap-8">
         <div>
-          <h3 className="mb-4 text-sm font-medium">Vertical layout (default)</h3>
+          <h3 className="mb-4 font-medium text-sm">
+            Vertical layout (default)
+          </h3>
           <Form {...form}>
             <form className="flex max-w-sm flex-col gap-4">
               <FormField
@@ -284,7 +290,9 @@ export const FormLayouts: Story = {
         </div>
 
         <div>
-          <h3 className="mb-4 text-sm font-medium">Grid layout (two columns)</h3>
+          <h3 className="mb-4 font-medium text-sm">
+            Grid layout (two columns)
+          </h3>
           <Form {...form}>
             <form className="grid max-w-2xl grid-cols-2 gap-4">
               <FormField

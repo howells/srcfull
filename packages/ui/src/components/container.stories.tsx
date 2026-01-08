@@ -109,13 +109,16 @@ export const GridStrategy: Story = {
           </p>
         </div>
         <div className="my-6" data-breakout>
-          <div className="rounded-md border-y-2 border-dashed border-primary/30 bg-primary/5 p-6 text-center">
+          <div className="rounded-md border-primary/30 border-y-2 border-dashed bg-primary/5 p-6 text-center">
             <div className="font-medium text-primary text-sm">
               Breakout Section
             </div>
             <div className="mt-1 text-neutral-600 text-xs">
-              This section uses <code className="rounded bg-neutral-200 px-1 py-0.5 font-mono">data-breakout</code> to span the full width,
-              breaking out of the container constraints
+              This section uses{" "}
+              <code className="rounded bg-neutral-200 px-1 py-0.5 font-mono">
+                data-breakout
+              </code>{" "}
+              to span the full width, breaking out of the container constraints
             </div>
           </div>
         </div>

@@ -63,7 +63,8 @@ export const VerticalLayout: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Vertical layout stacks labels above inputs. Best for forms with longer labels or when maximizing vertical space.",
+        story:
+          "Vertical layout stacks labels above inputs. Best for forms with longer labels or when maximizing vertical space.",
       },
     },
   },
@@ -94,7 +95,8 @@ export const HorizontalLayout: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Horizontal layout places labels beside inputs. Good for compact forms and settings pages.",
+        story:
+          "Horizontal layout places labels beside inputs. Good for compact forms and settings pages.",
       },
     },
   },
@@ -142,8 +144,15 @@ export const WithErrors: Story = {
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
           <FieldContent>
-            <Input aria-invalid id="password" placeholder="••••••••" type="password" />
-            <FieldError errors={[{ message: "Password must be at least 8 characters" }]} />
+            <Input
+              aria-invalid
+              id="password"
+              placeholder="••••••••"
+              type="password"
+            />
+            <FieldError
+              errors={[{ message: "Password must be at least 8 characters" }]}
+            />
           </FieldContent>
         </Field>
       </FieldGroup>
@@ -156,7 +165,8 @@ export const HorizontalWithError: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Horizontal fields can also display errors and use separators between field groups.",
+        story:
+          "Horizontal fields can also display errors and use separators between field groups.",
       },
     },
   },
@@ -192,7 +202,8 @@ export const WithDescriptions: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Field descriptions provide helpful context without cluttering the label.",
+        story:
+          "Field descriptions provide helpful context without cluttering the label.",
       },
     },
   },

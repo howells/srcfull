@@ -136,7 +136,8 @@ export const IndeterminateState: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Progress bar without a value shows indeterminate state (empty).",
+        story:
+          "Progress bar without a value shows indeterminate state (empty).",
       },
     },
   },
@@ -147,7 +148,9 @@ export const IndeterminateState: Story = {
         <Progress />
       </div>
       <div className="flex flex-col gap-2">
-        <div className="text-muted-foreground text-sm">Known progress (45%)</div>
+        <div className="text-muted-foreground text-sm">
+          Known progress (45%)
+        </div>
         <Progress value={45} />
       </div>
     </div>

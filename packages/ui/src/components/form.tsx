@@ -1,9 +1,9 @@
 "use client";
 
-import { Label } from "@repo/ui/components/label";
-import { cn } from "@repo/ui/utils/cn";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
+import { Label } from "@repo/ui/components/label";
+import { cn } from "@repo/ui/utils/cn";
 import React, { useContext, useId } from "react";
 import {
   Controller,
@@ -94,8 +94,8 @@ function FormLabel({
   return (
     <Label
       className={cn("data-[error=true]:text-destructive", className)}
-      data-error={!!error}
       data-component="form-label"
+      data-error={!!error}
       data-slot="form-label"
       htmlFor={formItemId}
       {...props}
@@ -103,16 +103,17 @@ function FormLabel({
   );
 }
 
-const FormControl = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
+const FormControl = ({
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof Slot> & {
+  ref?: React.RefObject<HTMLElement | null>;
+}) => {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
   return (
     <Slot
-      ref={ref}
       aria-describedby={
         error ? `${formDescriptionId} ${formMessageId}` : `${formDescriptionId}`
       }
@@ -120,10 +121,11 @@ const FormControl = React.forwardRef<
       data-component="form-control"
       data-slot="form-control"
       id={formItemId}
+      ref={ref}
       {...props}
     />
   );
-});
+};
 
 FormControl.displayName = "FormControl";
 

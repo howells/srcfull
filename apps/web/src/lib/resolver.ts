@@ -1,14 +1,18 @@
 // apps/web/src/lib/resolver.ts
-import { getCached, setCache } from './cache-repo';
-import { findPatternByDomain, savePattern, incrementSuccess } from './patterns-repo';
-import { matchCuratedPattern, applyPattern } from './pattern-matcher';
-import { probeForSource } from './prober';
-import { validateImageUrl } from './validator';
+import { getCached, setCache } from "./cache-repo";
+import { applyPattern, matchCuratedPattern } from "./pattern-matcher";
+import {
+  findPatternByDomain,
+  incrementSuccess,
+  savePattern,
+} from "./patterns-repo";
+import { probeForSource } from "./prober";
+import { validateImageUrl } from "./validator";
 
 export type ResolveResult = {
   original: string;
   resolved: string;
-  method: 'cached' | 'pattern' | 'learned' | 'probed' | 'fallback';
+  method: "cached" | "pattern" | "learned" | "probed" | "fallback";
   confidence?: number;
   sizeIncrease?: string;
 };
@@ -20,7 +24,7 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
   try {
     const cached = await getCached(imageUrl);
     if (cached) {
-      return { original, resolved: cached, method: 'cached' };
+      return { original, resolved: cached, method: "cached" };
     }
   } catch {
     // Cache unavailable, continue
@@ -40,7 +44,7 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
       return {
         original,
         resolved: curatedResult,
-        method: 'pattern',
+        method: "pattern",
         confidence: 0.95,
         sizeIncrease,
       };
@@ -58,12 +62,15 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
         const validation = await validateImageUrl(result);
         if (validation.valid) {
           await incrementSuccess(pattern.id);
-          const sizeIncrease = calculateSizeIncrease(originalSize, validation.size);
+          const sizeIncrease = calculateSizeIncrease(
+            originalSize,
+            validation.size
+          );
           await cacheResult(imageUrl, result, pattern.id);
           return {
             original,
             resolved: result,
-            method: 'learned',
+            method: "learned",
             confidence: pattern.confidence,
             sizeIncrease,
           };
@@ -80,12 +87,15 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
     if (probeResult) {
       // Learn the pattern for next time
       await learnPattern(imageUrl, probeResult.url);
-      const sizeIncrease = calculateSizeIncrease(originalSize, probeResult.size);
+      const sizeIncrease = calculateSizeIncrease(
+        originalSize,
+        probeResult.size
+      );
       await cacheResult(imageUrl, probeResult.url);
       return {
         original,
         resolved: probeResult.url,
-        method: 'probed',
+        method: "probed",
         confidence: 0.5,
         sizeIncrease,
       };
@@ -95,7 +105,7 @@ export async function resolve(imageUrl: string): Promise<ResolveResult> {
   }
 
   // 5. Fallback - return original
-  return { original, resolved: imageUrl, method: 'fallback' };
+  return { original, resolved: imageUrl, method: "fallback" };
 }
 
 async function cacheResult(
@@ -115,16 +125,23 @@ async function learnPattern(original: string, resolved: string): Promise<void> {
     const domain = new URL(original).hostname;
     // Create a simple pattern from this transformation
     // This is a basic implementation - could be smarter
-    const escaped = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escaped = original.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     await savePattern(domain, `^${escaped}$`, resolved);
   } catch {
     // Learning failed, not critical
   }
 }
 
-function calculateSizeIncrease(original?: number, resolved?: number): string | undefined {
-  if (!original || !resolved || original === 0) return undefined;
+function calculateSizeIncrease(
+  original?: number,
+  resolved?: number
+): string | undefined {
+  if (!(original && resolved) || original === 0) {
+    return;
+  }
   const increase = resolved / original;
-  if (increase <= 1) return undefined;
+  if (increase <= 1) {
+    return;
+  }
   return `${increase.toFixed(1)}x`;
 }

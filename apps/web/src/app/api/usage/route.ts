@@ -1,8 +1,8 @@
-import { eq, sql, and, gte } from 'drizzle-orm';
-import { NextResponse } from 'next/server';
-import { db } from '@/db/client';
-import { apiKeys, usageLogs } from '@/db/schema';
-import { requireSession } from '@/lib/session';
+import { and, eq, gte, sql } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { db } from "@/db/client";
+import { apiKeys, usageLogs } from "@/db/schema";
+import { requireSession } from "@/lib/session";
 
 export async function GET() {
   try {
@@ -23,7 +23,7 @@ export async function GET() {
       });
     }
 
-    const keyIds = keys.map(k => k.id);
+    const keyIds = keys.map((k) => k.id);
     const now = new Date();
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -71,12 +71,12 @@ export async function GET() {
       last24Hours: Number(last24Result?.count ?? 0),
       last7Days: Number(last7Result?.count ?? 0),
       byEndpoint: Object.fromEntries(
-        byEndpoint.map(e => [e.endpoint, Number(e.count)])
+        byEndpoint.map((e) => [e.endpoint, Number(e.count)])
       ),
     });
   } catch {
     return NextResponse.json(
-      { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+      { error: "Unauthorized", code: "UNAUTHORIZED" },
       { status: 401 }
     );
   }

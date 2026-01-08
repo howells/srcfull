@@ -50,10 +50,10 @@ export function ItemList({
   const Comp = ordered ? "ol" : "ul";
   return (
     <Comp
-      ref={ref as React.Ref<HTMLUListElement> & React.Ref<HTMLOListElement>}
       className={cn(itemListVariants({ variant, className }))}
       data-component="item-list"
       data-variant={variant}
+      ref={ref as React.Ref<HTMLUListElement> & React.Ref<HTMLOListElement>}
       role="list"
       {...props}
     />

@@ -1,9 +1,9 @@
-import { TextReveal } from 'packages/ui/src/components/text-reveal';
+import { TextReveal } from "packages/ui/src/components/text-reveal";
 
 export default function Component() {
   return (
-    <div className="flex items-center justify-center min-h-[200px]">
-      <TextReveal variant="fade" className="text-xl font-bold text-foreground">
+    <div className="flex min-h-[200px] items-center justify-center">
+      <TextReveal className="font-bold text-foreground text-xl" variant="fade">
         Beautiful Text Reveal Animation
       </TextReveal>
     </div>

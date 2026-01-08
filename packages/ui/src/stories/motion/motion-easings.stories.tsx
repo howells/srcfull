@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { useState } from "react";
+import {
+  durations,
+  type Easing,
+  easings,
+  easingsCSS,
+} from "@repo/ui/lib/motion";
 import { motion } from "motion/react";
-import { easings, easingsCSS, type Easing } from "@repo/ui/lib/motion";
-import { durations } from "@repo/ui/lib/motion";
+import { useState } from "react";
 
 const meta = {
   title: "Motion/Easings",
@@ -20,9 +24,9 @@ type Story = StoryObj<typeof meta>;
 export const AllEasings: Story = {
   render: () => {
     const easingKeys = Object.keys(easings) as Easing[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(easingKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(easingKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -38,18 +42,18 @@ export const AllEasings: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-4xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Easing Curves</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Easing Curves</h2>
+          <p className="mb-8 text-neutral-600">
             Click "Trigger Animation" to see how each easing function affects
             animation motion. All animations use the same duration (500ms) to
             focus on the easing differences.
           </p>
 
           <button
+            className="mb-8 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg mb-8 hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Stop" : "Trigger"} Animation
           </button>
@@ -62,26 +66,24 @@ export const AllEasings: Story = {
 
             return (
               <div
+                className="space-y-4 rounded-lg border border-neutral-200 p-6"
                 key={key}
-                className="border border-neutral-200 rounded-lg p-6 space-y-4"
               >
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium capitalize">{key}</h3>
-                  <p className="text-xs text-neutral-600">
+                  <h3 className="font-medium text-lg capitalize">{key}</h3>
+                  <p className="text-neutral-600 text-xs">
                     Cubic bezier: {easing.join(", ")}
                   </p>
-                  <p className="text-xs text-neutral-500 font-mono">
+                  <p className="font-mono text-neutral-500 text-xs">
                     {cssEasing}
                   </p>
                 </div>
 
-                <div className="bg-neutral-50 rounded-lg p-8 flex items-center justify-start h-24 overflow-hidden">
+                <div className="flex h-24 items-center justify-start overflow-hidden rounded-lg bg-neutral-50 p-8">
                   <motion.div
-                    className="w-12 h-12 bg-primary rounded-lg cursor-pointer transition-shadow hover:shadow-lg"
+                    animate={animatingBoxes[key] ? { x: 300 } : { x: 0 }}
+                    className="h-12 w-12 cursor-pointer rounded-lg bg-primary transition-shadow hover:shadow-lg"
                     onClick={() => toggleBox(key)}
-                    animate={
-                      animatingBoxes[key] ? { x: 300 } : { x: 0 }
-                    }
                     transition={{
                       duration: 0.8,
                       ease: easing,
@@ -89,7 +91,7 @@ export const AllEasings: Story = {
                   />
                 </div>
 
-                <p className="text-xs text-neutral-500">
+                <p className="text-neutral-500 text-xs">
                   {key === "standard" &&
                     "General purpose with smooth acceleration and deceleration"}
                   {key === "in" &&
@@ -115,9 +117,9 @@ export const AllEasings: Story = {
 export const EasingComparison: Story = {
   render: () => {
     const easingKeys = Object.keys(easings) as Easing[];
-    const [animatingBoxes, setAnimatingBoxes] = useState<Record<string, boolean>>(
-      Object.fromEntries(easingKeys.map((key) => [key, false]))
-    );
+    const [animatingBoxes, setAnimatingBoxes] = useState<
+      Record<string, boolean>
+    >(Object.fromEntries(easingKeys.map((key) => [key, false])));
 
     const toggleBox = (key: string) => {
       setAnimatingBoxes((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -133,30 +135,30 @@ export const EasingComparison: Story = {
     const allAnimating = Object.values(animatingBoxes).every((v) => v);
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-8">
+      <div className="mx-auto w-full max-w-6xl space-y-8 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Easing Comparison</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Easing Comparison</h2>
+          <p className="mb-8 text-neutral-600">
             Compare all easing functions side-by-side. Watch how each curve
             affects the motion of the box.
           </p>
 
           <button
+            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={toggleAll}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             {allAnimating ? "Reset" : "Animate"}
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {easingKeys.map((key) => (
-            <div key={key} className="space-y-3">
-              <div className="border border-neutral-200 rounded-lg p-4 bg-neutral-50 h-24 flex items-center overflow-hidden">
+            <div className="space-y-3" key={key}>
+              <div className="flex h-24 items-center overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-4">
                 <motion.div
-                  className="w-6 h-6 bg-primary rounded cursor-pointer transition-shadow hover:shadow-lg"
-                  onClick={() => toggleBox(key)}
                   animate={animatingBoxes[key] ? { x: 120 } : { x: 0 }}
+                  className="h-6 w-6 cursor-pointer rounded bg-primary transition-shadow hover:shadow-lg"
+                  onClick={() => toggleBox(key)}
                   transition={{
                     duration: 0.6,
                     ease: easings[key],
@@ -166,7 +168,7 @@ export const EasingComparison: Story = {
 
               <div className="space-y-1">
                 <p className="font-medium text-sm capitalize">{key}</p>
-                <p className="text-xs text-neutral-600 font-mono leading-tight">
+                <p className="font-mono text-neutral-600 text-xs leading-tight">
                   {easings[key].join(", ")}
                 </p>
               </div>
@@ -187,17 +189,17 @@ export const EasingInPractice: Story = {
     const [isAnimating, setIsAnimating] = useState(false);
 
     return (
-      <div className="w-full max-w-6xl mx-auto p-8 space-y-12">
+      <div className="mx-auto w-full max-w-6xl space-y-12 p-8">
         <div>
-          <h2 className="text-2xl font-medium mb-2">Easings in Practice</h2>
-          <p className="text-neutral-600 mb-8">
+          <h2 className="mb-2 font-medium text-2xl">Easings in Practice</h2>
+          <p className="mb-8 text-neutral-600">
             Real-world examples of easings applied to different animation
             patterns.
           </p>
 
           <button
+            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
             onClick={() => setIsAnimating(!isAnimating)}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             {isAnimating ? "Reset" : "Animate"}
           </button>
@@ -206,66 +208,63 @@ export const EasingInPractice: Story = {
         <div className="space-y-8">
           {/* Horizontal slide */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Horizontal Slide (out)</h3>
-            <div className="bg-neutral-50 rounded-lg p-8 h-20 flex items-center overflow-hidden">
+            <h3 className="font-medium text-lg">Horizontal Slide (out)</h3>
+            <div className="flex h-20 items-center overflow-hidden rounded-lg bg-neutral-50 p-8">
               <motion.div
-                className="w-10 h-10 bg-primary rounded"
                 animate={isAnimating ? { x: 350 } : { x: 0 }}
+                className="h-10 w-10 rounded bg-primary"
                 transition={{
                   duration: 0.6,
                   ease: easings.out,
                 }}
               />
             </div>
-            <p className="text-sm text-neutral-600">
+            <p className="text-neutral-600 text-sm">
               Smooth start, deceleration - good for elements leaving the screen
             </p>
           </div>
 
           {/* Vertical bounce in */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Vertical Entrance (in)</h3>
-            <div className="bg-neutral-50 rounded-lg p-8 h-40 flex items-end justify-center overflow-hidden">
+            <h3 className="font-medium text-lg">Vertical Entrance (in)</h3>
+            <div className="flex h-40 items-end justify-center overflow-hidden rounded-lg bg-neutral-50 p-8">
               <motion.div
-                className="w-10 h-10 bg-accent rounded"
                 animate={isAnimating ? { y: -100 } : { y: 0 }}
+                className="h-10 w-10 rounded bg-accent"
                 transition={{
                   duration: 0.6,
                   ease: easings.in,
                 }}
               />
             </div>
-            <p className="text-sm text-neutral-600">
+            <p className="text-neutral-600 text-sm">
               Accelerates in, sharp end - good for elements entering the screen
             </p>
           </div>
 
           {/* Scale with inOut */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Scale Transition (inOut)</h3>
-            <div className="bg-neutral-50 rounded-lg p-8 h-32 flex items-center justify-center overflow-hidden">
+            <h3 className="font-medium text-lg">Scale Transition (inOut)</h3>
+            <div className="flex h-32 items-center justify-center overflow-hidden rounded-lg bg-neutral-50 p-8">
               <motion.div
-                className="w-12 h-12 bg-secondary rounded"
-                animate={
-                  isAnimating ? { scale: 1.5 } : { scale: 1 }
-                }
+                animate={isAnimating ? { scale: 1.5 } : { scale: 1 }}
+                className="h-12 w-12 rounded bg-secondary"
                 transition={{
                   duration: 0.6,
                   ease: easings.inOut,
                 }}
               />
             </div>
-            <p className="text-sm text-neutral-600">
+            <p className="text-neutral-600 text-sm">
               Smooth both ends - good for complex transitions and scale changes
             </p>
           </div>
 
           {/* Standard for most cases */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">General Purpose (standard)</h3>
-            <div className="bg-neutral-50 rounded-lg p-8 h-32 flex items-center justify-start overflow-hidden">
+            <h3 className="font-medium text-lg">General Purpose (standard)</h3>
+            <div className="flex h-32 items-center justify-start overflow-hidden rounded-lg bg-neutral-50 p-8">
               <motion.div
-                className="w-10 h-10 bg-ring rounded"
                 animate={
                   isAnimating
                     ? {
@@ -274,13 +273,14 @@ export const EasingInPractice: Story = {
                       }
                     : { x: 0, rotate: 0 }
                 }
+                className="h-10 w-10 rounded bg-ring"
                 transition={{
                   duration: 0.6,
                   ease: easings.standard,
                 }}
               />
             </div>
-            <p className="text-sm text-neutral-600">
+            <p className="text-neutral-600 text-sm">
               Balanced acceleration and deceleration - suitable for most UI
               animations
             </p>

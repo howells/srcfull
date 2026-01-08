@@ -137,7 +137,9 @@ export const WithImage: Story = {
         <ItemMedia variant="image">
           <img
             alt="User avatar"
+            height={100}
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
+            width={100}
           />
         </ItemMedia>
         <ItemContent>
@@ -310,7 +312,8 @@ export const Complex: Story = {
         <ItemContent>
           <ItemTitle>Creative Director</ItemTitle>
           <ItemDescription>
-            Lead creative projects and collaborate with teams on brand initiatives.
+            Lead creative projects and collaborate with teams on brand
+            initiatives.
           </ItemDescription>
         </ItemContent>
         <ItemContent>

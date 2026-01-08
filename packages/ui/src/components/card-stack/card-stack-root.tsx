@@ -53,7 +53,9 @@ export function CardStack({
   };
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current) {
+      return;
+    }
     setWidth(ref.current.offsetWidth);
   }, []);
 
@@ -96,20 +98,21 @@ export function CardStack({
 
   return (
     <ul
-      ref={ref}
-      className={cn(
-        "relative m-0 h-fit w-fit list-none p-0",
-        className
-      )}
+      className={cn("relative m-0 h-fit w-fit list-none p-0", className)}
       data-component="card-stack"
+      ref={ref}
       {...props}
     >
       <AnimatePresence initial={false}>
         {React.Children.map(children, (child, index) => {
-          if (!React.isValidElement(child)) return null;
+          if (!React.isValidElement(child)) {
+            return null;
+          }
           const key = child.key ? String(child.key) : undefined;
           const isNew = key ? newKeys.has(key) : false;
-          const baseRotation = key ? cardRotationRef.current.get(key) ?? 0 : 0;
+          const baseRotation = key
+            ? (cardRotationRef.current.get(key) ?? 0)
+            : 0;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           return React.cloneElement(child as any, {
             index,

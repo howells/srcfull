@@ -1,12 +1,13 @@
-// apps/web/src/lib/patterns-repo.ts
-import { sql, type Pattern } from './db';
+import { desc, eq, lt, sql } from "drizzle-orm";
+import { db } from "@/db/client";
+import { type Pattern, patterns } from "@/db/schema";
 
-export async function findPatternByDomain(domain: string): Promise<Pattern[]> {
-  return sql<Pattern[]>`
-    SELECT * FROM patterns
-    WHERE domain = ${domain}
-    ORDER BY confidence DESC
-  `;
+export function findPatternByDomain(domain: string): Promise<Pattern[]> {
+  return db
+    .select()
+    .from(patterns)
+    .where(eq(patterns.domain, domain))
+    .orderBy(desc(patterns.confidence));
 }
 
 export async function savePattern(
@@ -14,39 +15,44 @@ export async function savePattern(
   matchRegex: string,
   transform: string
 ): Promise<Pattern> {
-  const [pattern] = await sql<Pattern[]>`
-    INSERT INTO patterns (domain, match_regex, transform)
-    VALUES (${domain}, ${matchRegex}, ${transform})
-    ON CONFLICT (domain, match_regex)
-    DO UPDATE SET successes = patterns.successes + 1, last_used_at = NOW()
-    RETURNING *
-  `;
+  const [pattern] = await db
+    .insert(patterns)
+    .values({ domain, matchRegex, transform })
+    .onConflictDoUpdate({
+      target: [patterns.domain, patterns.matchRegex],
+      set: {
+        successes: sql`${patterns.successes} + 1`,
+        lastUsedAt: new Date(),
+      },
+    })
+    .returning();
+
   if (!pattern) {
-    throw new Error('Failed to save pattern');
+    throw new Error("Failed to save pattern");
   }
   return pattern;
 }
 
 export async function incrementSuccess(patternId: number): Promise<void> {
-  await sql`
-    UPDATE patterns
-    SET
-      successes = successes + 1,
-      confidence = LEAST(confidence + 0.1, 0.99),
-      last_used_at = NOW()
-    WHERE id = ${patternId}
-  `;
+  await db
+    .update(patterns)
+    .set({
+      successes: sql`${patterns.successes} + 1`,
+      confidence: sql`LEAST(${patterns.confidence} + 0.1, 0.99)`,
+      lastUsedAt: new Date(),
+    })
+    .where(eq(patterns.id, patternId));
 }
 
 export async function incrementFailure(patternId: number): Promise<void> {
-  await sql`
-    UPDATE patterns
-    SET
-      failures = failures + 1,
-      confidence = GREATEST(confidence - 0.2, 0)
-    WHERE id = ${patternId}
-  `;
+  await db
+    .update(patterns)
+    .set({
+      failures: sql`${patterns.failures} + 1`,
+      confidence: sql`GREATEST(${patterns.confidence} - 0.2, 0)`,
+    })
+    .where(eq(patterns.id, patternId));
 
   // Delete low-confidence patterns
-  await sql`DELETE FROM patterns WHERE confidence < 0.2`;
+  await db.delete(patterns).where(lt(patterns.confidence, 0.2));
 }

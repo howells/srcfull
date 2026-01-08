@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@repo/ui/utils/cn";
-import { useContext } from "react";
 import type { ComponentPropsWithoutRef } from "react";
+import { useContext } from "react";
 import { AccordionMenuContext } from "./accordion-menu-context";
 
 export type AccordionMenuSeparatorProps = ComponentPropsWithoutRef<"div">;

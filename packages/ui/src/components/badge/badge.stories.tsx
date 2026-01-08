@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { Check } from "lucide-react";
 import { sizeArgType } from "@repo/ui/lib/storybook";
-import { Badge } from "./badge-root";
+import { Check } from "lucide-react";
 import { BadgeButton } from "./badge-button";
 import { BadgeDot } from "./badge-dot";
+import { Badge } from "./badge-root";
 
 const meta = {
   title: "Badge",

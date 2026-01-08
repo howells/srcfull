@@ -18,7 +18,7 @@ import { DataGridTable } from "packages/ui/src/components/data-grid-table";
 import { ScrollArea, ScrollBar } from "packages/ui/src/components/scroll-area";
 import { useMemo, useState } from "react";
 
-interface IData {
+type IData = {
   id: string;
   name: string;
   availability: "online" | "away" | "busy" | "offline";
@@ -31,7 +31,7 @@ interface IData {
   joined: string;
   location: string;
   balance: number;
-}
+};
 
 const demoData: IData[] = [
   {

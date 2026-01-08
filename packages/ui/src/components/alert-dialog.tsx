@@ -1,21 +1,31 @@
 "use client";
 
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { buttonVariants } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/utils/cn";
-import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import type * as React from "react";
 
 function AlertDialog({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
-  return <AlertDialogPrimitive.Root data-component="alert-dialog" data-slot="alert-dialog" {...props} />;
+  return (
+    <AlertDialogPrimitive.Root
+      data-component="alert-dialog"
+      data-slot="alert-dialog"
+      {...props}
+    />
+  );
 }
 
 function AlertDialogTrigger({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Trigger>) {
   return (
-    <AlertDialogPrimitive.Trigger data-component="alert-dialog-trigger" data-slot="alert-dialog-trigger" {...props} />
+    <AlertDialogPrimitive.Trigger
+      data-component="alert-dialog-trigger"
+      data-slot="alert-dialog-trigger"
+      {...props}
+    />
   );
 }
 
@@ -23,7 +33,11 @@ function AlertDialogPortal({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Portal>) {
   return (
-    <AlertDialogPrimitive.Portal data-component="alert-dialog-portal" data-slot="alert-dialog-portal" {...props} />
+    <AlertDialogPrimitive.Portal
+      data-component="alert-dialog-portal"
+      data-slot="alert-dialog-portal"
+      {...props}
+    />
   );
 }
 

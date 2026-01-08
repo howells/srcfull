@@ -54,9 +54,9 @@ export function Sidebar({
       <Sheet onOpenChange={setOpenMobile} open={openMobile}>
         <SheetContent
           className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+          data-component="sidebar"
           data-mobile="true"
           data-sidebar="sidebar"
-          data-component="sidebar"
           data-slot="sidebar"
           side={side}
           style={
@@ -79,8 +79,8 @@ export function Sidebar({
     <div
       className="group peer hidden text-sidebar-foreground md:block"
       data-collapsible={state === "collapsed" ? collapsible : ""}
-      data-side={side}
       data-component="sidebar"
+      data-side={side}
       data-slot="sidebar"
       data-state={state}
       data-variant={variant}
@@ -130,8 +130,8 @@ export function Sidebar({
       >
         <div
           className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm"
-          data-sidebar="sidebar"
           data-component="sidebar-inner"
+          data-sidebar="sidebar"
           data-slot="sidebar-inner"
         >
           {children}

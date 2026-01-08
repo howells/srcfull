@@ -12,7 +12,8 @@ export const badgeVariants = cva(
         info: "bg-blue-600 text-white",
         purple: "bg-purple-600 text-white",
         rose: "bg-rose-600 text-white",
-        outline: "border border-border bg-transparent text-secondary-foreground",
+        outline:
+          "border border-border bg-transparent text-secondary-foreground",
         destructive: "bg-destructive text-destructive-foreground",
       },
       appearance: {
@@ -31,7 +32,8 @@ export const badgeVariants = cva(
         base: "h-6 min-w-6 gap-1.5 rounded-md px-1.5 text-xs [&_svg]:size-3.5",
         sm: "h-5 min-w-5 gap-1 rounded-sm px-1.5 text-[0.6875rem] leading-[0.75rem] [&_svg]:size-3",
         xs: "h-4 min-w-4 gap-1 rounded-sm px-1 text-[0.625rem] leading-[0.5rem] [&_svg]:size-3",
-        "2xs": "h-3 min-w-3 gap-0.5 rounded-sm px-[0.1875rem] text-[0.5rem] leading-[0.5rem] [&_svg]:size-2.5",
+        "2xs":
+          "h-3 min-w-3 gap-0.5 rounded-sm px-[0.1875rem] text-[0.5rem] leading-[0.5rem] [&_svg]:size-2.5",
       },
       shape: {
         default: "",
@@ -43,37 +45,44 @@ export const badgeVariants = cva(
       {
         variant: "primary",
         appearance: "light",
-        className: "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
+        className:
+          "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
       },
       {
         variant: "secondary",
         appearance: "light",
-        className: "bg-secondary text-secondary-foreground dark:bg-secondary/50",
+        className:
+          "bg-secondary text-secondary-foreground dark:bg-secondary/50",
       },
       {
         variant: "success",
         appearance: "light",
-        className: "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300",
+        className:
+          "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300",
       },
       {
         variant: "warning",
         appearance: "light",
-        className: "bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+        className:
+          "bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
       },
       {
         variant: "info",
         appearance: "light",
-        className: "bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
+        className:
+          "bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
       },
       {
         variant: "purple",
         appearance: "light",
-        className: "bg-purple-50 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
+        className:
+          "bg-purple-50 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
       },
       {
         variant: "rose",
         appearance: "light",
-        className: "bg-rose-50 text-rose-800 dark:bg-rose-950 dark:text-rose-300",
+        className:
+          "bg-rose-50 text-rose-800 dark:bg-rose-950 dark:text-rose-300",
       },
       {
         variant: "destructive",
@@ -84,37 +93,44 @@ export const badgeVariants = cva(
       {
         variant: "primary",
         appearance: "outline",
-        className: "border-neutral-200 bg-neutral-50 text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
+        className:
+          "border-neutral-200 bg-neutral-50 text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
       },
       {
         variant: "success",
         appearance: "outline",
-        className: "border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-300",
+        className:
+          "border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-300",
       },
       {
         variant: "warning",
         appearance: "outline",
-        className: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300",
+        className:
+          "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300",
       },
       {
         variant: "info",
         appearance: "outline",
-        className: "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300",
+        className:
+          "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300",
       },
       {
         variant: "purple",
         appearance: "outline",
-        className: "border-purple-200 bg-purple-50 text-purple-800 dark:border-purple-900 dark:bg-purple-950 dark:text-purple-300",
+        className:
+          "border-purple-200 bg-purple-50 text-purple-800 dark:border-purple-900 dark:bg-purple-950 dark:text-purple-300",
       },
       {
         variant: "rose",
         appearance: "outline",
-        className: "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-300",
+        className:
+          "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-300",
       },
       {
         variant: "destructive",
         appearance: "outline",
-        className: "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-400",
+        className:
+          "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-400",
       },
       /* Ghost */
       {

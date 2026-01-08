@@ -1,9 +1,8 @@
 import { cn } from "@repo/ui/utils/cn";
 import type * as React from "react";
-import { forwardRef } from "react";
 
 type Breakpoint = "sm" | "md" | "lg" | "xl";
-type Responsive<T> = T | Partial<Record<Breakpoint, T>> & { base?: T };
+type Responsive<T> = T | (Partial<Record<Breakpoint, T>> & { base?: T });
 
 type Direction = "row" | "column" | "row-reverse" | "column-reverse";
 type Justify =
@@ -77,39 +76,54 @@ const GAP_TOKEN_TO_NUM: Record<SpacingToken, string> = {
 };
 
 function isResponsive<T>(v: Responsive<T> | undefined): v is Responsive<T> {
-  return !!v && (typeof v === "object");
+  return !!v && typeof v === "object";
 }
 
 function pushResponsiveClass<T>(
   classes: string[],
   value: Responsive<T> | undefined,
-  mapper: (v: T) => string | null,
+  mapper: (v: T) => string | null
 ) {
-  if (!value) return;
+  if (!value) {
+    return;
+  }
   if (!isResponsive<T>(value)) {
     const cls = mapper(value as T);
-    if (cls) classes.push(cls);
+    if (cls) {
+      classes.push(cls);
+    }
     return;
   }
   const base = (value as { base?: T }).base;
   if (base !== undefined) {
     const cls = mapper(base);
-    if (cls) classes.push(cls);
+    if (cls) {
+      classes.push(cls);
+    }
   }
   (["sm", "md", "lg", "xl"] as Breakpoint[]).forEach((bp) => {
     const typed = value as Partial<Record<Breakpoint, T>>;
     if (typed[bp] !== undefined) {
       const cls = mapper(typed[bp] as T);
-      if (cls) classes.push(`${PREFIX_BY_BREAKPOINT[bp]}${cls}`);
+      if (cls) {
+        classes.push(`${PREFIX_BY_BREAKPOINT[bp]}${cls}`);
+      }
     }
   });
 }
 
-function spacingToClass(prefix: "gap" | "gap-x" | "gap-y", v: Spacing): string | null {
-  if (typeof v === "number") return ""; // handled via inline style
+function spacingToClass(
+  prefix: "gap" | "gap-x" | "gap-y",
+  v: Spacing
+): string | null {
+  if (typeof v === "number") {
+    return ""; // handled via inline style
+  }
   if (typeof v === "string") {
     const token = GAP_TOKEN_TO_NUM[v as SpacingToken];
-    if (token) return `${prefix}-${token}`;
+    if (token) {
+      return `${prefix}-${token}`;
+    }
     // If user passed a raw tailwind token like "1.5" they can also pass classname via className
     return ""; // fall back to inline style
   }
@@ -119,9 +133,11 @@ function spacingToClass(prefix: "gap" | "gap-x" | "gap-y", v: Spacing): string |
 function mergeSpacingStyle(
   style: React.CSSProperties | undefined,
   key: "gap" | "rowGap" | "columnGap",
-  value: Responsive<Spacing> | undefined,
+  value: Responsive<Spacing> | undefined
 ): React.CSSProperties | undefined {
-  if (!value) return style;
+  if (!value) {
+    return style;
+  }
   // Only apply inline style for non-token numbers/strings on base (no responsive inline here)
   if (typeof value === "number" || typeof value === "string") {
     const next: React.CSSProperties = { ...(style ?? {}) };
@@ -137,22 +153,20 @@ function mergeSpacingStyle(
   return style;
 }
 
-export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(
-  {
-    className,
-    direction = "row",
-    justify = "flex-start",
-    align = "stretch",
-    wrap = "nowrap",
-    gap,
-    rowGap,
-    columnGap,
-    inline = false,
-    style,
-    ...props
-  },
+export const Flex = function Flex({
+  className,
+  direction = "row",
+  justify = "flex-start",
+  align = "stretch",
+  wrap = "nowrap",
+  gap,
+  rowGap,
+  columnGap,
+  inline = false,
+  style,
   ref,
-) {
+  ...props
+}: FlexProps & { ref?: React.RefObject<HTMLDivElement | null> }) {
   const classes: string[] = [inline ? "inline-flex" : "flex"];
 
   pushResponsiveClass(classes, direction, (v) => DIRECTION_CLASS[v]);
@@ -166,17 +180,17 @@ export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(
   const mergedStyle = mergeSpacingStyle(
     mergeSpacingStyle(mergeSpacingStyle(style, "gap", gap), "rowGap", rowGap),
     "columnGap",
-    columnGap,
+    columnGap
   );
 
   return (
     <div
-      ref={ref}
       className={cn(classes.join(" "), className)}
       data-component="flex"
       data-slot="flex"
+      ref={ref}
       style={mergedStyle}
       {...props}
     />
   );
-});
+};

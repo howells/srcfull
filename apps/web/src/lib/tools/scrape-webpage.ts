@@ -1,17 +1,18 @@
-import { ScrapingBeeClient } from 'scrapingbee';
+import { ScrapingBeeClient } from "scrapingbee";
+import { requireEnv } from "../env";
 
-interface ToolResult<T> {
+type ToolResult<T> = {
   success: boolean;
   data?: T;
   error?: string;
-}
+};
 
-const client = new ScrapingBeeClient(
-  process.env.SCRAPINGBEE_API_KEY!
-);
+const client = new ScrapingBeeClient(requireEnv("SCRAPINGBEE_API_KEY"));
 
 // Internal function for testing
-export async function executeScrapeWebpage(url: string): Promise<ToolResult<string>> {
+export async function executeScrapeWebpage(
+  url: string
+): Promise<ToolResult<string>> {
   try {
     const response = await client.get({
       url,
@@ -27,7 +28,7 @@ export async function executeScrapeWebpage(url: string): Promise<ToolResult<stri
     if (!html || html.length === 0) {
       return {
         success: false,
-        error: 'Received empty response from ScrapingBee',
+        error: "Received empty response from ScrapingBee",
       };
     }
 
@@ -36,7 +37,7 @@ export async function executeScrapeWebpage(url: string): Promise<ToolResult<stri
       data: html,
     };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : "Unknown error";
     return {
       success: false,
       error: `Failed to scrape webpage: ${message}`,

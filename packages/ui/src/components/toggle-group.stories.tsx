@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { Bold, Italic, Layers, LayoutGrid, LayoutList, Monitor, Smartphone, Tablet, Underline } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  Layers,
+  LayoutGrid,
+  LayoutList,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Underline,
+} from "lucide-react";
 import { sizeArgType, variantArgType } from "../lib/storybook";
 import { Icon } from "./icon";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
@@ -42,7 +52,12 @@ export const Base: Story = {
     spacing: 0,
   },
   render: (args) => (
-    <ToggleGroup type={args.type} variant={args.variant} size={args.size} spacing={args.spacing}>
+    <ToggleGroup
+      size={args.size}
+      spacing={args.spacing}
+      type={args.type}
+      variant={args.variant}
+    >
       <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
       <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
       <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
@@ -56,26 +71,43 @@ export const Types: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "ToggleGroup supports single-select (radio-like) and multi-select (checkbox-like) modes.",
+        story:
+          "ToggleGroup supports single-select (radio-like) and multi-select (checkbox-like) modes.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Single (one selection at a time)</div>
+        <div className="mb-2 text-muted-foreground text-xs">
+          Single (one selection at a time)
+        </div>
         <ToggleGroup type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Multiple (multiple selections allowed)</div>
+        <div className="mb-2 text-muted-foreground text-xs">
+          Multiple (multiple selections allowed)
+        </div>
         <ToggleGroup type="multiple">
           <ToggleGroupItem aria-label="Bold" icon={Bold} value="bold" />
           <ToggleGroupItem aria-label="Italic" icon={Italic} value="italic" />
-          <ToggleGroupItem aria-label="Underline" icon={Underline} value="underline" />
+          <ToggleGroupItem
+            aria-label="Underline"
+            icon={Underline}
+            value="underline"
+          />
         </ToggleGroup>
       </div>
     </div>
@@ -95,19 +127,37 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Default</div>
+        <div className="mb-2 text-muted-foreground text-xs">Default</div>
         <ToggleGroup type="single" variant="default">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Outline (default)</div>
+        <div className="mb-2 text-muted-foreground text-xs">
+          Outline (default)
+        </div>
         <ToggleGroup type="single" variant="outline">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
     </div>
@@ -120,66 +170,123 @@ export const Sizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "ToggleGroup supports all design system sizes: 2xs, xs, sm (default), base, lg, xl, 2xl. Icons automatically scale to match the size.",
+        story:
+          "ToggleGroup supports all design system sizes: 2xs, xs, sm (default), base, lg, xl, 2xl. Icons automatically scale to match the size.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">2xs</div>
+        <div className="mb-2 text-muted-foreground text-xs">2xs</div>
         <ToggleGroup size="2xs" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">xs</div>
+        <div className="mb-2 text-muted-foreground text-xs">xs</div>
         <ToggleGroup size="xs" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">sm (default)</div>
+        <div className="mb-2 text-muted-foreground text-xs">sm (default)</div>
         <ToggleGroup size="sm" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">base</div>
+        <div className="mb-2 text-muted-foreground text-xs">base</div>
         <ToggleGroup size="base" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">lg</div>
+        <div className="mb-2 text-muted-foreground text-xs">lg</div>
         <ToggleGroup size="lg" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">xl</div>
+        <div className="mb-2 text-muted-foreground text-xs">xl</div>
         <ToggleGroup size="xl" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">2xl</div>
+        <div className="mb-2 text-muted-foreground text-xs">2xl</div>
         <ToggleGroup size="2xl" type="single">
-          <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <ToggleGroupItem
+            aria-label="Desktop"
+            icon={Monitor}
+            value="desktop"
+          />
           <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-          <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+          <ToggleGroupItem
+            aria-label="Mobile"
+            icon={Smartphone}
+            value="mobile"
+          />
         </ToggleGroup>
       </div>
     </div>
@@ -192,7 +299,8 @@ export const Spacing: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Control the gap between toggle items with the spacing prop (0-4). When spacing is 0 with outline variant, borders collapse properly to avoid doubling.",
+        story:
+          "Control the gap between toggle items with the spacing prop (0-4). When spacing is 0 with outline variant, borders collapse properly to avoid doubling.",
       },
     },
   },
@@ -200,11 +308,21 @@ export const Spacing: Story = {
     <div className="flex flex-col gap-4">
       {[0, 1, 2, 3, 4].map((spacingValue) => (
         <div key={spacingValue}>
-          <div className="mb-2 text-xs text-muted-foreground">Spacing: {spacingValue}</div>
-          <ToggleGroup type="single" spacing={spacingValue}>
-            <ToggleGroupItem aria-label="Desktop" icon={Monitor} value="desktop" />
+          <div className="mb-2 text-muted-foreground text-xs">
+            Spacing: {spacingValue}
+          </div>
+          <ToggleGroup spacing={spacingValue} type="single">
+            <ToggleGroupItem
+              aria-label="Desktop"
+              icon={Monitor}
+              value="desktop"
+            />
             <ToggleGroupItem aria-label="Tablet" icon={Tablet} value="tablet" />
-            <ToggleGroupItem aria-label="Mobile" icon={Smartphone} value="mobile" />
+            <ToggleGroupItem
+              aria-label="Mobile"
+              icon={Smartphone}
+              value="mobile"
+            />
           </ToggleGroup>
         </div>
       ))}
@@ -218,14 +336,15 @@ export const WithText: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "ToggleGroup items can contain text labels alongside or instead of icons. Use the icon prop for automatic icon sizing and placement.",
+        story:
+          "ToggleGroup items can contain text labels alongside or instead of icons. Use the icon prop for automatic icon sizing and placement.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Text only</div>
+        <div className="mb-2 text-muted-foreground text-xs">Text only</div>
         <ToggleGroup type="single">
           <ToggleGroupItem value="desktop">Desktop</ToggleGroupItem>
           <ToggleGroupItem value="tablet">Tablet</ToggleGroupItem>
@@ -233,8 +352,10 @@ export const WithText: Story = {
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Icon with text (using icon prop)</div>
-        <ToggleGroup type="single" size="base">
+        <div className="mb-2 text-muted-foreground text-xs">
+          Icon with text (using icon prop)
+        </div>
+        <ToggleGroup size="base" type="single">
           <ToggleGroupItem icon={Monitor} value="desktop">
             Desktop
           </ToggleGroupItem>
@@ -256,23 +377,38 @@ export const ViewModes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Common pattern for view mode toggles with List, Grid, and Stack options.",
+        story:
+          "Common pattern for view mode toggles with List, Grid, and Stack options.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Icons only</div>
-        <ToggleGroup type="single" defaultValue="list">
-          <ToggleGroupItem aria-label="List view" icon={LayoutList} value="list" />
-          <ToggleGroupItem aria-label="Grid view" icon={LayoutGrid} value="grid" />
-          <ToggleGroupItem aria-label="Stack view" icon={Layers} value="stack" />
+        <div className="mb-2 text-muted-foreground text-xs">Icons only</div>
+        <ToggleGroup defaultValue="list" type="single">
+          <ToggleGroupItem
+            aria-label="List view"
+            icon={LayoutList}
+            value="list"
+          />
+          <ToggleGroupItem
+            aria-label="Grid view"
+            icon={LayoutGrid}
+            value="grid"
+          />
+          <ToggleGroupItem
+            aria-label="Stack view"
+            icon={Layers}
+            value="stack"
+          />
         </ToggleGroup>
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Icons with labels</div>
-        <ToggleGroup type="single" size="base" defaultValue="list">
+        <div className="mb-2 text-muted-foreground text-xs">
+          Icons with labels
+        </div>
+        <ToggleGroup defaultValue="list" size="base" type="single">
           <ToggleGroupItem icon={LayoutList} value="list">
             List
           </ToggleGroupItem>

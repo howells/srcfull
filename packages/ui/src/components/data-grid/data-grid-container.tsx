@@ -1,11 +1,11 @@
 import { cn } from "@repo/ui/utils/cn";
 import type { ReactNode } from "react";
 
-export interface DataGridContainerProps {
+export type DataGridContainerProps = {
   children: ReactNode;
   className?: string;
   border?: boolean;
-}
+};
 
 /**
  * Container wrapper for DataGrid table.

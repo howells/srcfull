@@ -17,7 +17,9 @@ export type DocumentItem = {
 
 export function getFileExtension(filename: string): string {
   const parts = filename.toLowerCase().trim().split(".");
-  if (parts.length < 2) return "";
+  if (parts.length < 2) {
+    return "";
+  }
   return parts.pop() ?? "";
 }
 

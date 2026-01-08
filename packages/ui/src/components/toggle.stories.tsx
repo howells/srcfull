@@ -45,7 +45,7 @@ export const AllVariants: Story = {
   render: ({ children, size }) => (
     <div className="flex flex-wrap gap-2">
       {(["default", "outline"] as const).map((variant) => (
-        <Toggle key={variant} variant={variant} size={size}>
+        <Toggle key={variant} size={size} variant={variant}>
           {children}
         </Toggle>
       ))}
@@ -62,7 +62,7 @@ export const AllSizes: Story = {
   render: ({ children, variant }) => (
     <div className="flex flex-wrap items-center gap-2">
       {(["sm", "default", "lg"] as const).map((size) => (
-        <Toggle key={size} variant={variant} size={size}>
+        <Toggle key={size} size={size} variant={variant}>
           {children}
         </Toggle>
       ))}
@@ -102,7 +102,7 @@ export const States: Story = {
       <Toggle pressed={false}>Unpressed</Toggle>
       <Toggle pressed={true}>Pressed</Toggle>
       <Toggle disabled>Disabled</Toggle>
-      <Toggle pressed={true} disabled>
+      <Toggle disabled pressed={true}>
         Pressed + Disabled
       </Toggle>
     </div>

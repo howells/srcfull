@@ -1,10 +1,10 @@
+import { Slot } from "@radix-ui/react-slot";
 import {
   IconContainer,
   type IconContainerProps,
 } from "@repo/ui/components/icon-container";
 import { Separator } from "@repo/ui/components/separator";
 import { cn } from "@repo/ui/utils/cn";
-import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 

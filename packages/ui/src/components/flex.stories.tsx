@@ -74,14 +74,15 @@ export const Directions: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Flex supports all flexbox direction values including reverse variants.",
+        story:
+          "Flex supports all flexbox direction values including reverse variants.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Row</div>
+        <div className="mb-2 font-medium text-sm">Row</div>
         <Flex direction="row" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -89,7 +90,7 @@ export const Directions: Story = {
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Row Reverse</div>
+        <div className="mb-2 font-medium text-sm">Row Reverse</div>
         <Flex direction="row-reverse" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -97,7 +98,7 @@ export const Directions: Story = {
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Column</div>
+        <div className="mb-2 font-medium text-sm">Column</div>
         <Flex direction="column" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -113,30 +114,31 @@ export const Justification: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Control how items are distributed along the main axis with justify-content values.",
+        story:
+          "Control how items are distributed along the main axis with justify-content values.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Flex Start</div>
-        <Flex className="border" justify="flex-start" gap="sm">
+        <div className="mb-2 font-medium text-sm">Flex Start</div>
+        <Flex className="border" gap="sm" justify="flex-start">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
           ))}
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Center</div>
-        <Flex className="border" justify="center" gap="sm">
+        <div className="mb-2 font-medium text-sm">Center</div>
+        <Flex className="border" gap="sm" justify="center">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
           ))}
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Space Between</div>
+        <div className="mb-2 font-medium text-sm">Space Between</div>
         <Flex className="border" justify="space-between">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -152,31 +154,32 @@ export const Alignment: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Control how items are aligned along the cross axis with align-items values.",
+        story:
+          "Control how items are aligned along the cross axis with align-items values.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">Flex Start</div>
-        <Flex className="min-h-[120px] border" align="flex-start" gap="sm">
+        <div className="mb-2 font-medium text-sm">Flex Start</div>
+        <Flex align="flex-start" className="min-h-[120px] border" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
           ))}
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Center</div>
-        <Flex className="min-h-[120px] border" align="center" gap="sm">
+        <div className="mb-2 font-medium text-sm">Center</div>
+        <Flex align="center" className="min-h-[120px] border" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
           ))}
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Stretch</div>
-        <Flex className="min-h-[120px] border" align="stretch" gap="sm">
+        <div className="mb-2 font-medium text-sm">Stretch</div>
+        <Flex align="stretch" className="min-h-[120px] border" gap="sm">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
           ))}
@@ -191,14 +194,15 @@ export const GapSizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Flex supports the full component size scale for gap spacing, plus numeric values.",
+        story:
+          "Flex supports the full component size scale for gap spacing, plus numeric values.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <div className="mb-2 text-sm font-medium">2xs Gap</div>
+        <div className="mb-2 font-medium text-sm">2xs Gap</div>
         <Flex gap="2xs">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -206,7 +210,7 @@ export const GapSizes: Story = {
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Base Gap</div>
+        <div className="mb-2 font-medium text-sm">Base Gap</div>
         <Flex gap="base">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>
@@ -214,7 +218,7 @@ export const GapSizes: Story = {
         </Flex>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">2xl Gap</div>
+        <div className="mb-2 font-medium text-sm">2xl Gap</div>
         <Flex gap="2xl">
           {[1, 2, 3].map((i) => (
             <Box key={i}>{i}</Box>

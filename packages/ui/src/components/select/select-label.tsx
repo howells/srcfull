@@ -1,8 +1,8 @@
 "use client";
 
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { cn } from "@repo/ui/utils/cn";
 import type { WithTestId } from "@repo/ui/utils/test-id";
-import * as SelectPrimitive from "@radix-ui/react-select";
 import type * as React from "react";
 
 function SelectLabel({

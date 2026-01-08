@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@repo/ui/utils/cn";
 import {
   Close as SheetClosePrimitive,
   Content as SheetContentPrimitive,
@@ -11,6 +10,7 @@ import {
   Title as SheetTitlePrimitive,
   Trigger as SheetTriggerPrimitive,
 } from "@radix-ui/react-dialog";
+import { cn } from "@repo/ui/utils/cn";
 import { XIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 
@@ -21,17 +21,35 @@ function Sheet({ ...props }: ComponentProps<typeof SheetRoot>) {
 function SheetTrigger({
   ...props
 }: ComponentProps<typeof SheetTriggerPrimitive>) {
-  return <SheetTriggerPrimitive data-component="sheet-trigger" data-slot="sheet-trigger" {...props} />;
+  return (
+    <SheetTriggerPrimitive
+      data-component="sheet-trigger"
+      data-slot="sheet-trigger"
+      {...props}
+    />
+  );
 }
 
 function SheetClose({ ...props }: ComponentProps<typeof SheetClosePrimitive>) {
-  return <SheetClosePrimitive data-component="sheet-close" data-slot="sheet-close" {...props} />;
+  return (
+    <SheetClosePrimitive
+      data-component="sheet-close"
+      data-slot="sheet-close"
+      {...props}
+    />
+  );
 }
 
 function SheetPortal({
   ...props
 }: ComponentProps<typeof SheetPortalPrimitive>) {
-  return <SheetPortalPrimitive data-component="sheet-portal" data-slot="sheet-portal" {...props} />;
+  return (
+    <SheetPortalPrimitive
+      data-component="sheet-portal"
+      data-slot="sheet-portal"
+      {...props}
+    />
+  );
 }
 
 function SheetOverlay({

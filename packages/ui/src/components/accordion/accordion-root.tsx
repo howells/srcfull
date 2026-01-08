@@ -48,14 +48,19 @@ function AccordionRoot(
 
   return (
     <AccordionContext.Provider
-      value={{ variant: variant || "default", indicator, value: currentValue, type }}
+      value={{
+        variant: variant || "default",
+        indicator,
+        value: currentValue,
+        type,
+      }}
     >
       <AccordionPrimitive.Root
         className={cn(accordionRootVariants({ variant }), className)}
         data-slot="accordion"
         {...rest}
-        value={currentValue as never}
         onValueChange={handleValueChange}
+        value={currentValue as never}
       >
         {children}
       </AccordionPrimitive.Root>

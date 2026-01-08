@@ -36,7 +36,7 @@ export const Base: Story = {
     size: "base",
   },
   render: (args) => (
-    <Status status={args.status} size={args.size}>
+    <Status size={args.size} status={args.status}>
       <StatusIndicator size={args.size} />
       <StatusLabel />
     </Status>
@@ -51,7 +51,7 @@ export const AllStatuses: Story = {
   render: ({ size }) => (
     <div className="flex flex-col gap-2">
       {(["online", "offline", "maintenance", "degraded"] as const).map((s) => (
-        <Status key={s} status={s} size={size}>
+        <Status key={s} size={size} status={s}>
           <StatusIndicator size={size} />
           <StatusLabel />
         </Status>
@@ -67,12 +67,14 @@ export const AllSizes: Story = {
   },
   render: ({ status }) => (
     <div className="flex flex-col gap-3">
-      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map((sizeValue) => (
-        <Status key={sizeValue} status={status} size={sizeValue}>
-          <StatusIndicator size={sizeValue} />
-          <StatusLabel />
-        </Status>
-      ))}
+      {(["2xs", "xs", "sm", "base", "lg", "xl", "2xl"] as const).map(
+        (sizeValue) => (
+          <Status key={sizeValue} size={sizeValue} status={status}>
+            <StatusIndicator size={sizeValue} />
+            <StatusLabel />
+          </Status>
+        )
+      )}
     </div>
   ),
 };
@@ -90,7 +92,7 @@ export const IndicatorOnly: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
       {(["online", "offline", "maintenance", "degraded"] as const).map((s) => (
-        <Status key={s} status={s} size="base">
+        <Status key={s} size="base" status={s}>
           <StatusIndicator size="base" />
         </Status>
       ))}
@@ -104,7 +106,8 @@ export const InContext: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Example of status indicators used in a service status dashboard.",
+        story:
+          "Example of status indicators used in a service status dashboard.",
       },
     },
   },
@@ -112,30 +115,30 @@ export const InContext: Story = {
     <div className="flex flex-col gap-3 rounded-lg border p-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-medium">API Service</div>
-          <div className="text-xs text-muted-foreground">api.example.com</div>
+          <div className="font-medium text-sm">API Service</div>
+          <div className="text-muted-foreground text-xs">api.example.com</div>
         </div>
-        <Status status="online" size="sm">
+        <Status size="sm" status="online">
           <StatusIndicator size="sm" />
           <StatusLabel />
         </Status>
       </div>
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-medium">Database</div>
-          <div className="text-xs text-muted-foreground">db.example.com</div>
+          <div className="font-medium text-sm">Database</div>
+          <div className="text-muted-foreground text-xs">db.example.com</div>
         </div>
-        <Status status="degraded" size="sm">
+        <Status size="sm" status="degraded">
           <StatusIndicator size="sm" />
           <StatusLabel />
         </Status>
       </div>
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-medium">Cache Server</div>
-          <div className="text-xs text-muted-foreground">cache.example.com</div>
+          <div className="font-medium text-sm">Cache Server</div>
+          <div className="text-muted-foreground text-xs">cache.example.com</div>
         </div>
-        <Status status="maintenance" size="sm">
+        <Status size="sm" status="maintenance">
           <StatusIndicator size="sm" />
           <StatusLabel />
         </Status>

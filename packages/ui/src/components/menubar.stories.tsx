@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import { ClipboardPaste, Copy, Scissors, Settings } from "lucide-react";
 import { Icon } from "./icon";
-import { Menubar } from "./menubar/menubar-root";
 import { MenubarContent } from "./menubar/menubar-content";
 import { MenubarItem } from "./menubar/menubar-item";
 import { MenubarMenu } from "./menubar/menubar-menu";
+import { Menubar } from "./menubar/menubar-root";
 import { MenubarSeparator } from "./menubar/menubar-separator";
 import {
   MenubarSub,
@@ -102,7 +102,8 @@ export const WithSubmenus: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Menubar supports nested submenus for organizing related commands.",
+        story:
+          "Menubar supports nested submenus for organizing related commands.",
       },
     },
   },

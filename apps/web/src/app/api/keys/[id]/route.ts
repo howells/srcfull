@@ -1,8 +1,8 @@
-import { and, eq } from 'drizzle-orm';
-import { NextResponse } from 'next/server';
-import { db } from '@/db/client';
-import { apiKeys } from '@/db/schema';
-import { requireSession } from '@/lib/session';
+import { and, eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { db } from "@/db/client";
+import { apiKeys } from "@/db/schema";
+import { requireSession } from "@/lib/session";
 
 export async function DELETE(
   _request: Request,
@@ -10,6 +10,12 @@ export async function DELETE(
 ) {
   try {
     const user = await requireSession();
+    if (user.plan !== "pro") {
+      return NextResponse.json(
+        { error: "Subscription required", code: "PAYMENT_REQUIRED" },
+        { status: 402 }
+      );
+    }
     const { id } = await params;
 
     const result = await db
@@ -19,7 +25,7 @@ export async function DELETE(
 
     if (result.length === 0) {
       return NextResponse.json(
-        { error: 'Key not found', code: 'NOT_FOUND' },
+        { error: "Key not found", code: "NOT_FOUND" },
         { status: 404 }
       );
     }
@@ -27,7 +33,7 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json(
-      { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+      { error: "Unauthorized", code: "UNAUTHORIZED" },
       { status: 401 }
     );
   }

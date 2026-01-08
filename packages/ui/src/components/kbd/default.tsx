@@ -1,4 +1,4 @@
-import { Kbd, KbdGroup } from 'packages/ui/src/components/kbd';
+import { Kbd, KbdGroup } from "packages/ui/src/components/kbd";
 
 export default function KbdDemo() {
   return (

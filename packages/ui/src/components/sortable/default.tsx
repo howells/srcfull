@@ -16,13 +16,13 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface SortableItem {
+type SortableItem = {
   id: string;
   title: string;
   description: string;
   type: "image" | "document" | "audio" | "video";
   size: string;
-}
+};
 
 const defaultItems: SortableItem[] = [
   {
@@ -72,6 +72,8 @@ const getTypeIcon = (type: SortableItem["type"]) => {
       return <MusicIcon className="h-4 w-4" />;
     case "video":
       return <VideoIcon className="h-4 w-4" />;
+    default:
+      return null;
   }
 };
 
@@ -85,6 +87,8 @@ const getTypeColor = (type: SortableItem["type"]) => {
       return "destructive";
     case "video":
       return "info";
+    default:
+      return "primary";
   }
 };
 

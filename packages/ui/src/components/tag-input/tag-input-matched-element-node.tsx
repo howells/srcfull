@@ -1,6 +1,5 @@
 import {
   $applyNodeReplacement,
-  $isElementNode,
   type DOMConversionMap,
   type DOMConversionOutput,
   type EditorConfig,
@@ -35,9 +34,10 @@ export class MatchedElementNode extends ElementNode {
     this.__tagData = tagData;
   }
 
-  createDOM(config: EditorConfig): HTMLElement {
+  createDOM(_config: EditorConfig): HTMLElement {
     const element = document.createElement("span");
-    element.className = "inline-block cursor-pointer bg-info-soft rounded px-1 py-0.5 hover:bg-info-accent";
+    element.className =
+      "inline-block cursor-pointer bg-info-soft rounded px-1 py-0.5 hover:bg-info-accent";
     // Store tag data for click handling
     element.dataset.tagId = this.__tagData.id;
     element.dataset.tagType = this.__tagData.type;
@@ -51,14 +51,16 @@ export class MatchedElementNode extends ElementNode {
 
   static importDOM(): DOMConversionMap | null {
     return {
-      span: (node: Node) => ({
+      span: (_node: Node) => ({
         conversion: convertMatchedElement,
         priority: 1,
       }),
     };
   }
 
-  static importJSON(serializedNode: SerializedMatchedElementNode): MatchedElementNode {
+  static importJSON(
+    serializedNode: SerializedMatchedElementNode
+  ): MatchedElementNode {
     return $createMatchedElementNode(serializedNode.tagData);
   }
 
@@ -100,7 +102,7 @@ function convertMatchedElement(domNode: Node): DOMConversionOutput | null {
   const tagType = domNode.dataset.tagType;
   const label = domNode.textContent || "";
 
-  if (!tagId || !tagType) {
+  if (!(tagId && tagType)) {
     return null;
   }
 
@@ -113,7 +115,9 @@ function convertMatchedElement(domNode: Node): DOMConversionOutput | null {
   return { node };
 }
 
-export function $createMatchedElementNode(tagData: TagData): MatchedElementNode {
+export function $createMatchedElementNode(
+  tagData: TagData
+): MatchedElementNode {
   return $applyNodeReplacement(new MatchedElementNode(tagData));
 }
 

@@ -43,28 +43,36 @@ export const Images: Story = {
         <img
           alt=""
           className="h-full w-full object-cover"
+          height={80}
           src="https://picsum.photos/seed/one/80/80"
+          width={80}
         />
       </Swatch>
       <Swatch aria-label="Variant two" value="i2">
         <img
           alt=""
           className="h-full w-full object-cover"
+          height={80}
           src="https://picsum.photos/seed/two/80/80"
+          width={80}
         />
       </Swatch>
       <Swatch aria-label="Variant three" value="i3">
         <img
           alt=""
           className="h-full w-full object-cover"
+          height={80}
           src="https://picsum.photos/seed/three/80/80"
+          width={80}
         />
       </Swatch>
       <Swatch aria-label="Variant four" value="i4">
         <img
           alt=""
           className="h-full w-full object-cover"
+          height={80}
           src="https://picsum.photos/seed/four/80/80"
+          width={80}
         />
       </Swatch>
     </SwatchGroup>

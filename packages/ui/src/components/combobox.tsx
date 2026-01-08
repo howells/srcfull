@@ -17,11 +17,11 @@ import {
 } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/utils/cn";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type ComboboxItem = { value: string; label: string };
 
-export interface ComboboxProps {
+export type ComboboxProps = {
   items: ComboboxItem[];
   value?: string;
   onValueChange?: (value: string) => void;
@@ -30,7 +30,7 @@ export interface ComboboxProps {
   contentClassName?: string;
   disabled?: boolean;
   buttonWidth?: number | string; // e.g. 200 | "200px" | "100%"
-}
+};
 
 export function Combobox({
   items,
@@ -47,7 +47,9 @@ export function Combobox({
 
   // keep controlled in sync
   useEffect(() => {
-    if (value !== undefined) setInternalValue(value);
+    if (value !== undefined) {
+      setInternalValue(value);
+    }
   }, [value]);
 
   const selected = items.find((i) => i.value === internalValue);
@@ -88,7 +90,9 @@ export function Combobox({
                   onSelect={(currentValue) => {
                     const next =
                       currentValue === internalValue ? "" : currentValue;
-                    if (onValueChange) onValueChange(next);
+                    if (onValueChange) {
+                      onValueChange(next);
+                    }
                     setInternalValue(next);
                     setOpen(false);
                   }}

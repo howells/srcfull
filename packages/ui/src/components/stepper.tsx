@@ -1,7 +1,15 @@
 "use client";
 
 import { cn } from "@repo/ui/utils/cn";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 // Types
 type StepperOrientation = "horizontal" | "vertical";
@@ -13,7 +21,7 @@ type StepIndicators = {
   loading?: React.ReactNode;
 };
 
-interface StepperContextValue {
+type StepperContextValue = {
   activeStep: number;
   setActiveStep: (step: number) => void;
   stepsCount: number;
@@ -25,14 +33,14 @@ interface StepperContextValue {
   focusFirst: () => void;
   focusLast: () => void;
   indicators: StepIndicators;
-}
+};
 
-interface StepItemContextValue {
+type StepItemContextValue = {
   step: number;
   state: StepState;
   isDisabled: boolean;
   isLoading: boolean;
-}
+};
 
 const StepperContext = createContext<StepperContextValue | undefined>(
   undefined
@@ -43,13 +51,17 @@ const StepItemContext = createContext<StepItemContextValue | undefined>(
 
 function useStepper() {
   const ctx = useContext(StepperContext);
-  if (!ctx) throw new Error("useStepper must be used within a Stepper");
+  if (!ctx) {
+    throw new Error("useStepper must be used within a Stepper");
+  }
   return ctx;
 }
 
 function useStepItem() {
   const ctx = useContext(StepItemContext);
-  if (!ctx) throw new Error("useStepItem must be used within a StepperItem");
+  if (!ctx) {
+    throw new Error("useStepItem must be used within a StepperItem");
+  }
   return ctx;
 }
 
@@ -72,25 +84,20 @@ function Stepper({
   ...props
 }: StepperProps) {
   const [activeStep, setActiveStep] = useState(defaultValue);
-  const [triggerNodes, setTriggerNodes] = useState<HTMLButtonElement[]>(
-    []
-  );
+  const [triggerNodes, setTriggerNodes] = useState<HTMLButtonElement[]>([]);
 
   // Register/unregister triggers
-  const registerTrigger = useCallback(
-    (node: HTMLButtonElement | null) => {
-      setTriggerNodes((prev) => {
-        if (node && !prev.includes(node)) {
-          return [...prev, node];
-        }
-        if (!node && prev.includes(node!)) {
-          return prev.filter((n) => n !== node);
-        }
-        return prev;
-      });
-    },
-    []
-  );
+  const registerTrigger = useCallback((node: HTMLButtonElement | null) => {
+    setTriggerNodes((prev) => {
+      if (node && !prev.includes(node)) {
+        return [...prev, node];
+      }
+      if (!node && prev.includes(node!)) {
+        return prev.filter((n) => n !== node);
+      }
+      return prev;
+    });
+  }, []);
 
   const handleSetActiveStep = useCallback(
     (step: number) => {
@@ -105,15 +112,45 @@ function Stepper({
   const currentStep = value ?? activeStep;
 
   // Keyboard navigation logic
-  const focusTrigger = (idx: number) => {
-    if (triggerNodes[idx]) triggerNodes[idx].focus();
-  };
-  const focusNext = (currentIdx: number) =>
-    focusTrigger((currentIdx + 1) % triggerNodes.length);
-  const focusPrev = (currentIdx: number) =>
-    focusTrigger((currentIdx - 1 + triggerNodes.length) % triggerNodes.length);
-  const focusFirst = () => focusTrigger(0);
-  const focusLast = () => focusTrigger(triggerNodes.length - 1);
+  const focusTrigger = useCallback(
+    (idx: number) => {
+      const node = triggerNodes[idx];
+      if (node) {
+        node.focus();
+      }
+    },
+    [triggerNodes]
+  );
+
+  const focusNext = useCallback(
+    (currentIdx: number) => {
+      if (triggerNodes.length === 0) {
+        return;
+      }
+      focusTrigger((currentIdx + 1) % triggerNodes.length);
+    },
+    [focusTrigger, triggerNodes.length]
+  );
+
+  const focusPrev = useCallback(
+    (currentIdx: number) => {
+      if (triggerNodes.length === 0) {
+        return;
+      }
+      focusTrigger(
+        (currentIdx - 1 + triggerNodes.length) % triggerNodes.length
+      );
+    },
+    [focusTrigger, triggerNodes.length]
+  );
+
+  const focusFirst = useCallback(() => {
+    focusTrigger(0);
+  }, [focusTrigger]);
+
+  const focusLast = useCallback(() => {
+    focusTrigger(triggerNodes.length - 1);
+  }, [focusTrigger, triggerNodes.length]);
 
   // Context value
   const contextValue = useMemo<StepperContextValue>(
@@ -141,6 +178,11 @@ function Stepper({
       orientation,
       registerTrigger,
       triggerNodes,
+      focusFirst,
+      focusLast,
+      focusNext,
+      focusPrev,
+      indicators,
     ]
   );
 
@@ -149,8 +191,8 @@ function Stepper({
       <div
         aria-orientation={orientation}
         className={cn("w-full", className)}
-        data-orientation={orientation}
         data-component="stepper"
+        data-orientation={orientation}
         data-slot="stepper"
         role="tablist"
         {...props}
@@ -244,13 +286,13 @@ function StepperTrigger({
     if (btnRef.current) {
       registerTrigger(btnRef.current);
     }
-  }, [btnRef.current]);
+  }, [registerTrigger]);
 
   // Find our index among triggers for navigation
   const myIdx = useMemo(
     () =>
       triggerNodes.findIndex((n: HTMLButtonElement) => n === btnRef.current),
-    [triggerNodes, btnRef.current]
+    [triggerNodes]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -258,25 +300,35 @@ function StepperTrigger({
       case "ArrowRight":
       case "ArrowDown":
         e.preventDefault();
-        if (myIdx !== -1 && focusNext) focusNext(myIdx);
+        if (myIdx !== -1 && focusNext) {
+          focusNext(myIdx);
+        }
         break;
       case "ArrowLeft":
       case "ArrowUp":
         e.preventDefault();
-        if (myIdx !== -1 && focusPrev) focusPrev(myIdx);
+        if (myIdx !== -1 && focusPrev) {
+          focusPrev(myIdx);
+        }
         break;
       case "Home":
         e.preventDefault();
-        if (focusFirst) focusFirst();
+        if (focusFirst) {
+          focusFirst();
+        }
         break;
       case "End":
         e.preventDefault();
-        if (focusLast) focusLast();
+        if (focusLast) {
+          focusLast();
+        }
         break;
       case "Enter":
       case " ":
         e.preventDefault();
         setActiveStep(step);
+        break;
+      default:
         break;
     }
   };
@@ -302,8 +354,8 @@ function StepperTrigger({
         "inline-flex cursor-pointer items-center gap-3 rounded-full outline-none focus-visible:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-60",
         className
       )}
-      data-loading={isLoading}
       data-component="stepper-trigger"
+      data-loading={isLoading}
       data-slot="stepper-trigger"
       data-state={state}
       disabled={isDisabled}
@@ -411,8 +463,8 @@ function StepperNav({ children, className }: React.ComponentProps<"nav">) {
         "group/stepper-nav inline-flex data-[orientation=horizontal]:w-full data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col",
         className
       )}
-      data-orientation={orientation}
       data-component="stepper-nav"
+      data-orientation={orientation}
       data-slot="stepper-nav"
       data-state={activeStep}
     >

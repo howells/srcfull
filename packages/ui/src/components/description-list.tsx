@@ -15,8 +15,8 @@ function DescriptionList({
       className={cn(
         "grid gap-3 text-sm",
         showSeparators &&
-          "[&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-border [&>*:not(:last-child)]:pb-3",
-        className,
+          "[&>*:not(:last-child)]:border-border [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:pb-3",
+        className
       )}
       data-component="description-list"
       data-slot="description-list"

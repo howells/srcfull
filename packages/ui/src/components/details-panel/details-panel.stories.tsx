@@ -1,30 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
-import { AvatarRoot as Avatar } from "../avatar/avatar-root";
 import { AvatarFallback } from "../avatar/avatar-fallback";
+import { AvatarRoot as Avatar } from "../avatar/avatar-root";
 import { Badge } from "../badge";
 import { Button } from "../button";
-import { Collapsible } from "../collapsible/collapsible-root";
 import { CollapsibleContent } from "../collapsible/collapsible-content";
+import { Collapsible } from "../collapsible/collapsible-root";
 import { CollapsibleTrigger } from "../collapsible/collapsible-trigger";
-import {
-  DetailsPanel,
-  DetailsPanelProvider,
-  useDetailsPanel,
-} from "./details-panel-root";
+import { Separator } from "../separator";
+import { Switch } from "../switch";
 import {
   DetailsPanelContent,
   DetailsPanelFooter,
   DetailsPanelHeader,
 } from "./details-panel-layout";
 import {
+  DetailsPanel,
+  DetailsPanelProvider,
+  useDetailsPanel,
+} from "./details-panel-root";
+import {
   DetailsPanelSection,
   DetailsPanelSectionAction,
   DetailsPanelSectionContent,
   DetailsPanelSectionLabel,
 } from "./details-panel-section";
-import { Separator } from "../separator";
-import { Switch } from "../switch";
 
 const meta = {
   title: "Details Panel",
@@ -172,7 +172,8 @@ export const WithCollapsibleSections: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Panel sections can be collapsible to organize complex information hierarchies.",
+        story:
+          "Panel sections can be collapsible to organize complex information hierarchies.",
       },
     },
   },

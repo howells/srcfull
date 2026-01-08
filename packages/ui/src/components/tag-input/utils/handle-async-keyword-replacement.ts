@@ -40,7 +40,13 @@ export function handleAsyncKeywordReplacement(
     });
 
     // Validate that text hasn't changed since query
-    if (!validateTextStillMatches(freshTextContent, freshAnchorOffset, originalText)) {
+    if (
+      !validateTextStillMatches(
+        freshTextContent,
+        freshAnchorOffset,
+        originalText
+      )
+    ) {
       console.log("[KeywordPlugin] Text changed, aborting");
       return;
     }

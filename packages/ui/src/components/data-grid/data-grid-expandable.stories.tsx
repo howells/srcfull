@@ -1,19 +1,19 @@
+import { Badge } from "@repo/ui/components/badge";
+import {
+  createExpanderColumn,
+  DataGrid,
+  DataGridContainer,
+} from "@repo/ui/components/data-grid";
+import { DataGridPagination } from "@repo/ui/components/data-grid-pagination";
+import { DataGridTable } from "@repo/ui/components/data-grid-table";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
 import {
   type ColumnDef,
   getCoreRowModel,
   getExpandedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  DataGrid,
-  DataGridContainer,
-  createExpanderColumn,
-} from "@repo/ui/components/data-grid";
-import { DataGridTable } from "@repo/ui/components/data-grid-table";
-import { DataGridPagination } from "@repo/ui/components/data-grid-pagination";
-import { Badge } from "@repo/ui/components/badge";
+import { useState } from "react";
 
 type Order = {
   id: string;
@@ -63,7 +63,7 @@ const sampleData: Order[] = [
     status: "processing",
     total: 499.99,
     items: [
-      { name: "27\" Monitor", quantity: 1, price: 349.99 },
+      { name: '27" Monitor', quantity: 1, price: 349.99 },
       { name: "Monitor Arm", quantity: 1, price: 89.99 },
       { name: "HDMI Cable", quantity: 2, price: 12.99 },
     ],
@@ -150,7 +150,7 @@ function ExpandableTable() {
                   </thead>
                   <tbody className="text-sm">
                     {row.items.map((item, i) => (
-                      <tr key={i} className="border-b last:border-0">
+                      <tr className="border-b last:border-0" key={i}>
                         <td className="px-4 py-2">{item.name}</td>
                         <td className="px-4 py-2 text-right">
                           {item.quantity}
@@ -205,7 +205,7 @@ function ExpandableTable() {
   });
 
   return (
-    <DataGrid table={table} recordCount={data.length}>
+    <DataGrid recordCount={data.length} table={table}>
       <DataGridContainer>
         <DataGridTable />
         <DataGridPagination sizes={[5, 10, 20]} />
@@ -228,8 +228,3 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => <ExpandableTable />,
 };
-
-
-
-
-

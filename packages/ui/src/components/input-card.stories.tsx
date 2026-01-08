@@ -121,7 +121,8 @@ export const Disabled: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Disabled state with reduced opacity and no pointer interaction.",
+        story:
+          "Disabled state with reduced opacity and no pointer interaction.",
       },
     },
   },
@@ -164,8 +165,8 @@ export const InteractiveSelection: Story = {
       <div className="flex min-h-[300px] flex-col items-center justify-center gap-3">
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected === "option-1"}
           onClick={() => setSelected("option-1")}
+          selected={selected === "option-1"}
         >
           <div className="flex items-start gap-4 p-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -185,8 +186,8 @@ export const InteractiveSelection: Story = {
 
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected === "option-2"}
           onClick={() => setSelected("option-2")}
+          selected={selected === "option-2"}
         >
           <div className="flex items-start gap-4 p-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -206,8 +207,8 @@ export const InteractiveSelection: Story = {
 
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected === "option-3"}
           onClick={() => setSelected("option-3")}
+          selected={selected === "option-3"}
         >
           <div className="flex items-start gap-4 p-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -257,8 +258,8 @@ export const MultipleSelection: Story = {
         </p>
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected.includes("feature-1")}
           onClick={() => toggleSelection("feature-1")}
+          selected={selected.includes("feature-1")}
         >
           <div className="flex items-center justify-between p-6">
             <div>
@@ -275,8 +276,8 @@ export const MultipleSelection: Story = {
 
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected.includes("feature-2")}
           onClick={() => toggleSelection("feature-2")}
+          selected={selected.includes("feature-2")}
         >
           <div className="flex items-center justify-between p-6">
             <div>
@@ -293,8 +294,8 @@ export const MultipleSelection: Story = {
 
         <InputCard
           className="w-full max-w-md cursor-pointer"
-          selected={selected.includes("feature-3")}
           onClick={() => toggleSelection("feature-3")}
+          selected={selected.includes("feature-3")}
         >
           <div className="flex items-center justify-between p-6">
             <div>
@@ -330,8 +331,8 @@ export const GridLayout: Story = {
         <div className="grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
           <InputCard
             className="cursor-pointer"
-            selected={selected === "basic"}
             onClick={() => setSelected("basic")}
+            selected={selected === "basic"}
           >
             <div className="p-6 text-center">
               <h3 className="font-semibold text-lg">Basic</h3>
@@ -347,8 +348,8 @@ export const GridLayout: Story = {
 
           <InputCard
             className="cursor-pointer"
-            selected={selected === "pro"}
             onClick={() => setSelected("pro")}
+            selected={selected === "pro"}
           >
             <div className="p-6 text-center">
               <h3 className="font-semibold text-lg">Pro</h3>
@@ -364,8 +365,8 @@ export const GridLayout: Story = {
 
           <InputCard
             className="cursor-pointer"
-            selected={selected === "enterprise"}
             onClick={() => setSelected("enterprise")}
+            selected={selected === "enterprise"}
           >
             <div className="p-6 text-center">
               <h3 className="font-semibold text-lg">Enterprise</h3>
@@ -404,7 +405,7 @@ export const AsButton: Story = {
           className="w-full max-w-md"
           selected={selected === "button-1"}
         >
-          <button type="button" onClick={() => setSelected("button-1")}>
+          <button onClick={() => setSelected("button-1")} type="button">
             <div className="p-6 text-left">
               <h3 className="font-semibold text-base">Button Card One</h3>
               <p className="mt-1 text-muted-foreground text-sm">
@@ -419,7 +420,7 @@ export const AsButton: Story = {
           className="w-full max-w-md"
           selected={selected === "button-2"}
         >
-          <button type="button" onClick={() => setSelected("button-2")}>
+          <button onClick={() => setSelected("button-2")} type="button">
             <div className="p-6 text-left">
               <h3 className="font-semibold text-base">Button Card Two</h3>
               <p className="mt-1 text-muted-foreground text-sm">
@@ -449,8 +450,8 @@ export const CompactCards: Story = {
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-2">
         <InputCard
           className="w-full max-w-sm cursor-pointer"
-          selected={selected === "compact-1"}
           onClick={() => setSelected("compact-1")}
+          selected={selected === "compact-1"}
         >
           <div className="flex items-center justify-between px-4 py-3">
             <span className="font-medium text-sm">Compact Option 1</span>
@@ -462,8 +463,8 @@ export const CompactCards: Story = {
 
         <InputCard
           className="w-full max-w-sm cursor-pointer"
-          selected={selected === "compact-2"}
           onClick={() => setSelected("compact-2")}
+          selected={selected === "compact-2"}
         >
           <div className="flex items-center justify-between px-4 py-3">
             <span className="font-medium text-sm">Compact Option 2</span>
@@ -475,8 +476,8 @@ export const CompactCards: Story = {
 
         <InputCard
           className="w-full max-w-sm cursor-pointer"
-          selected={selected === "compact-3"}
           onClick={() => setSelected("compact-3")}
+          selected={selected === "compact-3"}
         >
           <div className="flex items-center justify-between px-4 py-3">
             <span className="font-medium text-sm">Compact Option 3</span>

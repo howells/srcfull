@@ -21,9 +21,11 @@ function Card({
 }: CardProps) {
   const toneClasses = variant === "muted" ? "bg-card-muted" : "bg-card";
   const borderClasses =
-    border === "none" ? "border-transparent" :
-    border === "dashed" ? "border-dashed border-muted-foreground/25" :
-    "border-border";
+    border === "none"
+      ? "border-transparent"
+      : border === "dashed"
+        ? "border-dashed border-muted-foreground/25"
+        : "border-border";
   return (
     <div
       className={cn(

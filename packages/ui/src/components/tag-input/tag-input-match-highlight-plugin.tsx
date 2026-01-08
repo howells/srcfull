@@ -28,46 +28,18 @@ export function MatchHighlightPlugin() {
       return;
     }
 
-    return editor.registerUpdateListener(({ editorState, dirtyElements, dirtyLeaves }) => {
-      // Prevent recursive updates
-      if (isProcessingRef.current) {
-        return;
-      }
-
-      // Only process if there are actual content changes
-      if (dirtyElements.size === 0 && dirtyLeaves.size === 0) {
-        return;
-      }
-
-      editorState.read(() => {
-        const selection = $getSelection();
-        if (!$isRangeSelection(selection)) {
+    return editor.registerUpdateListener(
+      ({ editorState, dirtyElements, dirtyLeaves }) => {
+        // Prevent recursive updates
+        if (isProcessingRef.current) {
           return;
         }
 
-        const node = selection.anchor.getNode();
-        // Get the root paragraph node, not just immediate parent
-        const rootNode = node.getTopLevelElement();
-        if (!rootNode) {
+        // Only process if there are actual content changes
+        if (dirtyElements.size === 0 && dirtyLeaves.size === 0) {
           return;
         }
 
-        // Get current text and check if it has actually changed
-        const currentText = rootNode.getTextContent();
-        if (currentText === lastTextRef.current) {
-          return; // No text change, skip processing
-        }
-
-        lastTextRef.current = currentText;
-      });
-
-      // Clear existing timeout
-      if (queryTimeoutRef.current) {
-        clearTimeout(queryTimeoutRef.current);
-      }
-
-      // Debounce the query - increased to 500ms to reduce glitchiness
-      queryTimeoutRef.current = setTimeout(() => {
         editorState.read(() => {
           const selection = $getSelection();
           if (!$isRangeSelection(selection)) {
@@ -81,84 +53,119 @@ export function MatchHighlightPlugin() {
             return;
           }
 
-          // Get full text content of the paragraph
-          const fullText = rootNode.getTextContent();
-
-          // Only query if we have at least 2 characters
-          if (!fullText || fullText.trim().length < 2) {
-            // Unwrap any MatchedElementNodes back to text
-            isProcessingRef.current = true;
-            unwrapMatchedElements(editor, rootNode);
-            setTimeout(() => {
-              isProcessingRef.current = false;
-            }, 0);
-            return;
+          // Get current text and check if it has actually changed
+          const currentText = rootNode.getTextContent();
+          if (currentText === lastTextRef.current) {
+            return; // No text change, skip processing
           }
 
-          // Query the server with the full text - it will return matches with positions
-          Promise.resolve(onQuery(fullText))
-            .then((results) => {
-              if (results.length > 0) {
-                // Build a map of exact matches (case-insensitive)
-                const matchMap = new Map<string, TagData>();
-                for (const result of results) {
-                  const key = result.label.toLowerCase();
-                  matchMap.set(key, result);
-                }
+          lastTextRef.current = currentText;
+        });
 
-                isProcessingRef.current = true;
-                editor.update(() => {
-                  // Re-get root node as we're in a new update
-                  const currentSelection = $getSelection();
-                  if (!$isRangeSelection(currentSelection)) {
-                    return;
-                  }
+        // Clear existing timeout
+        if (queryTimeoutRef.current) {
+          clearTimeout(queryTimeoutRef.current);
+        }
 
-                  const currentNode = currentSelection.anchor.getNode();
-                  const currentRootNode = currentNode.getTopLevelElement();
-                  if (!currentRootNode) {
-                    return;
-                  }
+        // Debounce the query - increased to 500ms to reduce glitchiness
+        queryTimeoutRef.current = setTimeout(() => {
+          editorState.read(() => {
+            const selection = $getSelection();
+            if (!$isRangeSelection(selection)) {
+              return;
+            }
 
-                  // Store cursor position before transformation
-                  const cursorOffset = currentSelection.anchor.offset;
+            const node = selection.anchor.getNode();
+            // Get the root paragraph node, not just immediate parent
+            const rootNode = node.getTopLevelElement();
+            if (!rootNode) {
+              return;
+            }
 
-                  // Process the paragraph and replace exact matches
-                  replaceExactMatches(currentRootNode, matchMap, cursorOffset);
-                });
-                setTimeout(() => {
-                  isProcessingRef.current = false;
-                }, 0);
-              } else {
-                // No matches, unwrap any MatchedElementNodes back to text
-                isProcessingRef.current = true;
-                unwrapMatchedElements(editor, rootNode);
-                setTimeout(() => {
-                  isProcessingRef.current = false;
-                }, 0);
-              }
-            })
-            .catch(() => {
-              // On error, unwrap any MatchedElementNodes back to text
+            // Get full text content of the paragraph
+            const fullText = rootNode.getTextContent();
+
+            // Only query if we have at least 2 characters
+            if (!fullText || fullText.trim().length < 2) {
+              // Unwrap any MatchedElementNodes back to text
               isProcessingRef.current = true;
               unwrapMatchedElements(editor, rootNode);
               setTimeout(() => {
                 isProcessingRef.current = false;
               }, 0);
-            });
-        });
-      }, 500); // 500ms debounce to reduce glitchiness
-    });
+              return;
+            }
+
+            // Query the server with the full text - it will return matches with positions
+            Promise.resolve(onQuery(fullText))
+              .then((results) => {
+                if (results.length > 0) {
+                  // Build a map of exact matches (case-insensitive)
+                  const matchMap = new Map<string, TagData>();
+                  for (const result of results) {
+                    const key = result.label.toLowerCase();
+                    matchMap.set(key, result);
+                  }
+
+                  isProcessingRef.current = true;
+                  editor.update(() => {
+                    // Re-get root node as we're in a new update
+                    const currentSelection = $getSelection();
+                    if (!$isRangeSelection(currentSelection)) {
+                      return;
+                    }
+
+                    const currentNode = currentSelection.anchor.getNode();
+                    const currentRootNode = currentNode.getTopLevelElement();
+                    if (!currentRootNode) {
+                      return;
+                    }
+
+                    // Store cursor position before transformation
+                    const cursorOffset = currentSelection.anchor.offset;
+
+                    // Process the paragraph and replace exact matches
+                    replaceExactMatches(
+                      currentRootNode,
+                      matchMap,
+                      cursorOffset
+                    );
+                  });
+                  setTimeout(() => {
+                    isProcessingRef.current = false;
+                  }, 0);
+                } else {
+                  // No matches, unwrap any MatchedElementNodes back to text
+                  isProcessingRef.current = true;
+                  unwrapMatchedElements(editor, rootNode);
+                  setTimeout(() => {
+                    isProcessingRef.current = false;
+                  }, 0);
+                }
+              })
+              .catch(() => {
+                // On error, unwrap any MatchedElementNodes back to text
+                isProcessingRef.current = true;
+                unwrapMatchedElements(editor, rootNode);
+                setTimeout(() => {
+                  isProcessingRef.current = false;
+                }, 0);
+              });
+          });
+        }, 500); // 500ms debounce to reduce glitchiness
+      }
+    );
   }, [editor, onQuery]);
 
   // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (queryTimeoutRef.current) {
         clearTimeout(queryTimeoutRef.current);
       }
-    };
-  }, []);
+    },
+    []
+  );
 
   return null;
 }
@@ -181,7 +188,7 @@ function unwrapMatchedElements(editor: any, parent: any) {
 function replaceExactMatches(
   parent: any,
   matchMap: Map<string, TagData>,
-  cursorOffset: number
+  _cursorOffset: number
 ) {
   // Get current selection to preserve cursor
   const selection = $getSelection();
@@ -242,7 +249,7 @@ function replaceExactMatches(
   }
 
   // Merge all text content into the first text node
-  let combinedText = '';
+  let combinedText = "";
   for (const node of textNodes) {
     combinedText += node.getTextContent();
   }
@@ -271,12 +278,13 @@ function replaceExactMatches(
   // Only match complete words: words with whitespace/punctuation after them
   const activeMatches = matches.filter((match) => {
     // If cursor is within the match (including at the end)
-    const cursorInMatch = cursorPositionInText >= match.start && cursorPositionInText <= match.end;
+    const cursorInMatch =
+      cursorPositionInText >= match.start && cursorPositionInText <= match.end;
 
     if (cursorInMatch) {
       // Check if there's whitespace or punctuation after the match (word is complete)
-      const charAfter = match.end < text.length ? text[match.end] : '';
-      const hasDelimiterAfter = charAfter === ' ' || /[^\w]/.test(charAfter);
+      const charAfter = match.end < text.length ? text[match.end] : "";
+      const hasDelimiterAfter = charAfter === " " || /[^\w]/.test(charAfter);
 
       // Only highlight if word has delimiter after (word is complete)
       return hasDelimiterAfter;
@@ -384,10 +392,17 @@ function findExactMatches(
   text: string,
   matchMap: Map<string, TagData>
 ): Array<{ start: number; end: number; text: string; tag: TagData }> {
-  const matches: Array<{ start: number; end: number; text: string; tag: TagData }> = [];
+  const matches: Array<{
+    start: number;
+    end: number;
+    text: string;
+    tag: TagData;
+  }> = [];
 
   // Sort match keys by length (longest first) for greedy matching
-  const sortedKeys = Array.from(matchMap.keys()).sort((a, b) => b.length - a.length);
+  const sortedKeys = Array.from(matchMap.keys()).sort(
+    (a, b) => b.length - a.length
+  );
 
   const textLower = text.toLowerCase();
   const usedRanges = new Set<string>();
@@ -411,11 +426,13 @@ function findExactMatches(
 
       const isWordBoundary =
         (beforeChar === " " || /[^\w]/.test(beforeChar) || matchIndex === 0) &&
-        (afterChar === " " || /[^\w]/.test(afterChar) || matchEnd === text.length);
+        (afterChar === " " ||
+          /[^\w]/.test(afterChar) ||
+          matchEnd === text.length);
 
       if (isWordBoundary) {
         // Check if this range overlaps with existing matches
-        const rangeKey = `${matchIndex}-${matchEnd}`;
+        const _rangeKey = `${matchIndex}-${matchEnd}`;
         let overlaps = false;
 
         for (let i = matchIndex; i < matchEnd; i++) {

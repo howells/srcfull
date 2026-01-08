@@ -1,6 +1,7 @@
- "use client";
+"use client";
 
 import { Button } from "@repo/ui/components/button";
+import { Checkbox } from "@repo/ui/components/checkbox";
 import {
   Item,
   ItemActions,
@@ -9,7 +10,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@repo/ui/components/item-list/item-list-item";
-import { Checkbox } from "@repo/ui/components/checkbox";
 import { cn } from "@repo/ui/utils/cn";
 import { Download } from "lucide-react";
 import type * as React from "react";
@@ -33,11 +33,11 @@ export function DocumentListItem({
     <Item className={cn("items-center", className)} {...props}>
       <div className="flex items-center gap-3">
         <Checkbox
+          aria-label={`Select ${document.name}`}
           checked={isSelected(document.id)}
           onCheckedChange={() => toggleItem(document.id)}
-          aria-label={`Select ${document.name}`}
         />
-        <ItemMedia variant="icon" icon={Icon} />
+        <ItemMedia icon={Icon} variant="icon" />
       </div>
       <ItemContent className="min-w-0">
         <ItemTitle className="truncate">{document.name}</ItemTitle>
@@ -50,10 +50,10 @@ export function DocumentListItem({
       <ItemActions>
         <Button
           appearance="ghost"
-          mode="icon"
-          variant="outline"
           aria-label={`Download ${document.name}`}
+          mode="icon"
           onClick={() => onDownload(document.downloadUrl)}
+          variant="outline"
         >
           <Download />
         </Button>

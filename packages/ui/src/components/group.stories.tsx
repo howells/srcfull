@@ -77,7 +77,7 @@ export const Positions: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-sm font-medium">Flex Start</div>
+        <div className="mb-2 font-medium text-sm">Flex Start</div>
         <Group position="flex-start">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -85,7 +85,7 @@ export const Positions: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Center</div>
+        <div className="mb-2 font-medium text-sm">Center</div>
         <Group position="center">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -93,7 +93,7 @@ export const Positions: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Flex End</div>
+        <div className="mb-2 font-medium text-sm">Flex End</div>
         <Group position="flex-end">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -101,7 +101,7 @@ export const Positions: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Space Between</div>
+        <div className="mb-2 font-medium text-sm">Space Between</div>
         <Group position="space-between">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -109,7 +109,7 @@ export const Positions: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Space Around</div>
+        <div className="mb-2 font-medium text-sm">Space Around</div>
         <Group position="space-around">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -117,7 +117,7 @@ export const Positions: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Space Evenly</div>
+        <div className="mb-2 font-medium text-sm">Space Evenly</div>
         <Group position="space-evenly">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -140,7 +140,7 @@ export const Alignment: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-sm font-medium">Stretch (default)</div>
+        <div className="mb-2 font-medium text-sm">Stretch (default)</div>
         <Group align="stretch">
           <ExampleItem>Short</ExampleItem>
           <div className="rounded-md border bg-neutral-50 p-6 text-neutral-700 text-sm">
@@ -150,7 +150,7 @@ export const Alignment: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Flex Start</div>
+        <div className="mb-2 font-medium text-sm">Flex Start</div>
         <Group align="flex-start">
           <ExampleItem>Short</ExampleItem>
           <div className="rounded-md border bg-neutral-50 p-6 text-neutral-700 text-sm">
@@ -160,7 +160,7 @@ export const Alignment: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Center</div>
+        <div className="mb-2 font-medium text-sm">Center</div>
         <Group align="center">
           <ExampleItem>Short</ExampleItem>
           <div className="rounded-md border bg-neutral-50 p-6 text-neutral-700 text-sm">
@@ -170,7 +170,7 @@ export const Alignment: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">Flex End</div>
+        <div className="mb-2 font-medium text-sm">Flex End</div>
         <Group align="flex-end">
           <ExampleItem>Short</ExampleItem>
           <div className="rounded-md border bg-neutral-50 p-6 text-neutral-700 text-sm">
@@ -195,7 +195,7 @@ export const Gaps: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-sm font-medium">2xs</div>
+        <div className="mb-2 font-medium text-sm">2xs</div>
         <Group gap="2xs">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -203,7 +203,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">xs</div>
+        <div className="mb-2 font-medium text-sm">xs</div>
         <Group gap="xs">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -211,7 +211,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">sm</div>
+        <div className="mb-2 font-medium text-sm">sm</div>
         <Group gap="sm">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -219,7 +219,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">base</div>
+        <div className="mb-2 font-medium text-sm">base</div>
         <Group gap="base">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -227,7 +227,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">lg</div>
+        <div className="mb-2 font-medium text-sm">lg</div>
         <Group gap="lg">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -235,7 +235,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">xl</div>
+        <div className="mb-2 font-medium text-sm">xl</div>
         <Group gap="xl">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -243,7 +243,7 @@ export const Gaps: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">2xl</div>
+        <div className="mb-2 font-medium text-sm">2xl</div>
         <Group gap="2xl">
           <ExampleItem>1</ExampleItem>
           <ExampleItem>2</ExampleItem>
@@ -259,14 +259,15 @@ export const Wrapping: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Groups can wrap children to multiple rows when space is limited.",
+        story:
+          "Groups can wrap children to multiple rows when space is limited.",
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-sm font-medium">No Wrap (default)</div>
+        <div className="mb-2 font-medium text-sm">No Wrap (default)</div>
         <Group wrap={false}>
           {Array.from({ length: 15 }).map((_, i) => (
             <ExampleItem key={i}>{i + 1}</ExampleItem>
@@ -274,7 +275,7 @@ export const Wrapping: Story = {
         </Group>
       </div>
       <div>
-        <div className="mb-2 text-sm font-medium">With Wrap</div>
+        <div className="mb-2 font-medium text-sm">With Wrap</div>
         <Group wrap={true}>
           {Array.from({ length: 15 }).map((_, i) => (
             <ExampleItem key={i}>{i + 1}</ExampleItem>

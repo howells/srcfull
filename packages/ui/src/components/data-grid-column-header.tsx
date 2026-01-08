@@ -141,7 +141,10 @@ function DataGridColumnHeader<TData, TValue>({
   );
 
   const headerControls = () => (
-    <div className="flex h-full items-center justify-between gap-1.5" data-component="data-grid-column-header">
+    <div
+      className="flex h-full items-center justify-between gap-1.5"
+      data-component="data-grid-column-header"
+    >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>{headerButton()}</DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-40">
@@ -301,7 +304,14 @@ function DataGridColumnHeader<TData, TValue>({
     column.getCanSort() ||
     (props.tableLayout?.columnsResizable && column.getCanResize())
   ) {
-    return <div className="flex h-full items-center" data-component="data-grid-column-header">{headerButton()}</div>;
+    return (
+      <div
+        className="flex h-full items-center"
+        data-component="data-grid-column-header"
+      >
+        {headerButton()}
+      </div>
+    );
   }
 
   return headerLabel();

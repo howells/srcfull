@@ -1,19 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "@materia/tailwind-config/shared-styles.css";
-import {
-  FileText,
-  Folder,
-  Home,
-  Settings,
-  User,
-  Users,
-} from "lucide-react";
-import { AccordionMenu } from "./accordion-menu-root";
+import { FileText, Folder, Home, Settings, User, Users } from "lucide-react";
 import { AccordionMenuGroup } from "./accordion-menu-group";
-import { AccordionMenuLabel } from "./accordion-menu-label";
-import { AccordionMenuSeparator } from "./accordion-menu-separator";
-import { AccordionMenuItem } from "./accordion-menu-item";
 import { AccordionMenuIndicator } from "./accordion-menu-indicator";
+import { AccordionMenuItem } from "./accordion-menu-item";
+import { AccordionMenuLabel } from "./accordion-menu-label";
+import { AccordionMenu } from "./accordion-menu-root";
+import { AccordionMenuSeparator } from "./accordion-menu-separator";
 import {
   AccordionMenuSub,
   AccordionMenuSubContent,
@@ -99,9 +92,9 @@ export const WithNestedSubmenus: Story = {
             <span>Users</span>
           </AccordionMenuSubTrigger>
           <AccordionMenuSubContent
+            collapsible={true}
             parentValue="users"
             type="single"
-            collapsible={true}
           >
             <AccordionMenuItem value="all-users">
               <User />
@@ -166,10 +159,7 @@ export const MultipleSelection: Story = {
             <Folder />
             <span>Files</span>
           </AccordionMenuSubTrigger>
-          <AccordionMenuSubContent
-            parentValue="files"
-            type="multiple"
-          >
+          <AccordionMenuSubContent parentValue="files" type="multiple">
             <AccordionMenuItem value="documents">
               <FileText />
               <span>Documents</span>
@@ -185,10 +175,7 @@ export const MultipleSelection: Story = {
             <Users />
             <span>Users</span>
           </AccordionMenuSubTrigger>
-          <AccordionMenuSubContent
-            parentValue="users"
-            type="multiple"
-          >
+          <AccordionMenuSubContent parentValue="users" type="multiple">
             <AccordionMenuItem value="all-users">
               <User />
               <span>All Users</span>
@@ -223,9 +210,9 @@ export const WithSelectedValue: Story = {
             <span>Users</span>
           </AccordionMenuSubTrigger>
           <AccordionMenuSubContent
+            collapsible={true}
             parentValue="users"
             type="single"
-            collapsible={true}
           >
             <AccordionMenuItem value="all-users">
               <User />
@@ -256,9 +243,9 @@ export const DeeplyNested: Story = {
             <span>Level 1</span>
           </AccordionMenuSubTrigger>
           <AccordionMenuSubContent
+            collapsible={true}
             parentValue="level1"
             type="single"
-            collapsible={true}
           >
             <AccordionMenuSub value="level2">
               <AccordionMenuSubTrigger>
@@ -266,9 +253,9 @@ export const DeeplyNested: Story = {
                 <span>Level 2</span>
               </AccordionMenuSubTrigger>
               <AccordionMenuSubContent
+                collapsible={true}
                 parentValue="level2"
                 type="single"
-                collapsible={true}
               >
                 <AccordionMenuItem value="item1">
                   <FileText />

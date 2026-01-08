@@ -3,11 +3,11 @@ import { ChevronRight } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 
-export interface TreeItemProps {
+export type TreeItemProps = {
   item: ItemInstance;
   onItemClick?: () => void;
   renderLabel?: () => React.ReactNode;
-}
+};
 
 export function TreeItem({ item, onItemClick, renderLabel }: TreeItemProps) {
   const itemMeta = item.getItemMeta();
@@ -19,21 +19,21 @@ export function TreeItem({ item, onItemClick, renderLabel }: TreeItemProps) {
   const isExpanded = item.isExpanded();
   const level = itemMeta.level;
 
-  console.log('TreeItem render:', {
+  console.log("TreeItem render:", {
     name: itemData?.name,
     isFolder,
     isExpanded,
-    itemMeta: itemMeta,
+    itemMeta,
   });
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log('Clicking folder:', itemData?.name, 'isExpanded:', isExpanded);
+    console.log("Clicking folder:", itemData?.name, "isExpanded:", isExpanded);
     if (isExpanded) {
-      console.log('Calling collapse');
+      console.log("Calling collapse");
       item.collapse();
     } else {
-      console.log('Calling expand');
+      console.log("Calling expand");
       item.expand();
     }
   };
@@ -42,27 +42,24 @@ export function TreeItem({ item, onItemClick, renderLabel }: TreeItemProps) {
     <div
       {...item.getProps()}
       className={cn(
-        "flex items-center gap-1 px-2 py-1.5 text-sm transition-colors border-b border-border/50",
+        "flex items-center gap-1 border-border/50 border-b px-2 py-1.5 text-sm transition-colors",
         itemMeta.isFocused && "bg-accent/50",
         itemMeta.isSelected && "bg-primary/10"
       )}
-      style={{ paddingLeft: `${level * 16 + 8}px` }}
       onClick={onItemClick}
+      style={{ paddingLeft: `${level * 16 + 8}px` }}
     >
       {isFolder ? (
         <Button
-          mode="icon"
           appearance="ghost"
-          size="2xs"
+          className={cn("transition-transform", isExpanded && "rotate-90")}
           icon={ChevronRight}
+          mode="icon"
           onClick={handleToggle}
-          className={cn(
-            "transition-transform",
-            isExpanded && "rotate-90"
-          )}
+          size="2xs"
         />
       ) : (
-        <div className="w-6 h-6" />
+        <div className="h-6 w-6" />
       )}
       <span className="flex-1 truncate">
         {renderLabel ? renderLabel() : item.getItemName()}

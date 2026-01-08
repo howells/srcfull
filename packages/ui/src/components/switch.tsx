@@ -1,9 +1,9 @@
 "use client";
 
+import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { cn } from "@repo/ui/utils/cn";
 import { focusInput } from "@repo/ui/utils/focus-input";
 import { hasErrorInput } from "@repo/ui/utils/has-error-input";
-import * as SwitchPrimitive from "@radix-ui/react-switch";
 import type * as React from "react";
 
 function Switch({

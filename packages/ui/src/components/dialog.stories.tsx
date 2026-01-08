@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
-import { Settings, AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle, Info, Settings } from "lucide-react";
 import { Button } from "./button";
 import {
   Dialog,
@@ -172,9 +172,7 @@ export const DialogPatterns: Story = {
               <Icon icon={AlertTriangle} />
               Delete item
             </DialogTitle>
-            <DialogDescription>
-              This action cannot be undone.
-            </DialogDescription>
+            <DialogDescription>This action cannot be undone.</DialogDescription>
           </DialogHeader>
           <div className="text-neutral-600 text-sm">
             This will permanently delete the item and all associated data.

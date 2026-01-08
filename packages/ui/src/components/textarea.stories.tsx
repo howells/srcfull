@@ -68,20 +68,20 @@ export const States: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Default</div>
+        <div className="mb-2 text-muted-foreground text-xs">Default</div>
         <Textarea placeholder="Enter your text here…" />
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">With value</div>
+        <div className="mb-2 text-muted-foreground text-xs">With value</div>
         <Textarea defaultValue="This textarea has some content already filled in." />
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Disabled</div>
+        <div className="mb-2 text-muted-foreground text-xs">Disabled</div>
         <Textarea disabled placeholder="This textarea is disabled" />
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Error</div>
-        <Textarea placeholder="Invalid textarea" aria-invalid={true} />
+        <div className="mb-2 text-muted-foreground text-xs">Error</div>
+        <Textarea aria-invalid={true} placeholder="Invalid textarea" />
       </div>
     </div>
   ),
@@ -100,16 +100,18 @@ export const RowSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Rows: 2</div>
-        <Textarea rows={2} placeholder="Compact textarea…" />
+        <div className="mb-2 text-muted-foreground text-xs">Rows: 2</div>
+        <Textarea placeholder="Compact textarea…" rows={2} />
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Rows: 4 (default)</div>
-        <Textarea rows={4} placeholder="Standard textarea…" />
+        <div className="mb-2 text-muted-foreground text-xs">
+          Rows: 4 (default)
+        </div>
+        <Textarea placeholder="Standard textarea…" rows={4} />
       </div>
       <div>
-        <div className="mb-2 text-xs text-muted-foreground">Rows: 8</div>
-        <Textarea rows={8} placeholder="Tall textarea…" />
+        <div className="mb-2 text-muted-foreground text-xs">Rows: 8</div>
+        <Textarea placeholder="Tall textarea…" rows={8} />
       </div>
     </div>
   ),
@@ -128,18 +130,22 @@ export const WithLabel: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <label htmlFor="description" className="text-sm font-medium">
+        <label className="font-medium text-sm" htmlFor="description">
           Description
         </label>
         <Textarea id="description" placeholder="Enter a description…" />
-        <p className="text-xs text-muted-foreground">Provide a detailed description of the item.</p>
+        <p className="text-muted-foreground text-xs">
+          Provide a detailed description of the item.
+        </p>
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="feedback" className="text-sm font-medium">
+        <label className="font-medium text-sm" htmlFor="feedback">
           Feedback
         </label>
-        <Textarea id="feedback" rows={6} placeholder="Share your thoughts…" />
-        <p className="text-xs text-muted-foreground">Your feedback helps us improve the product.</p>
+        <Textarea id="feedback" placeholder="Share your thoughts…" rows={6} />
+        <p className="text-muted-foreground text-xs">
+          Your feedback helps us improve the product.
+        </p>
       </div>
     </div>
   ),

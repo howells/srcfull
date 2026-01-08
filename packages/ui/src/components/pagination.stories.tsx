@@ -33,7 +33,8 @@ export const Base: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Basic pagination with prev/next controls, active states, and ellipsis for truncated ranges.",
+        story:
+          "Basic pagination with prev/next controls, active states, and ellipsis for truncated ranges.",
       },
     },
   },
@@ -74,7 +75,8 @@ export const SimplePagination: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Basic pagination with consecutive page numbers and no ellipsis.",
+        story:
+          "Basic pagination with consecutive page numbers and no ellipsis.",
       },
     },
   },

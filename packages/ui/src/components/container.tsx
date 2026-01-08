@@ -38,13 +38,21 @@ function getMaxWidthClass(
   size: ComponentSize | number | string | undefined,
   fluid: boolean
 ): string {
-  if (fluid) return "w-full";
-  if (!size) return TAILWIND_MAX_WIDTH.xl;
+  if (fluid) {
+    return "w-full";
+  }
+  if (!size) {
+    return TAILWIND_MAX_WIDTH.xl;
+  }
   if (typeof size === "string" && size in TAILWIND_MAX_WIDTH) {
     return TAILWIND_MAX_WIDTH[size as ComponentSize];
   }
-  if (typeof size === "number") return `max-w-[${size}px]`;
-  if (typeof size === "string") return `max-w-[${size}]`;
+  if (typeof size === "number") {
+    return `max-w-[${size}px]`;
+  }
+  if (typeof size === "string") {
+    return `max-w-[${size}]`;
+  }
   return TAILWIND_MAX_WIDTH.xl;
 }
 
@@ -52,7 +60,9 @@ function getPaddingClass(
   value: ComponentSize | number | string | undefined,
   axis: "x" | "y"
 ): string | undefined {
-  if (!value) return;
+  if (!value) {
+    return;
+  }
   const map = axis === "x" ? TAILWIND_PADDING_X : TAILWIND_PADDING_Y;
   if (typeof value === "string" && value in map) {
     return map[value as ComponentSize];
@@ -101,11 +111,15 @@ export function Container({
 
     // Wrap children to ensure non-breakout items land in the middle column
     const wrapped = React.Children.map(children, (child) => {
-      if (!React.isValidElement(child)) return child;
+      if (!React.isValidElement(child)) {
+        return child;
+      }
       const isBreakout = (child.props as Record<string, unknown>)?.[
         "data-breakout"
       ];
-      if (isBreakout) return child; // consumer controls its own columns
+      if (isBreakout) {
+        return child; // consumer controls its own columns
+      }
       return (
         <div className={cn("col-start-2", paddingXClass, paddingYClass)}>
           {child}

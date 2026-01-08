@@ -121,9 +121,7 @@ export const LongOptions: Story = {
   },
   render: () => (
     <NativeSelect defaultValue="1">
-      <NativeSelectOption value="1">
-        Short option
-      </NativeSelectOption>
+      <NativeSelectOption value="1">Short option</NativeSelectOption>
       <NativeSelectOption value="2">
         This is a much longer option that demonstrates how the select handles
         extended text content

@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { Button } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/utils/cn";
@@ -30,10 +30,10 @@ export function DocumentListActions({
     >
       <Button
         className="w-full rounded-xl"
-        variant="outline"
-        size="lg"
-        onClick={handleBulk}
         disabled={disabled}
+        onClick={handleBulk}
+        size="lg"
+        variant="outline"
       >
         <Download />
         Download selected items{selected > 0 ? ` (${selected})` : ""}

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
+import { sizeArgType } from "@repo/ui/lib/storybook";
 import { Calendar, Settings, User } from "lucide-react";
 import { Badge } from "../badge";
 import { Icon } from "../icon";
 import { Text } from "../text";
-import { sizeArgType } from "@repo/ui/lib/storybook";
-import { Tabs } from "./tabs-root";
 import { TabsContent } from "./tabs-content";
 import { TabsList } from "./tabs-list";
+import { Tabs } from "./tabs-root";
 import { TabsTrigger } from "./tabs-trigger";
 
 const meta = {
@@ -48,7 +48,7 @@ export const Base: Story = {
         <TabsTrigger value="tab2">Password</TabsTrigger>
         <TabsTrigger value="tab3">Settings</TabsTrigger>
       </TabsList>
-      <TabsContent value="tab1" className="mt-4 space-y-4">
+      <TabsContent className="mt-4 space-y-4" value="tab1">
         <div className="text-sm">
           <h3 className="mb-2 font-medium">Account Information</h3>
           <p className="text-muted-foreground">
@@ -56,7 +56,7 @@ export const Base: Story = {
           </p>
         </div>
       </TabsContent>
-      <TabsContent value="tab2" className="mt-4 space-y-4">
+      <TabsContent className="mt-4 space-y-4" value="tab2">
         <div className="text-sm">
           <h3 className="mb-2 font-medium">Password Settings</h3>
           <p className="text-muted-foreground">
@@ -64,7 +64,7 @@ export const Base: Story = {
           </p>
         </div>
       </TabsContent>
-      <TabsContent value="tab3" className="mt-4 space-y-4">
+      <TabsContent className="mt-4 space-y-4" value="tab3">
         <div className="text-sm">
           <h3 className="mb-2 font-medium">Application Settings</h3>
           <p className="text-muted-foreground">
@@ -92,15 +92,15 @@ export const DefaultStyle: Story = {
         <TabsTrigger value="about">About</TabsTrigger>
         <TabsTrigger value="contact">Contact</TabsTrigger>
       </TabsList>
-      <TabsContent value="home" className="mt-4">
+      <TabsContent className="mt-4" value="home">
         <Text className="text-muted-foreground">
           Default pill-style tabs with a muted background.
         </Text>
       </TabsContent>
-      <TabsContent value="about" className="mt-4">
+      <TabsContent className="mt-4" value="about">
         <Text className="text-muted-foreground">About content.</Text>
       </TabsContent>
-      <TabsContent value="contact" className="mt-4">
+      <TabsContent className="mt-4" value="contact">
         <Text className="text-muted-foreground">Contact information.</Text>
       </TabsContent>
     </Tabs>
@@ -117,21 +117,21 @@ export const Pill: Story = {
     },
   },
   render: () => (
-    <Tabs variant="pill" defaultValue="home">
+    <Tabs defaultValue="home" variant="pill">
       <TabsList>
         <TabsTrigger value="home">Home</TabsTrigger>
         <TabsTrigger value="about">About</TabsTrigger>
         <TabsTrigger value="contact">Contact</TabsTrigger>
       </TabsList>
-      <TabsContent value="home" className="mt-4">
+      <TabsContent className="mt-4" value="home">
         <Text className="text-muted-foreground">
           Pill variant with rounded-full tabs.
         </Text>
       </TabsContent>
-      <TabsContent value="about" className="mt-4">
+      <TabsContent className="mt-4" value="about">
         <Text className="text-muted-foreground">About content.</Text>
       </TabsContent>
-      <TabsContent value="contact" className="mt-4">
+      <TabsContent className="mt-4" value="contact">
         <Text className="text-muted-foreground">Contact information.</Text>
       </TabsContent>
     </Tabs>
@@ -148,26 +148,29 @@ export const Line: Story = {
     },
   },
   render: () => (
-    <Tabs variant="line" defaultValue="returns">
+    <Tabs defaultValue="returns" variant="line">
       <TabsList>
         <TabsTrigger value="returns">Returns</TabsTrigger>
         <TabsTrigger value="shipping">Shipping</TabsTrigger>
         <TabsTrigger value="warranty">Warranty</TabsTrigger>
       </TabsList>
-      <div className="ml-2 mt-4">
-        <TabsContent value="returns" className="space-y-2">
-          <Text className="leading-7 text-muted-foreground">
-            You have 60 days to return any part of your order for a refund in original, unused condition.
+      <div className="mt-4 ml-2">
+        <TabsContent className="space-y-2" value="returns">
+          <Text className="text-muted-foreground leading-7">
+            You have 60 days to return any part of your order for a refund in
+            original, unused condition.
           </Text>
         </TabsContent>
-        <TabsContent value="shipping" className="space-y-2">
-          <Text className="leading-7 text-muted-foreground">
-            We ship worldwide via UPS Expedited. Flat rate shipping available to most countries.
+        <TabsContent className="space-y-2" value="shipping">
+          <Text className="text-muted-foreground leading-7">
+            We ship worldwide via UPS Expedited. Flat rate shipping available to
+            most countries.
           </Text>
         </TabsContent>
-        <TabsContent value="warranty" className="space-y-2">
-          <Text className="leading-7 text-muted-foreground">
-            Standard 1-year manufacturer's warranty covering defects in materials and workmanship.
+        <TabsContent className="space-y-2" value="warranty">
+          <Text className="text-muted-foreground leading-7">
+            Standard 1-year manufacturer's warranty covering defects in
+            materials and workmanship.
           </Text>
         </TabsContent>
       </div>
@@ -185,19 +188,21 @@ export const Button: Story = {
     },
   },
   render: () => (
-    <Tabs variant="button" defaultValue="overview">
+    <Tabs defaultValue="overview" variant="button">
       <TabsList>
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="analytics">Analytics</TabsTrigger>
         <TabsTrigger value="reports">Reports</TabsTrigger>
       </TabsList>
-      <TabsContent value="overview" className="mt-4">
-        <Text className="text-muted-foreground">Overview dashboard content.</Text>
+      <TabsContent className="mt-4" value="overview">
+        <Text className="text-muted-foreground">
+          Overview dashboard content.
+        </Text>
       </TabsContent>
-      <TabsContent value="analytics" className="mt-4">
+      <TabsContent className="mt-4" value="analytics">
         <Text className="text-muted-foreground">Analytics and metrics.</Text>
       </TabsContent>
-      <TabsContent value="reports" className="mt-4">
+      <TabsContent className="mt-4" value="reports">
         <Text className="text-muted-foreground">Generated reports.</Text>
       </TabsContent>
     </Tabs>
@@ -229,13 +234,15 @@ export const WithIcon: Story = {
           Settings
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="profile" className="mt-4">
-        <Text className="text-muted-foreground">Profile settings and information.</Text>
+      <TabsContent className="mt-4" value="profile">
+        <Text className="text-muted-foreground">
+          Profile settings and information.
+        </Text>
       </TabsContent>
-      <TabsContent value="calendar" className="mt-4">
+      <TabsContent className="mt-4" value="calendar">
         <Text className="text-muted-foreground">Calendar view and events.</Text>
       </TabsContent>
-      <TabsContent value="settings" className="mt-4">
+      <TabsContent className="mt-4" value="settings">
         <Text className="text-muted-foreground">Application settings.</Text>
       </TabsContent>
     </Tabs>
@@ -273,13 +280,13 @@ export const WithBadge: Story = {
           </Badge>
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="all" className="mt-4">
+      <TabsContent className="mt-4" value="all">
         <Text className="text-muted-foreground">All items (24 total).</Text>
       </TabsContent>
-      <TabsContent value="active" className="mt-4">
+      <TabsContent className="mt-4" value="active">
         <Text className="text-muted-foreground">Active items (8 total).</Text>
       </TabsContent>
-      <TabsContent value="pending" className="mt-4">
+      <TabsContent className="mt-4" value="pending">
         <Text className="text-muted-foreground">Pending items (3 total).</Text>
       </TabsContent>
     </Tabs>
@@ -291,15 +298,18 @@ export const Sizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "All available tab sizes: 2xs, xs, sm, base (default), lg, xl, 2xl.",
+        story:
+          "All available tab sizes: 2xs, xs, sm, base (default), lg, xl, 2xl.",
       },
     },
   },
   render: () => (
     <div className="space-y-8">
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">2 Extra Large (2xl)</p>
-        <Tabs size="2xl" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          2 Extra Large (2xl)
+        </p>
+        <Tabs defaultValue="home" size="2xl">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -308,8 +318,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Extra Large (xl)</p>
-        <Tabs size="xl" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          Extra Large (xl)
+        </p>
+        <Tabs defaultValue="home" size="xl">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -318,8 +330,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Large (lg)</p>
-        <Tabs size="lg" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          Large (lg)
+        </p>
+        <Tabs defaultValue="home" size="lg">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -328,8 +342,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Base - Default</p>
-        <Tabs size="base" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          Base - Default
+        </p>
+        <Tabs defaultValue="home" size="base">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -338,8 +354,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Small (sm)</p>
-        <Tabs size="sm" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          Small (sm)
+        </p>
+        <Tabs defaultValue="home" size="sm">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -348,8 +366,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Extra Small (xs)</p>
-        <Tabs size="xs" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          Extra Small (xs)
+        </p>
+        <Tabs defaultValue="home" size="xs">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -358,8 +378,10 @@ export const Sizes: Story = {
         </Tabs>
       </div>
       <div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">2 Extra Small (2xs)</p>
-        <Tabs size="2xs" defaultValue="home">
+        <p className="mb-2 font-medium text-muted-foreground text-xs">
+          2 Extra Small (2xs)
+        </p>
+        <Tabs defaultValue="home" size="2xs">
           <TabsList>
             <TabsTrigger value="home">Home</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
@@ -384,17 +406,17 @@ export const Disabled: Story = {
     <Tabs defaultValue="home">
       <TabsList>
         <TabsTrigger value="home">Home</TabsTrigger>
-        <TabsTrigger value="about" disabled>
+        <TabsTrigger disabled value="about">
           About (Disabled)
         </TabsTrigger>
         <TabsTrigger value="contact">Contact</TabsTrigger>
       </TabsList>
-      <TabsContent value="home" className="mt-4">
+      <TabsContent className="mt-4" value="home">
         <Text className="text-muted-foreground">
           The "About" tab is disabled and cannot be selected.
         </Text>
       </TabsContent>
-      <TabsContent value="contact" className="mt-4">
+      <TabsContent className="mt-4" value="contact">
         <Text className="text-muted-foreground">Contact information.</Text>
       </TabsContent>
     </Tabs>

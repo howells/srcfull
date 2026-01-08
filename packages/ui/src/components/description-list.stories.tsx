@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "@materia/tailwind-config/shared-styles.css";
 import {
-  DescriptionList,
-  DescriptionItem,
-  DescriptionTerm,
   DescriptionDetails,
+  DescriptionItem,
+  DescriptionList,
+  DescriptionTerm,
 } from "./description-list";
 
 const meta = {
@@ -14,8 +14,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "Displays key-value pairs in an organized format.",
+        component: "Displays key-value pairs in an organized format.",
       },
     },
   },
@@ -54,7 +53,9 @@ export const Base: Story = {
       </DescriptionItem>
       <DescriptionItem>
         <DescriptionTerm>Intended Use</DescriptionTerm>
-        <DescriptionDetails>Commercial project specification only</DescriptionDetails>
+        <DescriptionDetails>
+          Commercial project specification only
+        </DescriptionDetails>
       </DescriptionItem>
     </DescriptionList>
   ),
@@ -65,7 +66,8 @@ export const ProductSpecifications: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Product specification details with various data types and lengths.",
+        story:
+          "Product specification details with various data types and lengths.",
       },
     },
   },
@@ -169,7 +171,7 @@ export const OrderDetails: Story = {
         <DescriptionItem>
           <DescriptionTerm>Status</DescriptionTerm>
           <DescriptionDetails>
-            <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
+            <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 font-medium text-emerald-700 text-xs">
               Shipped
             </span>
           </DescriptionDetails>
@@ -188,7 +190,9 @@ export const OrderDetails: Story = {
         </DescriptionItem>
         <DescriptionItem>
           <DescriptionTerm>Total</DescriptionTerm>
-          <DescriptionDetails className="text-base">$1,247.50</DescriptionDetails>
+          <DescriptionDetails className="text-base">
+            $1,247.50
+          </DescriptionDetails>
         </DescriptionItem>
       </DescriptionList>
     </div>
