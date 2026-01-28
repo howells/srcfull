@@ -13,7 +13,7 @@ vi.mock("@/lib/tools/scrape-webpage", () => ({
 }));
 
 vi.mock("@/lib/tools/extract-image-elements", () => ({
-  executeExtractImageElements: vi.fn(async () => ({
+  extractImageElementsEnhanced: vi.fn(async () => ({
     success: true,
     data: Array.from({ length: 31 }, (_, index) => {
       const url =

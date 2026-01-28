@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { type ResolveResult, resolve } from "@/lib/resolver";
 import { requireSession } from "@/lib/session";
-import { executeExtractImageElements } from "@/lib/tools/extract-image-elements";
+import { extractImageElementsEnhanced } from "@/lib/tools/extract-image-elements";
 import { executeScrapeWebpage } from "@/lib/tools/scrape-webpage";
 
 const ScrapeRequestSchema = z.object({
@@ -48,8 +48,19 @@ export async function POST(request: Request) {
       );
     }
 
-    // Extract image elements
-    const extractResult = await executeExtractImageElements(scrapeResult.data);
+    // Extract source domain for raw image filtering
+    const sourceDomain = new URL(url).hostname.replace(/^www\./, "");
+
+    // Extract image elements (includes raw extraction for aria-hidden content)
+    // sortBySize: true makes HEAD requests to get actual file sizes and sorts largest first
+    const extractResult = await extractImageElementsEnhanced(
+      scrapeResult.data,
+      {
+        includeRaw: true,
+        sourceDomain,
+        sortBySize: true,
+      }
+    );
     if (!(extractResult.success && extractResult.data)) {
       return NextResponse.json(
         { error: "Failed to extract images", code: "EXTRACT_FAILED" },

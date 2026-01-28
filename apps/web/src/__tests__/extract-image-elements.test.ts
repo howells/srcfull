@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { executeExtractImageElements } from "../lib/tools/extract-image-elements";
+import {
+  executeExtractImageElements,
+  extractImageElementsEnhanced,
+  extractImageUrlsFromRaw,
+} from "../lib/tools/extract-image-elements";
 
 describe("extractImageElements", () => {
   it("should extract images from img tags", async () => {
@@ -238,5 +242,164 @@ describe("extractImageElements", () => {
     expect(result.data).toHaveLength(1);
     expect(result.data?.[0].url).toContain("res.cloudinary.com");
     expect(result.data?.[0].url).toContain("sample.jpg");
+  });
+});
+
+describe("extractImageUrlsFromRaw", () => {
+  it("should extract images from raw HTML using regex", () => {
+    const html = `
+      <html>
+        <body>
+          <div aria-hidden="true">
+            <img src="https://cdn.shopify.com/hidden-carousel.jpg" />
+          </div>
+          <script>
+            const images = ["https://cdn.cloudinary.com/dynamic.jpg"];
+          </script>
+        </body>
+      </html>
+    `;
+
+    const result = extractImageUrlsFromRaw(html);
+
+    expect(result).toContain("https://cdn.shopify.com/hidden-carousel.jpg");
+    expect(result).toContain("https://cdn.cloudinary.com/dynamic.jpg");
+  });
+
+  it("should filter by source domain", () => {
+    const html = `
+      <html>
+        <body>
+          <img src="https://example.com/product.jpg" />
+          <img src="https://other.com/external.jpg" />
+        </body>
+      </html>
+    `;
+
+    const result = extractImageUrlsFromRaw(html, "example.com");
+
+    expect(result).toContain("https://example.com/product.jpg");
+    expect(result).not.toContain("https://other.com/external.jpg");
+  });
+
+  it("should include known CDN patterns", () => {
+    const html = `
+      <html>
+        <body>
+          <img src="https://d1abc123.cloudfront.net/product.jpg" />
+          <img src="https://res.cloudinary.com/demo/image.jpg" />
+          <img src="https://example.imgix.net/photo.jpg" />
+        </body>
+      </html>
+    `;
+
+    const result = extractImageUrlsFromRaw(html);
+
+    expect(result).toContain("https://d1abc123.cloudfront.net/product.jpg");
+    expect(result).toContain("https://res.cloudinary.com/demo/image.jpg");
+    expect(result).toContain("https://example.imgix.net/photo.jpg");
+  });
+
+  it("should exclude tracking pixels and social icons", () => {
+    const html = `
+      <html>
+        <body>
+          <img src="https://cdn.shopify.com/tracking-pixel.jpg" />
+          <img src="https://cdn.shopify.com/facebook-icon.png" />
+          <img src="https://cdn.shopify.com/logo-small.jpg" />
+          <img src="https://cdn.shopify.com/real-product.jpg" />
+        </body>
+      </html>
+    `;
+
+    const result = extractImageUrlsFromRaw(html);
+
+    expect(result).not.toContain("https://cdn.shopify.com/tracking-pixel.jpg");
+    expect(result).not.toContain("https://cdn.shopify.com/facebook-icon.png");
+    expect(result).not.toContain("https://cdn.shopify.com/logo-small.jpg");
+    expect(result).toContain("https://cdn.shopify.com/real-product.jpg");
+  });
+
+  it("should deduplicate URLs by base path", () => {
+    const html = `
+      <img src="https://cdn.shopify.com/product.jpg?w=100" />
+      <img src="https://cdn.shopify.com/product.jpg?w=200" />
+      <img src="https://cdn.shopify.com/product.jpg?w=300" />
+    `;
+
+    const result = extractImageUrlsFromRaw(html);
+
+    expect(result).toHaveLength(1);
+  });
+});
+
+describe("extractImageElementsEnhanced", () => {
+  it("should combine DOM and raw extraction when includeRaw is true", async () => {
+    const html = `
+      <html>
+        <body>
+          <img src="https://example.com/visible.jpg" />
+          <div aria-hidden="true">
+            <img src="https://cdn.shopify.com/hidden-gallery.jpg" />
+          </div>
+        </body>
+      </html>
+    `;
+
+    const result = await extractImageElementsEnhanced(html, {
+      includeRaw: true,
+      sourceDomain: "example.com",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.data?.some((img) => img.url.includes("visible.jpg"))).toBe(
+      true
+    );
+    expect(
+      result.data?.some((img) => img.url.includes("hidden-gallery.jpg"))
+    ).toBe(true);
+  });
+
+  it("should work without raw extraction by default", async () => {
+    const html = `
+      <html>
+        <body>
+          <img src="https://example.com/visible.jpg" />
+          <div aria-hidden="true">
+            <img src="https://cdn.shopify.com/hidden-gallery.jpg" />
+          </div>
+        </body>
+      </html>
+    `;
+
+    const result = await extractImageElementsEnhanced(html);
+
+    expect(result.success).toBe(true);
+    // Without includeRaw, aria-hidden content might still be visible to Cheerio
+    // but raw-only sources (like script content) won't be
+    expect(result.data?.some((img) => img.url.includes("visible.jpg"))).toBe(
+      true
+    );
+  });
+
+  it("should mark raw-extracted images with source: raw", async () => {
+    const html = `
+      <html>
+        <body>
+          <script>
+            window.images = ["https://cdn.cloudinary.com/dynamic.jpg"];
+          </script>
+        </body>
+      </html>
+    `;
+
+    const result = await extractImageElementsEnhanced(html, {
+      includeRaw: true,
+    });
+
+    const rawImage = result.data?.find((img) =>
+      img.url.includes("dynamic.jpg")
+    );
+    expect(rawImage?.source).toBe("raw");
   });
 });
