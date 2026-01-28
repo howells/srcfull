@@ -1,46 +1,26 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import "./globals.css"; // Change to globals-srcfull.css when ready
+import { Inter } from "next/font/google";
+import "./globals.css";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { getAppUrl } from "@/lib/app-url";
-
-const baseUrl = getAppUrl();
-
-/**
- * Typography Stack for Srcfull
- *
- * - Inter: Body text, UI elements
- * - Space Grotesk: Headlines, display text
- * - JetBrains Mono: Code samples, API references
- */
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-body",
+  variable: "--font-inter",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-display",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-mono",
-});
+const baseUrl = getAppUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Srcfull - Find the source",
+    default: "Srcfull - Every image, any URL",
     template: "%s | Srcfull",
   },
   description:
-    "Resolve image URLs to their highest-quality source versions. A paid API built for production pipelines where quality matters.",
+    "Extract every image from any webpage at its highest resolution. One API call.",
   keywords: [
     "image API",
     "image resolution",
@@ -56,17 +36,16 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "Srcfull",
-    title: "Srcfull - Find the source. Every time.",
+    title: "Srcfull - Every image, any URL",
     description:
-      "Resolve image URLs to their highest-quality source versions.",
+      "Extract every image from any webpage at its highest resolution.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Srcfull - Find the source. Every time.",
+    title: "Srcfull - Every image, any URL",
     description:
-      "Resolve image URLs to their highest-quality source versions.",
-    creator: "@srcfull",
+      "Extract every image from any webpage at its highest resolution.",
   },
   robots: {
     index: true,
@@ -94,48 +73,43 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
-      lang="en"
-    >
+    <html lang="en" className={inter.variable}>
       <body className="antialiased">
         <ClerkProvider
           appearance={{
             variables: {
-              // Srcfull brand colors for Clerk components
-              colorPrimary: "#00d4ff",
-              colorBackground: "#12121a",
-              colorInputBackground: "#1a1a24",
-              colorInputText: "#fafafa",
-              colorText: "#fafafa",
-              colorTextSecondary: "#94a3b8",
-              colorDanger: "#ef4444",
-              colorSuccess: "#10b981",
-              borderRadius: "8px",
+              colorPrimary: "#171717",
+              colorBackground: "#ffffff",
+              colorInputBackground: "#fafafa",
+              colorInputText: "#171717",
+              colorText: "#171717",
+              colorTextSecondary: "#525252",
+              colorDanger: "#dc2626",
+              colorSuccess: "#16a34a",
+              borderRadius: "6px",
             },
             elements: {
-              // Dark theme overrides
               card: {
-                backgroundColor: "#12121a",
-                borderColor: "rgba(255, 255, 255, 0.06)",
+                backgroundColor: "#ffffff",
+                borderColor: "#e5e5e5",
               },
               headerTitle: {
-                color: "#fafafa",
+                color: "#171717",
               },
               headerSubtitle: {
-                color: "#94a3b8",
+                color: "#525252",
               },
               formButtonPrimary: {
-                backgroundColor: "#00d4ff",
-                color: "#0a0a0f",
+                backgroundColor: "#171717",
+                color: "#ffffff",
                 "&:hover": {
-                  backgroundColor: "#5ce5ff",
+                  opacity: 0.85,
                 },
               },
               footerActionLink: {
-                color: "#00d4ff",
+                color: "#171717",
                 "&:hover": {
-                  color: "#5ce5ff",
+                  opacity: 0.7,
                 },
               },
             },
