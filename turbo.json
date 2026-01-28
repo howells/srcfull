@@ -1,5 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "DATABASE_URL",
+    "CLERK_SECRET_KEY",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    "SCRAPINGBEE_API_KEY",
+    "FIRECRAWL_API_KEY",
+    "CRON_SECRET"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
