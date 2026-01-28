@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { logUsage, validateApiKey } from "@/lib/api-auth";
+import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { type ResolveResult, resolve } from "@/lib/resolver";
 import { executeExtractImageElements } from "@/lib/tools/extract-image-elements";
+import { scrapeWithFirecrawl } from "@/lib/tools/scrape-firecrawl";
 import { executeScrapeWebpage } from "@/lib/tools/scrape-webpage";
+import { validateUrl } from "@/lib/url-validator";
 
 type ScrapedImage = {
   original: string;
@@ -48,27 +51,75 @@ export async function POST(request: Request) {
     );
   }
 
+  // Check rate limit (100 requests per minute per API key)
+  const rateLimit = checkRateLimit(`api:${apiKey.id}`, 100, 60_000);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: { code: "RATE_LIMITED", message: "Too many requests" },
+      },
+      { status: 429, headers: rateLimitHeaders(rateLimit) }
+    );
+  }
+
   try {
     const body = await request.json();
     const { url, maxImages } = ScrapeRequestSchema.parse(body);
 
-    // Scrape the page
-    const scrapeResult = await executeScrapeWebpage(url);
-    if (!(scrapeResult.success && scrapeResult.data)) {
+    // SSRF protection - validate URL before scraping
+    const urlValidation = validateUrl(url);
+    if (!urlValidation.valid) {
       const response = NextResponse.json(
         {
           success: false,
-          error: { code: "SCRAPE_FAILED", message: "Failed to fetch page" },
+          error: { code: "INVALID_URL", message: urlValidation.error },
         },
-        { status: 502 }
+        { status: 400 }
       );
-      await logUsage(apiKey.id, "/v1/scrape", 502, Date.now() - startTime);
+      await logUsage(apiKey.id, "/v1/scrape", 400, Date.now() - startTime);
       return response;
     }
 
-    // Extract image elements
-    const extractResult = await executeExtractImageElements(scrapeResult.data);
-    if (!(extractResult.success && extractResult.data)) {
+    // Scrape the page
+    const scrapeResult = await executeScrapeWebpage(url);
+    const scrapeMetadata = scrapeResult.metadata;
+    let usedFirecrawl = false;
+
+    let candidates: { url: string; alt?: string | null; width?: number | null; height?: number | null }[] = [];
+
+    if (scrapeResult.success && scrapeResult.data) {
+      // Extract image elements from HTML
+      const extractResult = await executeExtractImageElements(scrapeResult.data);
+      if (extractResult.success && extractResult.data) {
+        // Filter to main images
+        candidates = extractResult.data.filter((img) => {
+          if (LOGO_PATTERNS.some((p) => p.test(img.url))) {
+            return false;
+          }
+          if (img.width && img.width < MIN_SIZE) {
+            return false;
+          }
+          if (img.height && img.height < MIN_SIZE) {
+            return false;
+          }
+          return true;
+        });
+      }
+    }
+
+    // Fallback to Firecrawl if ScrapingBee failed or found no images
+    if (candidates.length === 0) {
+      console.log(`ScrapingBee returned no images for ${url}, trying Firecrawl`);
+      const firecrawlResult = await scrapeWithFirecrawl(url);
+      if (firecrawlResult.success && firecrawlResult.images) {
+        usedFirecrawl = true;
+        candidates = firecrawlResult.images;
+      }
+    }
+
+    // If still no images, return error
+    if (candidates.length === 0) {
       const response = NextResponse.json(
         {
           success: false,
@@ -76,23 +127,12 @@ export async function POST(request: Request) {
         },
         { status: 502 }
       );
-      await logUsage(apiKey.id, "/v1/scrape", 502, Date.now() - startTime);
+      await logUsage(apiKey.id, "/v1/scrape", 502, Date.now() - startTime, {
+        usedStealthProxy: scrapeMetadata?.usedStealthProxy,
+        targetDomain: scrapeMetadata?.domain,
+      });
       return response;
     }
-
-    // Filter to main images
-    const candidates = extractResult.data.filter((img) => {
-      if (LOGO_PATTERNS.some((p) => p.test(img.url))) {
-        return false;
-      }
-      if (img.width && img.width < MIN_SIZE) {
-        return false;
-      }
-      if (img.height && img.height < MIN_SIZE) {
-        return false;
-      }
-      return true;
-    });
 
     // Resolve each image
     const toResolve = candidates.slice(0, maxImages ?? 20);
@@ -136,14 +176,19 @@ export async function POST(request: Request) {
       url,
       images: results,
       stats: {
-        found: extractResult.data.length,
+        found: candidates.length,
         resolved,
         failed,
         durationMs: Date.now() - startTime,
+        scraper: usedFirecrawl ? "fc" : "b",
       },
     });
 
-    await logUsage(apiKey.id, "/v1/scrape", 200, Date.now() - startTime);
+    await logUsage(apiKey.id, "/v1/scrape", 200, Date.now() - startTime, {
+      usedStealthProxy: scrapeMetadata?.usedStealthProxy,
+      targetDomain: scrapeMetadata?.domain,
+      usedFirecrawl,
+    });
     return response;
   } catch (error) {
     if (error instanceof z.ZodError) {

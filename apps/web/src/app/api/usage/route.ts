@@ -1,4 +1,4 @@
-import { and, eq, gte, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { apiKeys, usageLogs } from "@/db/schema";
@@ -24,39 +24,18 @@ export async function GET() {
     }
 
     const keyIds = keys.map((k) => k.id);
-    const now = new Date();
-    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    // Get total requests
-    const [totalResult] = await db
-      .select({ count: sql<number>`count(*)` })
+    // Single query with conditional aggregation for all counts
+    const [stats] = await db
+      .select({
+        total: sql<number>`count(*)`,
+        last24Hours: sql<number>`count(*) filter (where ${usageLogs.createdAt} >= now() - interval '24 hours')`,
+        last7Days: sql<number>`count(*) filter (where ${usageLogs.createdAt} >= now() - interval '7 days')`,
+      })
       .from(usageLogs)
       .where(sql`${usageLogs.apiKeyId} = ANY(${keyIds})`);
 
-    // Get last 24 hours
-    const [last24Result] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(usageLogs)
-      .where(
-        and(
-          sql`${usageLogs.apiKeyId} = ANY(${keyIds})`,
-          gte(usageLogs.createdAt, oneDayAgo)
-        )
-      );
-
-    // Get last 7 days
-    const [last7Result] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(usageLogs)
-      .where(
-        and(
-          sql`${usageLogs.apiKeyId} = ANY(${keyIds})`,
-          gte(usageLogs.createdAt, sevenDaysAgo)
-        )
-      );
-
-    // Get by endpoint
+    // Get by endpoint in single grouped query
     const byEndpoint = await db
       .select({
         endpoint: usageLogs.endpoint,
@@ -67,9 +46,9 @@ export async function GET() {
       .groupBy(usageLogs.endpoint);
 
     return NextResponse.json({
-      totalRequests: Number(totalResult?.count ?? 0),
-      last24Hours: Number(last24Result?.count ?? 0),
-      last7Days: Number(last7Result?.count ?? 0),
+      totalRequests: Number(stats?.total ?? 0),
+      last24Hours: Number(stats?.last24Hours ?? 0),
+      last7Days: Number(stats?.last7Days ?? 0),
       byEndpoint: Object.fromEntries(
         byEndpoint.map((e) => [e.endpoint, Number(e.count)])
       ),

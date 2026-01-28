@@ -1,5 +1,7 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
+  boolean,
+  index,
   integer,
   pgTable,
   real,
@@ -27,22 +29,29 @@ export const patterns = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [unique().on(table.domain, table.matchRegex)]
+  (table) => [
+    unique().on(table.domain, table.matchRegex),
+    index("idx_patterns_domain").on(table.domain),
+  ]
 );
 
-export const cache = pgTable("cache", {
-  originalUrl: text("original_url").primaryKey(),
-  resolvedUrl: text("resolved_url").notNull(),
-  patternId: integer("pattern_id").references(() => patterns.id, {
-    onDelete: "set null",
-  }),
-  resolvedAt: timestamp("resolved_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  expiresAt: timestamp("expires_at", { withTimezone: true })
-    .$defaultFn(() => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
-    .notNull(),
-});
+export const cache = pgTable(
+  "cache",
+  {
+    originalUrl: text("original_url").primaryKey(),
+    resolvedUrl: text("resolved_url").notNull(),
+    patternId: integer("pattern_id").references(() => patterns.id, {
+      onDelete: "set null",
+    }),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true })
+      .$defaultFn(() => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
+      .notNull(),
+  },
+  (table) => [index("idx_cache_expires_at").on(table.expiresAt)]
+);
 
 export type Pattern = InferSelectModel<typeof patterns>;
 export type NewPattern = InferInsertModel<typeof patterns>;
@@ -62,32 +71,49 @@ export const users = pgTable("users", {
     .notNull(),
 });
 
-export const apiKeys = pgTable("api_keys", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  keyHash: text("key_hash").notNull(),
-  keyPrefix: text("key_prefix").notNull(),
-  name: text("name").notNull().default("Default"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
-});
+export const apiKeys = pgTable(
+  "api_keys",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    keyHash: text("key_hash").notNull(),
+    keyPrefix: text("key_prefix").notNull(),
+    name: text("name").notNull().default("Default"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("idx_api_keys_user_id").on(table.userId),
+    index("idx_api_keys_key_prefix").on(table.keyPrefix),
+  ]
+);
 
-export const usageLogs = pgTable("usage_logs", {
-  id: serial("id").primaryKey(),
-  apiKeyId: uuid("api_key_id")
-    .notNull()
-    .references(() => apiKeys.id, { onDelete: "cascade" }),
-  endpoint: text("endpoint").notNull(),
-  statusCode: integer("status_code").notNull(),
-  responseTimeMs: integer("response_time_ms").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
+export const usageLogs = pgTable(
+  "usage_logs",
+  {
+    id: serial("id").primaryKey(),
+    apiKeyId: uuid("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    endpoint: text("endpoint").notNull(),
+    statusCode: integer("status_code").notNull(),
+    responseTimeMs: integer("response_time_ms").notNull(),
+    usedStealthProxy: boolean("used_stealth_proxy").default(false),
+    usedFirecrawl: boolean("used_firecrawl").default(false),
+    targetDomain: text("target_domain"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("idx_usage_logs_api_key_id").on(table.apiKeyId),
+    index("idx_usage_logs_created_at").on(table.createdAt),
+  ]
+);
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
