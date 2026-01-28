@@ -17,9 +17,8 @@
     "db:studio": "dotenv -e .env.local -- drizzle-kit studio"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.10",
     "@neondatabase/serverless": "^1.0.2",
-    "@polar-sh/nextjs": "^0.9.3",
-    "@polar-sh/sdk": "^0.42.1",
     "@repo/ui": "workspace:*",
     "bcrypt": "^6.0.0",
     "cheerio": "^1.0.0",
@@ -32,12 +31,12 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
+    "@tailwindcss/postcss": "^4.1.17",
     "@types/bcrypt": "^6.0.0",
     "@types/cheerio": "^1.0.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
-    "@tailwindcss/postcss": "^4.1.17",
     "@vitest/coverage-v8": "^4.0.16",
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.8",

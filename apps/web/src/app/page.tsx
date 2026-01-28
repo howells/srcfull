@@ -1,11 +1,7 @@
+import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
-  const proProductId = process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID;
-  const checkoutUrl = proProductId
-    ? `/api/checkout?products=${proProductId}`
-    : null;
-
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <div className="hex-grid" />
@@ -26,20 +22,32 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link
-              className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm transition-colors hover:border-[var(--border-hover)]"
-              href="/dashboard"
-            >
-              Dashboard
-            </Link>
-            {checkoutUrl && (
-              <a
-                className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-black text-sm transition-opacity hover:opacity-90"
-                href={checkoutUrl}
+            <SignedIn>
+              <Link
+                className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm transition-colors hover:border-[var(--border-hover)]"
+                href="/dashboard"
               >
-                Subscribe
-              </a>
-            )}
+                Dashboard
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="redirect">
+                <button
+                  className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm transition-colors hover:border-[var(--border-hover)]"
+                  type="button"
+                >
+                  Sign in
+                </button>
+              </SignInButton>
+              <SignUpButton mode="redirect">
+                <button
+                  className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-black text-sm transition-opacity hover:opacity-90"
+                  type="button"
+                >
+                  Get started
+                </button>
+              </SignUpButton>
+            </SignedOut>
           </div>
         </header>
 
@@ -53,8 +61,8 @@ export default function Home() {
           </h1>
           <p className="mt-5 text-[var(--text-secondary)] leading-relaxed">
             Beeline resolves image URLs to their highest-quality source versions
-            using curated patterns, learned transformations, and probing. It’s
-            built for production pipelines where “close enough” is not enough.
+            using curated patterns, learned transformations, and probing. It's
+            built for production pipelines where "close enough" is not enough.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -64,18 +72,12 @@ export default function Home() {
             >
               Get an API key
             </Link>
-            {checkoutUrl ? (
-              <a
-                className="rounded-xl bg-[var(--accent)] px-5 py-3 font-medium text-black transition-opacity hover:opacity-90"
-                href={checkoutUrl}
-              >
-                Subscribe now
-              </a>
-            ) : (
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] px-5 py-3 text-[var(--text-muted)] text-sm">
-                Set `NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID` to enable checkout.
-              </div>
-            )}
+            <Link
+              className="rounded-xl bg-[var(--accent)] px-5 py-3 font-medium text-black transition-opacity hover:opacity-90"
+              href="/pricing"
+            >
+              View pricing
+            </Link>
           </div>
         </section>
 

@@ -2,7 +2,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { type ApiKey, apiKeys, usageLogs, users } from "@/db/schema";
 import { verifyApiKey } from "./api-keys";
-import { getPolarClient } from "./polar";
 
 export async function validateApiKey(request: Request): Promise<ApiKey | null> {
   const authHeader = request.headers.get("Authorization");
@@ -50,40 +49,12 @@ export async function logUsage(
   responseTimeMs: number
 ): Promise<void> {
   try {
-    // Log to local database
     await db.insert(usageLogs).values({
       apiKeyId,
       endpoint,
       statusCode,
       responseTimeMs,
     });
-
-    // Send meter event to Polar for successful requests
-    if (statusCode === 200) {
-      const [keyWithUser] = await db
-        .select({ polarCustomerId: users.polarCustomerId })
-        .from(apiKeys)
-        .innerJoin(users, eq(apiKeys.userId, users.id))
-        .where(eq(apiKeys.id, apiKeyId))
-        .limit(1);
-
-      if (keyWithUser?.polarCustomerId) {
-        const eventName =
-          endpoint === "/v1/scrape" ? "api_scrape" : "api_transform";
-        await getPolarClient().events.ingest({
-          events: [
-            {
-              name: eventName,
-              externalCustomerId: keyWithUser.polarCustomerId,
-              metadata: {
-                endpoint,
-                responseTimeMs,
-              },
-            },
-          ],
-        });
-      }
-    }
   } catch {
     // Logging failure shouldn't break the request
   }

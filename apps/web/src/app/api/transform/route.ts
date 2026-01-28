@@ -1,4 +1,5 @@
 // apps/web/src/app/api/transform/route.ts
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { resolve } from "@/lib/resolver";
@@ -11,7 +12,8 @@ const TransformRequestSchema = z.object({
 export async function POST(request: Request) {
   try {
     const user = await requireSession();
-    if (user.plan !== "pro") {
+    const { has } = await auth();
+    if (user.plan !== "pro" && !(has && has({ feature: "pro" }))) {
       return NextResponse.json(
         { error: "Subscription required", code: "PAYMENT_REQUIRED" },
         { status: 402 }

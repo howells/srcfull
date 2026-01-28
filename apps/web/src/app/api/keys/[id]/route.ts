@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
@@ -10,7 +11,8 @@ export async function DELETE(
 ) {
   try {
     const user = await requireSession();
-    if (user.plan !== "pro") {
+    const { has } = await auth();
+    if (user.plan !== "pro" && !(has && has({ feature: "pro" }))) {
       return NextResponse.json(
         { error: "Subscription required", code: "PAYMENT_REQUIRED" },
         { status: 402 }

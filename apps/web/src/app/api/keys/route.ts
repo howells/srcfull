@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -37,7 +38,8 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const user = await requireSession();
-    if (user.plan !== "pro") {
+    const { has } = await auth();
+    if (user.plan !== "pro" && !(has && has({ feature: "pro" }))) {
       return NextResponse.json(
         {
           error: "Subscription required",

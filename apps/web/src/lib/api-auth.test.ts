@@ -15,16 +15,6 @@ vi.mock("./api-keys", () => ({
   verifyApiKey: vi.fn(),
 }));
 
-const polarIngestMock = vi.fn();
-
-vi.mock("./polar", () => ({
-  getPolarClient: () => ({
-    events: {
-      ingest: polarIngestMock,
-    },
-  }),
-}));
-
 describe("validateApiKey", () => {
   beforeEach(() => {
     vi.clearAllMocks();

@@ -12,9 +12,7 @@ pnpm dev
 
 - `POST /api/v1/scrape` - scrape a page and resolve image URLs (API key required)
 - `POST /api/v1/transform` - resolve a single image URL (API key required)
-- `GET /api/checkout` - Polar checkout (subscription)
-- `GET /api/portal` - Polar customer portal
-- `POST /api/webhooks/polar` - Polar webhook receiver
+- `POST /api/webhooks/clerk` - Clerk webhook receiver (billing + user events)
 
 ## Environment Variables
 

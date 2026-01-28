@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("@clerk/nextjs/server", () => ({
+  auth: vi.fn(async () => ({
+    has: () => true,
+  })),
+}));
+
 vi.mock("@/lib/session", () => ({
   requireSession: vi.fn(async () => ({ plan: "pro" })),
 }));

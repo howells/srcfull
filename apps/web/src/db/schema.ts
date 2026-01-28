@@ -51,10 +51,9 @@ export type NewCacheEntry = InferInsertModel<typeof cache>;
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
+  clerkUserId: text("clerk_user_id").unique(),
   email: text("email").notNull().unique(),
   name: text("name"),
-  polarCustomerId: text("polar_customer_id").unique(),
-  polarSubscriptionId: text("polar_subscription_id").unique(),
   plan: text("plan", { enum: ["free", "pro"] })
     .notNull()
     .default("free"),

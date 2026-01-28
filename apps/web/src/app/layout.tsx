@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
@@ -59,7 +60,9 @@ export default function RootLayout({
       lang="en"
     >
       <body className="antialiased">
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ClerkProvider>
+          <ErrorBoundary>{children}</ErrorBoundary>
+        </ClerkProvider>
       </body>
     </html>
   );
