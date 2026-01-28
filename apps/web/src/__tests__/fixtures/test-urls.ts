@@ -1,5 +1,5 @@
 /**
- * Real image URLs from various CDNs for testing the Beeline resolver.
+ * Real image URLs from various CDNs for testing the Srcfull resolver.
  * These are actual production URLs gathered from live websites.
  *
  * Each fixture includes:

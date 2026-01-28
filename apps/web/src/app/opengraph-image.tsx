@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+export const alt = "Srcfull - Find the source. Every time.";
 export const size = {
   width: 1200,
   height: 630,
@@ -7,6 +8,14 @@ export const size = {
 
 export const contentType = "image/png";
 
+/**
+ * Srcfull OpenGraph Image
+ *
+ * Design: Dark background with pixel grid pattern,
+ * logo, tagline, and cyan glow effects
+ *
+ * To use: rename to opengraph-image.tsx
+ */
 export default function OpenGraphImage() {
   return new ImageResponse(
     <div
@@ -14,98 +23,179 @@ export default function OpenGraphImage() {
         width: "100%",
         height: "100%",
         display: "flex",
-        background: "#08080a",
-        color: "#fafafa",
-        padding: 72,
-        justifyContent: "space-between",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#0a0a0f",
+        position: "relative",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      {/* Grid pattern overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* Top gradient glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: -200,
+          left: "50%",
+          width: 800,
+          height: 400,
+          background:
+            "radial-gradient(ellipse at center, rgba(0, 212, 255, 0.15), transparent 70%)",
+          transform: "translateX(-50%)",
+        }}
+      />
+
+      {/* Logo */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 24,
+          marginBottom: 32,
+        }}
+      >
+        {/* Logo mark */}
         <div
           style={{
+            position: "relative",
+            width: 80,
+            height: 80,
             display: "flex",
             alignItems: "center",
-            gap: 18,
+            justifyContent: "center",
           }}
         >
+          {/* Outer ring */}
           <div
             style={{
-              width: 84,
-              height: 84,
-              borderRadius: 28,
-              background: "linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)",
+              position: "absolute",
+              width: 80,
+              height: 80,
+              borderRadius: 16,
+              border: "2px solid rgba(0, 212, 255, 0.3)",
+            }}
+          />
+          {/* Middle ring */}
+          <div
+            style={{
+              position: "absolute",
+              width: 60,
+              height: 60,
+              borderRadius: 12,
+              border: "2px solid rgba(0, 212, 255, 0.5)",
+            }}
+          />
+          {/* Inner filled */}
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 8,
+              background: "linear-gradient(135deg, #00d4ff, #5ce5ff)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              boxShadow: "0 0 40px rgba(0, 212, 255, 0.4)",
             }}
           >
-            <div
+            <span
               style={{
-                fontSize: 54,
-                fontWeight: 900,
-                letterSpacing: -3,
-                color: "#08080a",
-                fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
-                lineHeight: 1,
+                fontSize: 24,
+                fontWeight: 700,
+                color: "#0a0a0f",
+                fontFamily: "system-ui",
               }}
             >
-              B
-            </div>
-          </div>
-          <div
-            style={{
-              fontSize: 44,
-              fontWeight: 700,
-              letterSpacing: -1,
-              fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
-            }}
-          >
-            Beeline
+              S
+            </span>
           </div>
         </div>
 
-        <div
+        {/* Wordmark */}
+        <span
           style={{
-            fontSize: 72,
-            fontWeight: 800,
+            fontSize: 56,
+            fontWeight: 600,
+            color: "#fafafa",
+            fontFamily: "system-ui",
             letterSpacing: -2,
-            lineHeight: 1.05,
-            fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
-            maxWidth: 900,
           }}
         >
-          Resolve image URLs to their highest-quality source versions.
-        </div>
-
-        <div
-          style={{
-            fontSize: 26,
-            color: "rgba(250, 250, 250, 0.72)",
-            fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
-            maxWidth: 840,
-            lineHeight: 1.4,
-          }}
-        >
-          Paid API · API keys · Usage tracking · Learns patterns over time
-        </div>
+          srcfull
+        </span>
       </div>
 
-      <div
+      {/* Tagline */}
+      <h1
         style={{
-          alignSelf: "flex-end",
-          padding: "20px 24px",
-          borderRadius: 18,
-          background: "rgba(245, 158, 11, 0.08)",
-          border: "1px solid rgba(245, 158, 11, 0.25)",
-          color: "rgba(250, 250, 250, 0.86)",
-          fontSize: 22,
-          fontFamily:
-            "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-          whiteSpace: "pre",
+          fontSize: 72,
+          fontWeight: 700,
+          color: "#fafafa",
+          fontFamily: "system-ui",
+          textAlign: "center",
+          lineHeight: 1.1,
+          letterSpacing: -3,
+          margin: 0,
+          marginBottom: 16,
         }}
       >
-        {`POST /api/v1/transform\nAuthorization: Bearer sk_live_…\n\n{ "url": "https://…" }`}
-      </div>
+        Find the source.
+      </h1>
+
+      <h2
+        style={{
+          fontSize: 72,
+          fontWeight: 700,
+          background: "linear-gradient(135deg, #00d4ff, #5ce5ff)",
+          backgroundClip: "text",
+          color: "transparent",
+          fontFamily: "system-ui",
+          textAlign: "center",
+          lineHeight: 1.1,
+          letterSpacing: -3,
+          margin: 0,
+          marginBottom: 40,
+        }}
+      >
+        Every time.
+      </h2>
+
+      {/* Description */}
+      <p
+        style={{
+          fontSize: 28,
+          color: "#94a3b8",
+          fontFamily: "system-ui",
+          textAlign: "center",
+          maxWidth: 700,
+          lineHeight: 1.4,
+          margin: 0,
+        }}
+      >
+        Resolve image URLs to their highest-quality source versions.
+      </p>
+
+      {/* Bottom accent line */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 4,
+          background: "linear-gradient(90deg, transparent, #00d4ff, transparent)",
+        }}
+      />
     </div>,
     size
   );

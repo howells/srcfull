@@ -3,16 +3,16 @@ import { NextResponse } from "next/server";
 const openApiSpec = {
   openapi: "3.1.0",
   info: {
-    title: "Beeline API",
+    title: "Srcfull API",
     description: "Resolve image URLs to their highest-quality source versions",
     version: "1.0.0",
     contact: {
-      name: "Beeline Support",
+      name: "Srcfull Support",
     },
   },
   servers: [
     {
-      url: "https://beeline.dev/api/v1",
+      url: "https://srcfull.dev/api/v1",
       description: "Production",
     },
   ],

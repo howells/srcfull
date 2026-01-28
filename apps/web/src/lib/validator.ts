@@ -17,7 +17,7 @@ export async function validateImageUrl(url: string): Promise<ValidationResult> {
       const response = await fetch(url, {
         method: "HEAD",
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; Beeline/2.0)",
+          "User-Agent": "Mozilla/5.0 (compatible; Srcfull/2.0)",
           Accept: "image/*",
         },
         signal: controller.signal,
