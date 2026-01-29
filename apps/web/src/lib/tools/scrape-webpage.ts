@@ -23,7 +23,7 @@ async function scrapeWithParams(
     url,
     params: {
       render_js: true,
-      wait: 2000,
+      wait: 5000,
       block_resources: false,
       ...extraParams,
     },
