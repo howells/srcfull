@@ -1,4 +1,4 @@
-import { PricingTable } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,291 +8,215 @@ export const metadata: Metadata = {
     "Simple, transparent pricing for Srcfull. Start free, scale as you grow.",
 };
 
-/**
- * Srcfull Pricing Page
- *
- * Features:
- * - Clean, centered layout
- * - Clerk PricingTable integration
- * - Custom styled pricing cards (if not using Clerk)
- * - Enterprise CTA section
- *
- * To use: rename to page.tsx
- */
 export default function PricingPage() {
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      {/* Background effects */}
-      <div className="pixel-grid" />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-gradient-radial" />
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <div className="dot-grid" />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-        {/* Back link */}
-        <header className="mb-8">
+      {/* Header */}
+      <header className="relative z-10 mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <Link href="/" className="text-lg font-medium tracking-tight">
+          srcfull
+        </Link>
+        <nav className="flex items-center gap-6">
           <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
+            href="/pricing"
+            className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back to home
+            Pricing
           </Link>
-        </header>
+          <SignedOut>
+            <SignUpButton mode="modal">
+              <button className="btn-primary px-4 py-2 text-sm">
+                Get started
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard" className="btn-primary px-4 py-2 text-sm">
+              Dashboard
+            </Link>
+          </SignedIn>
+        </nav>
+      </header>
 
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <h1 className="font-display font-bold text-4xl tracking-tight md:text-5xl">
-            Simple, transparent pricing
+      {/* Content */}
+      <main className="relative z-10 mx-auto max-w-3xl px-6 pt-24 pb-20">
+        <div className="space-y-6">
+          <p className="text-sm font-mono text-[var(--text-tertiary)]">
+            Plans
+          </p>
+          <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-balance leading-[1.1]">
+            Pricing
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--text-secondary)]">
-            Start with 1,000 free requests. Scale as you grow. No hidden fees.
+          <p className="text-lg text-[var(--text-secondary)] max-w-xl leading-relaxed">
+            10 free Transform requests. No credit card.
+            <br />
+            Upgrade when you need more.
           </p>
         </div>
 
-        {/* Clerk PricingTable - inherits theme from ClerkProvider */}
-        <div className="mb-20">
-          <PricingTable />
+        {/* Pricing table */}
+        <div className="mt-16 code-block">
+          <div className="code-header">
+            <span className="font-mono">Plans</span>
+            <span className="text-[var(--text-tertiary)]">monthly</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)] text-left text-[var(--text-tertiary)]">
+                  <th className="px-4 py-3 font-mono font-normal">Plan</th>
+                  <th className="px-4 py-3 font-mono font-normal">Requests</th>
+                  <th className="px-4 py-3 font-mono font-normal">Endpoints</th>
+                  <th className="px-4 py-3 font-mono font-normal text-right">Price</th>
+                </tr>
+              </thead>
+              <tbody className="font-mono">
+                {plans.map((plan, i) => (
+                  <tr
+                    key={plan.name}
+                    className={
+                      i < plans.length - 1
+                        ? "border-b border-[var(--border)]"
+                        : ""
+                    }
+                  >
+                    <td className="px-4 py-3 font-medium text-[var(--text-primary)]">
+                      {plan.name}
+                    </td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">
+                      {plan.requests}
+                    </td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">
+                      {plan.endpoints}
+                    </td>
+                    <td className="px-4 py-3 text-right text-[var(--text-primary)]">
+                      {plan.price}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Alternative: Custom pricing cards (uncomment if not using Clerk) */}
-        {/* <PricingCards /> */}
+        <p className="mt-6 text-sm text-[var(--text-secondary)] leading-relaxed">
+          All paid plans include priority support and custom pattern requests.
+        </p>
 
-        {/* Enterprise section */}
-        <section className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-8 md:p-12">
-          <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-            <div>
-              <h2 className="font-display font-semibold text-2xl">
-                Need more?
-              </h2>
-              <p className="mt-2 max-w-lg text-[var(--text-secondary)]">
-                Enterprise plans include unlimited requests, dedicated support,
-                SLA guarantees, and custom integrations.
-              </p>
-              <ul className="mt-4 grid gap-2 text-sm text-[var(--text-secondary)] sm:grid-cols-2">
-                {[
-                  "Unlimited requests",
-                  "99.9% uptime SLA",
-                  "Dedicated support",
-                  "Custom patterns",
-                  "Priority processing",
-                  "Volume discounts",
-                ].map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <svg
-                      className="h-4 w-4 text-[var(--accent)]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Link
-              href="mailto:enterprise@srcfull.dev"
-              className="btn-secondary whitespace-nowrap rounded-xl px-6 py-3 font-medium"
-            >
-              Contact sales
+        <div className="mt-6 flex items-center gap-4">
+          <SignedOut>
+            <SignUpButton mode="modal">
+              <button className="btn-primary px-5 py-2.5 text-sm">
+                Get started
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard" className="btn-primary px-5 py-2.5 text-sm">
+              Go to dashboard
             </Link>
-          </div>
-        </section>
+          </SignedIn>
+        </div>
 
-        {/* FAQ Section */}
-        <section className="mt-20">
-          <h2 className="mb-8 text-center font-display font-semibold text-2xl">
-            Frequently asked questions
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
+        {/* Enterprise */}
+        <div className="mt-24">
+          <h2 className="font-medium mb-2">Need something bigger?</h2>
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-lg">
+            Enterprise includes unlimited requests, 99.9% SLA,
+            and dedicated support.
+          </p>
+          <Link
+            href="mailto:enterprise@srcfull.dev"
+            className="mt-3 inline-block text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            enterprise@srcfull.dev →
+          </Link>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-24">
+          <p className="text-sm font-mono text-[var(--text-tertiary)] mb-6">
+            Common questions
+          </p>
+          <div className="space-y-8">
             {faqs.map((faq) => (
-              <div
-                key={faq.question}
-                className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-6"
-              >
-                <h3 className="font-medium">{faq.question}</h3>
-                <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              <div key={faq.question}>
+                <h3 className="font-medium mb-1">{faq.question}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-lg">
                   {faq.answer}
                 </p>
               </div>
             ))}
           </div>
-        </section>
-      </div>
-    </main>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-10 mt-20 border-t border-[var(--border)]">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-8">
+          <p className="text-sm text-[var(--text-tertiary)]">srcfull</p>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/pricing"
+              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              Pricing
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
+
+const plans = [
+  {
+    name: "Free",
+    requests: "10/mo",
+    endpoints: "Transform",
+    price: "$0",
+  },
+  {
+    name: "Starter",
+    requests: "1,000/mo",
+    endpoints: "Transform",
+    price: "$19/mo",
+  },
+  {
+    name: "Pro",
+    requests: "10,000/mo",
+    endpoints: "Transform + Scrape",
+    price: "$49/mo",
+  },
+  {
+    name: "Scale",
+    requests: "50,000/mo",
+    endpoints: "Transform + Scrape",
+    price: "$149/mo",
+  },
+];
 
 const faqs = [
   {
     question: "What counts as a request?",
     answer:
-      "Each call to the Transform or Scrape endpoint counts as one request. Scrape requests that return multiple images still count as a single request.",
+      "Each call to Transform or Scrape counts as one request. Multiple images returned from a single scrape still count as one.",
   },
   {
     question: "Do unused requests roll over?",
     answer:
-      "No, request allocations reset at the start of each billing cycle. We recommend choosing a plan that matches your typical monthly usage.",
+      "No. Allocations reset each billing cycle.",
   },
   {
-    question: "Can I upgrade or downgrade anytime?",
+    question: "What if I exceed my limit?",
     answer:
-      "Yes, you can change your plan at any time. Upgrades take effect immediately, and downgrades take effect at the start of your next billing cycle.",
+      "You'll get a 429. Upgrade or wait for the next cycle. No surprise charges.",
   },
   {
-    question: "What payment methods do you accept?",
+    question: "Can I change plans?",
     answer:
-      "We accept all major credit cards (Visa, Mastercard, American Express) and can arrange invoicing for enterprise customers.",
-  },
-  {
-    question: "Is there a free trial?",
-    answer:
-      "Every account starts with 1,000 free requests. No credit card required. This lets you test the API before committing to a paid plan.",
-  },
-  {
-    question: "What happens if I exceed my limit?",
-    answer:
-      "Requests beyond your limit return a 429 status code. You can upgrade your plan or wait for the next billing cycle. We never charge overage fees without your consent.",
+      "Upgrades are instant. Downgrades take effect next cycle.",
   },
 ];
-
-/**
- * Custom Pricing Cards Component
- * Use this if you're not using Clerk's built-in PricingTable
- */
-function PricingCards() {
-  const plans = [
-    {
-      name: "Starter",
-      price: "$9",
-      period: "/month",
-      description: "For side projects and testing",
-      features: [
-        "5,000 requests/month",
-        "Transform endpoint only",
-        "Email support",
-        "7-day response time",
-      ],
-      cta: "Get started",
-      highlighted: false,
-    },
-    {
-      name: "Pro",
-      price: "$29",
-      period: "/month",
-      description: "For production applications",
-      features: [
-        "50,000 requests/month",
-        "Transform + Scrape endpoints",
-        "Priority support",
-        "Webhook callbacks",
-        "Custom pattern requests",
-        "24-hour response time",
-      ],
-      cta: "Get started",
-      highlighted: true,
-    },
-    {
-      name: "Team",
-      price: "$99",
-      period: "/month",
-      description: "For growing teams",
-      features: [
-        "250,000 requests/month",
-        "All Pro features",
-        "Multiple API keys",
-        "Usage analytics",
-        "Slack support channel",
-        "4-hour response time",
-      ],
-      cta: "Get started",
-      highlighted: false,
-    },
-  ];
-
-  return (
-    <div className="grid gap-6 md:grid-cols-3">
-      {plans.map((plan) => (
-        <div
-          key={plan.name}
-          className={`rounded-2xl border p-8 ${
-            plan.highlighted
-              ? "border-[var(--border-accent)] bg-[var(--bg-secondary)] glow-subtle"
-              : "border-[var(--border)] bg-[var(--bg-secondary)]"
-          }`}
-        >
-          {plan.highlighted && (
-            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-subtle)] px-3 py-1 text-xs font-medium text-[var(--accent)]">
-              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              Most popular
-            </div>
-          )}
-
-          <h3 className="font-display font-semibold text-xl">{plan.name}</h3>
-          <p className="mt-1 text-sm text-[var(--text-muted)]">
-            {plan.description}
-          </p>
-
-          <div className="mt-6">
-            <span className="font-display font-bold text-4xl">{plan.price}</span>
-            <span className="text-[var(--text-muted)]">{plan.period}</span>
-          </div>
-
-          <ul className="mt-6 space-y-3">
-            {plan.features.map((feature) => (
-              <li
-                key={feature}
-                className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
-              >
-                <svg
-                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--accent)]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                {feature}
-              </li>
-            ))}
-          </ul>
-
-          <Link
-            href="/dashboard"
-            className={`mt-8 block w-full rounded-xl py-3 text-center font-medium ${
-              plan.highlighted
-                ? "btn-primary"
-                : "btn-secondary"
-            }`}
-          >
-            {plan.cta}
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-}

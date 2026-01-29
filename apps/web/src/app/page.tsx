@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -20,11 +20,6 @@ export default function Home() {
             Pricing
           </Link>
           <SignedOut>
-            <SignInButton mode="modal">
-              <button className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-                Sign in
-              </button>
-            </SignInButton>
             <SignUpButton mode="modal">
               <button className="btn-primary px-4 py-2 text-sm">
                 Get started
