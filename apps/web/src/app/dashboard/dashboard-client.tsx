@@ -86,11 +86,9 @@ export function ApiKeysSection() {
   }
 
   return (
-    <section>
-      <h2 className="mb-6 font-semibold text-xl">API Keys</h2>
-
+    <div>
       {newlyCreatedKey && (
-        <div className="mb-6 rounded-lg border border-[var(--success)]/20 bg-[var(--success-bg)] p-4">
+        <div className="mb-6 rounded-lg border border-[var(--success)]/20 bg-[var(--success-light)] p-4">
           <p className="mb-2 font-medium text-[var(--success)] text-sm">
             Key created! Copy it now — you won't see it again.
           </p>
@@ -99,14 +97,14 @@ export function ApiKeysSection() {
               {newlyCreatedKey}
             </code>
             <button
-              className="rounded bg-[var(--success)] px-3 py-2 font-medium text-black text-sm transition-opacity hover:opacity-90"
+              className="btn-primary px-3 py-2 text-sm"
               onClick={() => copyToClipboard(newlyCreatedKey)}
               type="button"
             >
               Copy
             </button>
             <button
-              className="px-3 py-2 text-[var(--text-muted)] text-sm hover:text-[var(--text-primary)]"
+              className="px-3 py-2 text-[var(--text-tertiary)] text-sm hover:text-[var(--text-primary)] transition-colors"
               onClick={() => setNewlyCreatedKey(null)}
               type="button"
             >
@@ -118,61 +116,91 @@ export function ApiKeysSection() {
 
       <form className="mb-6 flex gap-3" onSubmit={handleCreateKey}>
         <input
-          className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm focus:border-[var(--accent)] focus:outline-none"
+          className="flex-1 rounded-md border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-sm focus:border-[var(--accent)] focus:outline-none transition-colors"
           onChange={(e) => setNewKeyName(e.target.value)}
           placeholder="Key name (e.g., Production)"
           type="text"
           value={newKeyName}
         />
         <button
-          className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-black text-sm transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="btn-primary px-4 py-2 text-sm disabled:opacity-50"
           disabled={isCreatingKey || !newKeyName.trim()}
           type="submit"
         >
-          {isCreatingKey ? "Creating..." : "Create Key"}
+          {isCreatingKey ? "Creating..." : "Create key"}
         </button>
       </form>
 
       {error && (
-        <div className="mb-4 rounded-lg border border-[var(--error)]/20 bg-[var(--error-bg)] p-3 text-[var(--error)] text-sm">
+        <div className="mb-4 rounded-lg border border-[var(--error)]/20 bg-[var(--error-light)] p-3 text-[var(--error)] text-sm">
           {error}
         </div>
       )}
 
       {apiKeys.length === 0 ? (
-        <p className="text-[var(--text-muted)] text-sm">No API keys yet.</p>
+        <p className="text-sm text-[var(--text-tertiary)]">No API keys yet.</p>
       ) : (
-        <div className="space-y-2">
-          {apiKeys.map((key) => (
-            <div
-              className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] p-4"
-              key={key.id}
-            >
-              <div className="flex-1">
-                <div className="flex items-center gap-3">
-                  <span className="font-medium">{key.name}</span>
-                  <code className="rounded bg-[var(--bg-primary)] px-2 py-1 text-[var(--text-muted)] text-xs">
-                    {key.keyPrefix}...
-                  </code>
-                </div>
-                <div className="mt-1 text-[var(--text-muted)] text-xs">
-                  Created {formatDate(key.createdAt)}
-                  {key.lastUsedAt &&
-                    ` · Last used ${formatDate(key.lastUsedAt)}`}
-                </div>
-              </div>
-              <button
-                className="rounded px-3 py-1.5 text-[var(--error)] text-xs transition-colors hover:bg-[var(--error-bg)]"
-                onClick={() => handleDeleteKey(key.id)}
-                type="button"
-              >
-                Revoke
-              </button>
-            </div>
-          ))}
+        <div className="code-block">
+          <div className="code-header">
+            <span className="font-mono">Keys</span>
+            <span className="text-[var(--text-tertiary)]">
+              {apiKeys.length} active
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)] text-left text-[var(--text-tertiary)]">
+                  <th className="px-4 py-3 font-mono font-normal">Name</th>
+                  <th className="px-4 py-3 font-mono font-normal">Key</th>
+                  <th className="px-4 py-3 font-mono font-normal">Created</th>
+                  <th className="px-4 py-3 font-mono font-normal">
+                    Last used
+                  </th>
+                  <th className="px-4 py-3 font-mono font-normal text-right">
+                    &nbsp;
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="font-mono">
+                {apiKeys.map((key, i) => (
+                  <tr
+                    key={key.id}
+                    className={
+                      i < apiKeys.length - 1
+                        ? "border-b border-[var(--border)]"
+                        : ""
+                    }
+                  >
+                    <td className="px-4 py-3 font-medium text-[var(--text-primary)]">
+                      {key.name}
+                    </td>
+                    <td className="px-4 py-3 text-[var(--text-tertiary)]">
+                      {key.keyPrefix}...
+                    </td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">
+                      {formatDate(key.createdAt)}
+                    </td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">
+                      {key.lastUsedAt ? formatDate(key.lastUsedAt) : "—"}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        className="text-[var(--text-tertiary)] text-xs hover:text-[var(--error)] transition-colors"
+                        onClick={() => handleDeleteKey(key.id)}
+                        type="button"
+                      >
+                        Revoke
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }
 
@@ -194,60 +222,80 @@ export function UsageSection() {
     load();
   }, []);
 
+  if (!usage) {
+    return (
+      <p className="text-sm text-[var(--text-tertiary)]">No usage data yet.</p>
+    );
+  }
+
+  const endpoints = Object.entries(usage.byEndpoint);
+
   return (
-    <section>
-      <h2 className="mb-6 font-semibold text-xl">Usage</h2>
-
-      {usage ? (
-        <>
-          <div className="mb-6 grid grid-cols-3 gap-4">
-            <StatCard
-              label="Total Requests"
-              value={usage.totalRequests.toLocaleString()}
-            />
-            <StatCard
-              label="Last 24 Hours"
-              value={usage.last24Hours.toLocaleString()}
-            />
-            <StatCard
-              label="Last 7 Days"
-              value={usage.last7Days.toLocaleString()}
-            />
-          </div>
-
-          {Object.keys(usage.byEndpoint).length > 0 && (
-            <div>
-              <h3 className="mb-3 font-medium text-[var(--text-secondary)] text-sm">
-                By Endpoint
-              </h3>
-              <div className="space-y-1">
-                {Object.entries(usage.byEndpoint).map(([endpoint, count]) => (
-                  <div
-                    className="flex items-center justify-between rounded bg-[var(--bg-secondary)] px-3 py-2 text-sm"
-                    key={endpoint}
-                  >
-                    <span className="text-[var(--text-muted)]">{endpoint}</span>
-                    <span className="text-[var(--text-primary)]">
-                      {count.toLocaleString()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <p className="text-[var(--text-muted)] text-sm">No usage data yet.</p>
-      )}
-    </section>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] p-4">
-      <div className="font-bold text-2xl">{value}</div>
-      <div className="mt-1 text-[var(--text-muted)] text-xs">{label}</div>
+    <div className="code-block">
+      <div className="code-header">
+        <span className="font-mono">Requests</span>
+        <span className="text-[var(--text-tertiary)]">
+          {usage.totalRequests.toLocaleString()} total
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-[var(--border)] text-left text-[var(--text-tertiary)]">
+              <th className="px-4 py-3 font-mono font-normal">Endpoint</th>
+              <th className="px-4 py-3 font-mono font-normal text-right">
+                24h
+              </th>
+              <th className="px-4 py-3 font-mono font-normal text-right">
+                7d
+              </th>
+              <th className="px-4 py-3 font-mono font-normal text-right">
+                Total
+              </th>
+            </tr>
+          </thead>
+          <tbody className="font-mono">
+            {endpoints.length > 0 ? (
+              endpoints.map(([endpoint, count], i) => (
+                <tr
+                  key={endpoint}
+                  className={
+                    i < endpoints.length - 1
+                      ? "border-b border-[var(--border)]"
+                      : ""
+                  }
+                >
+                  <td className="px-4 py-3 font-medium text-[var(--text-primary)]">
+                    {endpoint}
+                  </td>
+                  <td className="px-4 py-3 text-right text-[var(--text-secondary)]">
+                    —
+                  </td>
+                  <td className="px-4 py-3 text-right text-[var(--text-secondary)]">
+                    —
+                  </td>
+                  <td className="px-4 py-3 text-right text-[var(--text-primary)]">
+                    {count.toLocaleString()}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="px-4 py-3 text-[var(--text-primary)]">All</td>
+                <td className="px-4 py-3 text-right text-[var(--text-secondary)]">
+                  {usage.last24Hours.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-right text-[var(--text-secondary)]">
+                  {usage.last7Days.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-right text-[var(--text-primary)]">
+                  {usage.totalRequests.toLocaleString()}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

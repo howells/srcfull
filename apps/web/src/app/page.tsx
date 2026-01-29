@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export default function Home() {
   return (
@@ -7,32 +9,7 @@ export default function Home() {
       {/* Subtle dot grid */}
       <div className="dot-grid" />
 
-      {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
-        <Link href="/" className="text-lg font-medium tracking-tight">
-          srcfull
-        </Link>
-        <nav className="flex items-center gap-6">
-          <Link
-            href="/pricing"
-            className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-          >
-            Pricing
-          </Link>
-          <SignedOut>
-            <SignUpButton mode="modal">
-              <button className="btn-primary px-4 py-2 text-sm">
-                Get started
-              </button>
-            </SignUpButton>
-          </SignedOut>
-          <SignedIn>
-            <Link href="/dashboard" className="btn-primary px-4 py-2 text-sm">
-              Dashboard
-            </Link>
-          </SignedIn>
-        </nav>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <main className="relative z-10 max-w-3xl mx-auto px-6 pt-24 pb-20">
@@ -155,20 +132,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-[var(--border)] mt-20">
-        <div className="max-w-5xl mx-auto px-6 py-8 flex items-center justify-between">
-          <p className="text-sm text-[var(--text-tertiary)]">srcfull</p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/pricing"
-              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              Pricing
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

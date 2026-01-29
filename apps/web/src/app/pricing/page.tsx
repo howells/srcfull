@@ -1,6 +1,8 @@
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -13,32 +15,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <div className="dot-grid" />
 
-      {/* Header */}
-      <header className="relative z-10 mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" className="text-lg font-medium tracking-tight">
-          srcfull
-        </Link>
-        <nav className="flex items-center gap-6">
-          <Link
-            href="/pricing"
-            className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-          >
-            Pricing
-          </Link>
-          <SignedOut>
-            <SignUpButton mode="modal">
-              <button className="btn-primary px-4 py-2 text-sm">
-                Get started
-              </button>
-            </SignUpButton>
-          </SignedOut>
-          <SignedIn>
-            <Link href="/dashboard" className="btn-primary px-4 py-2 text-sm">
-              Dashboard
-            </Link>
-          </SignedIn>
-        </nav>
-      </header>
+      <SiteHeader />
 
       {/* Content */}
       <main className="relative z-10 mx-auto max-w-3xl px-6 pt-24 pb-20">
@@ -153,20 +130,7 @@ export default function PricingPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 mt-20 border-t border-[var(--border)]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-8">
-          <p className="text-sm text-[var(--text-tertiary)]">srcfull</p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/pricing"
-              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              Pricing
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
