@@ -18,22 +18,20 @@ export function SiteHeader({
         >
           Pricing
         </Link>
+        <Link
+          href="/docs"
+          className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+        >
+          Docs
+        </Link>
         {variant === "dashboard" ? (
-          <>
-            <Link
-              href="/docs"
-              className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              Docs
-            </Link>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-8 h-8",
-                },
-              }}
-            />
-          </>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "w-8 h-8",
+              },
+            }}
+          />
         ) : (
           <>
             <SignedOut>

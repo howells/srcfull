@@ -12,6 +12,12 @@ export function SiteFooter() {
           >
             Pricing
           </Link>
+          <Link
+            href="/docs"
+            className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            Docs
+          </Link>
         </div>
       </div>
     </footer>
