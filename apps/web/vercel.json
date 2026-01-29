@@ -5,5 +5,15 @@
       "path": "/api/cron/cleanup",
       "schedule": "0 3 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "app/api/v1/scrape/route.ts": {
+      "memory": 1024,
+      "maxDuration": 60
+    },
+    "app/api/v1/transform/route.ts": {
+      "memory": 512,
+      "maxDuration": 30
+    }
+  }
 }
