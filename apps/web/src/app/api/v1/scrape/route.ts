@@ -8,12 +8,15 @@ import { scrapeWithFirecrawl } from "@/lib/tools/scrape-firecrawl";
 import { executeScrapeWebpage } from "@/lib/tools/scrape-webpage";
 import { validateUrl } from "@/lib/url-validator";
 
+// Allow longer execution time for scraping (Vercel Pro: 60s max)
+export const maxDuration = 60;
+
 // Get file size via HEAD request
 async function getImageSize(url: string): Promise<number | null> {
   try {
     const response = await fetch(url, { method: "HEAD" });
     const contentLength = response.headers.get("content-length");
-    return contentLength ? parseInt(contentLength, 10) : null;
+    return contentLength ? Number.parseInt(contentLength, 10) : null;
   } catch {
     return null;
   }
@@ -108,6 +111,7 @@ export async function POST(request: Request) {
     const sourceDomain = new URL(url).hostname.replace(/^www\./, "");
 
     if (scrapeResult.success && scrapeResult.data) {
+      console.log(`[scrape] HTML received: ${scrapeResult.data.length} chars`);
       // Extract image elements from HTML (includes raw extraction for aria-hidden content)
       // sortBySize: true makes HEAD requests to get actual file sizes and sorts largest first
       const extractResult = await extractImageElementsEnhanced(
@@ -117,6 +121,9 @@ export async function POST(request: Request) {
           sourceDomain,
           sortBySize: true,
         }
+      );
+      console.log(
+        `[scrape] Extract result: success=${extractResult.success}, count=${extractResult.data?.length ?? 0}`
       );
       if (extractResult.success && extractResult.data) {
         // Filter to main images
@@ -136,7 +143,14 @@ export async function POST(request: Request) {
           }
           return true;
         });
+        console.log(
+          `[scrape] After filtering: ${candidates.length} candidates`
+        );
       }
+    } else {
+      console.log(
+        `[scrape] ScrapingBee failed: ${scrapeResult.error ?? "unknown error"}`
+      );
     }
 
     // Fallback to Firecrawl if ScrapingBee failed or found no images
