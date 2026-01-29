@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type React from "react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { sizeArgType } from "../lib/storybook";
 import {
   ICON_OPTIONS,

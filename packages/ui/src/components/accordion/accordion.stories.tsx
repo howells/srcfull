@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { AccordionContent } from "./accordion-content";
 import { AccordionItem } from "./accordion-item";
 import { AccordionRoot as Accordion } from "./accordion-root";

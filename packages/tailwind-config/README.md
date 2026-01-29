@@ -1,4 +1,4 @@
-# @beeline/tailwind-config
+# @srcfull/tailwind-config
 
 Shared Tailwind CSS configuration for the monorepo.
 
@@ -7,7 +7,7 @@ Shared Tailwind CSS configuration for the monorepo.
 Import in your CSS files:
 
 ```css
-@import "@beeline/tailwind-config";
+@import "@srcfull/tailwind-config";
 ```
 
 This package provides:

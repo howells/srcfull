@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { Calendar, Info, Mail, User } from "lucide-react";
 import { Button } from "./button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";

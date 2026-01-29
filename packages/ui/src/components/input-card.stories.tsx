@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { Check, CreditCard, Home, Zap } from "lucide-react";
 import { useState } from "react";
 import { InputCard } from "./input-card";

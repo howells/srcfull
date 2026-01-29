@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { Badge } from "../badge/badge-root";
 import { TabNavigationLink } from "./tab-navigation-link";
 import { TabNavigationList } from "./tab-navigation-list";

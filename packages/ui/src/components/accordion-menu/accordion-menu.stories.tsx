@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { FileText, Folder, Home, Settings, User, Users } from "lucide-react";
 import { AccordionMenuGroup } from "./accordion-menu-group";
 import { AccordionMenuIndicator } from "./accordion-menu-indicator";

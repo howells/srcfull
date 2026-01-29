@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "./badge";
 import { Button } from "./button";

@@ -8,23 +8,23 @@ alwaysApply: true
 Scope: All apps in this monorepo (e.g., apps/web, apps/docs).
 
 ## Core Rule
-- MUST import UI primitives/components from `@materia/ui`.
+- MUST import UI primitives/components from `@repo/ui`.
 - MUST NOT duplicate those components inside app folders (e.g., `apps/web/app/components/ui`).
 - SHOULD propose new primitives in `packages/ui` when missing instead of implementing them in apps.
 
 ## Imports
 - Correct:
-  - `import { Button } from "@materia/ui/components/button"`
-  - `import { Icon } from "@materia/ui/components/icon"`
-  - `import { Avatar } from "@materia/ui/components/avatar"`
+  - `import { Button } from "@repo/ui/components/button"`
+  - `import { Icon } from "@repo/ui/components/icon"`
+  - `import { Avatar } from "@repo/ui/components/avatar"`
 - Avoid:
   - `@/components/ui/button` (app-local duplicates)
 
 ## Adding Components
 1. Implement the primitive in `packages/ui/src/components/`.
-2. Use shared utilities from `@materia/ui/lib/*`.
+2. Use shared utilities from `@repo/ui/lib/*`.
 3. Add a Storybook story alongside to document usage.
-4. Update apps to import from `@materia/ui`.
+4. Update apps to import from `@repo/ui`.
 
 ## Structure for Complex Components
 - SHOULD split complex components into a folder with single-purpose files.
@@ -43,8 +43,8 @@ Scope: All apps in this monorepo (e.g., apps/web, apps/docs).
 - If a composite becomes generic, promote it to `packages/ui`.
 
 ## Consistency
-- Icons: use `@materia/ui/components/icon` with the shared size scale.
+- Icons: use `@repo/ui/components/icon` with the shared size scale.
 - Sizes: use the shared `ComponentSize` scale where applicable.
-- Styling: rely on tokens and utilities from `@materia/tailwind-config`.
+- Styling: rely on tokens and utilities from `@srcfull/tailwind-config`.
 
-Rationale: Centralizing primitives in `@materia/ui` eliminates duplication, ensures consistent UX, and simplifies maintenance across apps.
+Rationale: Centralizing primitives in `@repo/ui` eliminates duplication, ensures consistent UX, and simplifies maintenance across apps.

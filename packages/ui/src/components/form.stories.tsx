@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import {

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { useState } from "react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { Button } from "../button";
 import { CardStackItem } from "./card-stack-item";
 import { CardStack } from "./card-stack-root";

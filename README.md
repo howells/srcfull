@@ -1,6 +1,6 @@
-# Beeline
+# Srcfull
 
-Beeline is a paid-only API that extracts clean, full-resolution image URLs from web pages.
+Srcfull is a paid-only API that extracts clean, full-resolution image URLs from web pages.
 
 ## What You Get
 

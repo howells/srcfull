@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Icon } from "./icon";

@@ -44,6 +44,6 @@ Scope: All apps in this monorepo (e.g., apps/web, apps/docs).
 ## Consistency
 - Icons: use `@repo/ui/components/icon` with the shared size scale.
 - Sizes: use the shared `ComponentSize` scale where applicable.
-- Styling: rely on tokens and utilities from `@materia/tailwind-config`.
+- Styling: rely on tokens and utilities from `@srcfull/tailwind-config`.
 
 Rationale: Centralizing primitives in `@repo/ui` eliminates duplication, ensures consistent UX, and simplifies maintenance across apps.

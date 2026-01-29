@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { type Preset, presets } from "@repo/ui/lib/motion";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";

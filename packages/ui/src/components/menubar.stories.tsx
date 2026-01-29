@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { ClipboardPaste, Copy, Scissors, Settings } from "lucide-react";
 import { Icon } from "./icon";
 import { MenubarContent } from "./menubar/menubar-content";

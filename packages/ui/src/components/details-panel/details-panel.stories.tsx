@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { AvatarFallback } from "../avatar/avatar-fallback";
 import { AvatarRoot as Avatar } from "../avatar/avatar-root";
 import { Badge } from "../badge";

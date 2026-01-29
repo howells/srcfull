@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { AtSign, Calendar, DollarSign, Search, X } from "lucide-react";
 import {
   InputGroup,

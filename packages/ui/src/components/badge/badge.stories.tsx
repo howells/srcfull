@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "@materia/tailwind-config/shared-styles.css";
+import "@srcfull/tailwind-config/shared-styles.css";
 import { sizeArgType } from "@repo/ui/lib/storybook";
 import { Check } from "lucide-react";
 import { BadgeButton } from "./badge-button";
