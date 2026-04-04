@@ -1,5 +1,15 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
-  "extends": ["ultracite/biome/core", "ultracite/biome/react", "ultracite/biome/next"],
-  "root": true
+  "files": {
+    "includes": ["**", "!dist", "!node_modules", "!coverage", "!.vercel"]
+  },
+  "formatter": {
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  }
 }

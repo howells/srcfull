@@ -1,25 +1,56 @@
 {
   "name": "srcfull",
-  "version": "0.1.0",
-  "private": true,
+  "version": "2.0.0",
+  "description": "Image extraction and source-resolution toolkit for high-quality web images.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "srcfull": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./providers/scrapingbee": {
+      "types": "./dist/providers/scrapingbee.d.ts",
+      "import": "./dist/providers/scrapingbee.js"
+    },
+    "./providers/firecrawl": {
+      "types": "./dist/providers/firecrawl.d.ts",
+      "import": "./dist/providers/firecrawl.js"
+    },
+    "./stores/memory": {
+      "types": "./dist/stores/memory.d.ts",
+      "import": "./dist/stores/memory.js"
+    },
+    "./stores/file": {
+      "types": "./dist/stores/file.d.ts",
+      "import": "./dist/stores/file.js"
+    }
+  },
+  "files": [
+    "dist",
+    "data/patterns.json"
+  ],
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "format": "ultracite fix",
-    "type-check": "turbo type-check",
-    "typecheck": "turbo type-check",
-    "prepare": "husky"
+    "build": "tsup src/index.ts src/cli.ts src/providers/*.ts src/stores/*.ts --format esm --dts --clean",
+    "demo:build": "pnpm build && node scripts/build-demo.mjs",
+    "demo:serve": "pnpm demo:build && node scripts/serve-demo.mjs",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "scrapingbee": "^1.7.6"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
-    "@tailwindcss/postcss": "^4.1.17",
-    "husky": "9.1.7",
-    "tailwindcss": "^4.1.17",
-    "tailwindcss-animate": "^1.0.7",
-    "turbo": "^2.3.3",
+    "@types/node": "^24.6.0",
+    "tsup": "^8.5.0",
     "typescript": "5.9.3",
-    "ultracite": "7.1.1"
+    "vitest": "^4.0.16"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {

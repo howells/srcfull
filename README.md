@@ -1,61 +1,136 @@
 # Srcfull
 
-Srcfull is a paid-only API that extracts clean, full-resolution image URLs from web pages.
+`srcfull` is a package-first toolkit for extracting and upgrading web image URLs.
 
-## What You Get
+It is designed as a standalone library and CLI for image extraction and source resolution. The focus is:
 
-- **Public API**: scrape a page and return resolved image URLs
-- **Resolver**: upgrades CDN URLs (query params, srcset, known transforms, probing)
-- **Dashboard**: subscribe (Polar), create/revoke API keys, view usage
+- extract image candidates from HTML
+- filter obvious junk like logos and icons
+- resolve CDN/transformed URLs back to larger originals
+- probe likely source variants when no curated pattern exists
+- optionally plug in HTML fetchers like ScrapingBee and fallback image providers like Firecrawl
 
-## Repo Layout
+It handles the page-shape problems that usually make this kind of package annoying in practice:
 
-- `apps/web` — Next.js app (dashboard + API)
-- `packages/ui` — shared UI components
-- `data/patterns.json` — curated URL transform patterns
+- relative image paths resolved against the page URL
+- lazy-loaded image attributes like `data-src`, `data-srcset`, and `data-original`
+- `img srcset`, `picture source`, inline background images, and social/meta image tags
+- private-host blocking for both page scraping and image validation
+- `HEAD` fallback to ranged `GET` for hosts that refuse metadata requests
+- persistent file-backed cache/pattern stores for repeat runs
 
-## Prerequisites
-
-- Node.js `>=20.9.0`
-- pnpm `9.x`
-
-## Setup
+## Install
 
 ```bash
 pnpm install
-cp apps/web/.env.local.example apps/web/.env.local
-pnpm --filter web db:push
+pnpm build
 ```
 
-## Run
+## Library Usage
+
+```ts
+import { scrapePage, resolveImageUrl } from "srcfull";
+
+const resolved = await resolveImageUrl(
+  "https://cdn.example.com/image.jpg?w=400&q=80"
+);
+
+const page = await scrapePage("https://example.com/product-page");
+```
+
+`scrapePage()` normalizes relative candidates against the page URL before validation and resolution, so typical product/article HTML works without extra preprocessing.
+
+If you need rendered HTML instead of plain `fetch`, inject a custom fetcher:
+
+```ts
+import { scrapePage } from "srcfull";
+import { createScrapingBeeHtmlFetcher } from "srcfull/providers/scrapingbee";
+
+const fetchHtml = createScrapingBeeHtmlFetcher({
+  apiKey: process.env.SCRAPINGBEE_API_KEY!,
+});
+
+const result = await scrapePage("https://example.com", { fetchHtml });
+```
+
+If you want the built-in fetcher with different timeout or header behavior:
+
+```ts
+import { createDefaultHtmlFetcher, scrapePage } from "srcfull";
+
+const fetchHtml = createDefaultHtmlFetcher({
+  timeoutMs: 15_000,
+  headers: {
+    "Accept-Language": "en-GB,en;q=0.9",
+  },
+});
+
+const result = await scrapePage("https://example.com", { fetchHtml });
+```
+
+For image-only fallback:
+
+```ts
+import { createFirecrawlImageFallback } from "srcfull/providers/firecrawl";
+```
+
+If you want candidate extraction without the rest of the pipeline:
+
+```ts
+import { extractImageCandidatesFromHtml } from "srcfull";
+
+const candidates = extractImageCandidatesFromHtml(
+  html,
+  "https://example.com/product-page"
+);
+```
+
+For repeat jobs, persist cache and learned patterns on disk:
+
+```ts
+import {
+  createFileCache,
+  createFilePatternStore,
+  resolveImageUrl,
+} from "srcfull";
+
+const cache = createFileCache({ filePath: ".srcfull/cache.json" });
+const patternStore = createFilePatternStore({
+  filePath: ".srcfull/patterns.json",
+});
+
+const result = await resolveImageUrl("https://cdn.example.com/photo.jpg?w=400", {
+  cache,
+  patternStore,
+});
+```
+
+## CLI
 
 ```bash
-pnpm dev
+srcfull resolve 'https://cdn.example.com/photo.jpg?w=300'
+srcfull scrape 'https://example.com/listing' --max-images=12
+srcfull scrape 'https://example.com/listing' --max-images=12 --min-size=300 --resolve-concurrency=8
+srcfull --version
 ```
 
-Open `http://localhost:13000`.
+The JSON response from `scrape` includes `stats.returned` as well as `found`, `resolved`, `failed`, and `durationMs`.
 
-## API
+## Demo Page
 
-Create an API key in the dashboard, then:
+There is a self-contained demo page at `docs/demo/index.html`.
 
 ```bash
-curl -X POST http://localhost:13000/api/v1/transform \
-  -H "Authorization: Bearer sk_live_..." \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com/image.jpg"}'
+pnpm demo:build
+pnpm demo:serve
 ```
+
+The page is generated from real calls to the package, so the HTML samples, extracted candidates, resolved URLs, and persisted cache/pattern snapshots are actual outputs rather than hand-written mockups.
+
+## Development
 
 ```bash
-curl -X POST http://localhost:13000/api/v1/scrape \
-  -H "Authorization: Bearer sk_live_..." \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com","maxImages":20}'
+pnpm test
+pnpm typecheck
+pnpm build
 ```
-
-## Scripts
-
-- `pnpm dev` — run all apps (Turborepo)
-- `pnpm lint` — Biome checks
-- `pnpm --filter web test` — unit tests (Vitest)
-- `pnpm build` — production build (Next.js)

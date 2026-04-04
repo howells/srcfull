@@ -53,7 +53,15 @@
     "domain": "cdn.shopify.com",
     "description": "Shopify CDN",
     "stripParams": ["v=\\d+"],
-    "stripSuffixes": ["_small", "_medium", "_large", "_grande", "_master", "_\\d+x\\d*", "_\\d*x\\d+"],
+    "stripSuffixes": [
+      "_small",
+      "_medium",
+      "_large",
+      "_grande",
+      "_master",
+      "_\\d+x\\d*",
+      "_\\d*x\\d+"
+    ],
     "confidence": "high",
     "examples": [
       "https://cdn.shopify.com/s/files/1/0001/2345/products/image_800x800.jpg?v=1234"
@@ -71,7 +79,16 @@
   "imgix": {
     "domain": ".imgix.net",
     "description": "imgix image CDN",
-    "stripParams": ["[?&]w=\\d+", "[?&]h=\\d+", "[?&]fit=\\w+", "[?&]auto=[\\w,]+", "[?&]q=\\d+", "[?&]fm=\\w+", "[?&]dpr=[\\d.]+", "[?&]crop=[\\w,]+"],
+    "stripParams": [
+      "[?&]w=\\d+",
+      "[?&]h=\\d+",
+      "[?&]fit=\\w+",
+      "[?&]auto=[\\w,]+",
+      "[?&]q=\\d+",
+      "[?&]fm=\\w+",
+      "[?&]dpr=[\\d.]+",
+      "[?&]crop=[\\w,]+"
+    ],
     "confidence": "high",
     "examples": [
       "https://assets.imgix.net/image.jpg?w=800&h=600&fit=crop&auto=format"
@@ -102,7 +119,13 @@
   "contentful": {
     "domain": "images.ctfassets.net",
     "description": "Contentful CDN",
-    "stripParams": ["[?&]w=\\d+", "[?&]h=\\d+", "[?&]q=\\d+", "[?&]fm=\\w+", "[?&]fit=\\w+"],
+    "stripParams": [
+      "[?&]w=\\d+",
+      "[?&]h=\\d+",
+      "[?&]q=\\d+",
+      "[?&]fm=\\w+",
+      "[?&]fit=\\w+"
+    ],
     "confidence": "high",
     "examples": [
       "https://images.ctfassets.net/space/asset.jpg?w=800&h=600&fm=webp"
@@ -122,13 +145,20 @@
     "description": "Bunny CDN",
     "stripParams": ["[?&]width=\\d+", "[?&]height=\\d+", "[?&]quality=\\d+"],
     "confidence": "medium",
-    "examples": [
-      "https://example.b-cdn.net/image.jpg?width=800&height=600"
-    ]
+    "examples": ["https://example.b-cdn.net/image.jpg?width=800&height=600"]
   },
   "generic": {
     "domain": "*",
-    "stripParams": ["[?&]w=\\d+", "[?&]h=\\d+", "[?&]width=\\d+", "[?&]height=\\d+", "[?&]resize=\\d+", "[?&]size=\\d+", "[?&]quality=\\d+", "[?&]q=\\d+"],
+    "stripParams": [
+      "[?&]w=\\d+",
+      "[?&]h=\\d+",
+      "[?&]width=\\d+",
+      "[?&]height=\\d+",
+      "[?&]resize=\\d+",
+      "[?&]size=\\d+",
+      "[?&]quality=\\d+",
+      "[?&]q=\\d+"
+    ],
     "confidence": "low",
     "description": "Common resizing parameters to try stripping"
   }
