@@ -1,6 +1,6 @@
 {
   "name": "srcfull",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Image extraction and source-resolution toolkit for high-quality web images.",
   "type": "module",
   "license": "MIT",
@@ -39,7 +39,8 @@
     "demo:serve": "pnpm demo:build && node scripts/serve-demo.mjs",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:live-patterns": "SRCFULL_LIVE_TESTS=1 vitest run test/live-curated-patterns.test.ts"
   },
   "dependencies": {
     "cheerio": "^1.1.2",

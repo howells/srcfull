@@ -131,6 +131,9 @@ The page is generated from real calls to the package, so the HTML samples, extra
 
 ```bash
 pnpm test
+pnpm test:live-patterns
 pnpm typecheck
 pnpm build
 ```
+
+`pnpm test:live-patterns` revalidates the researched real-world CDN fixtures in `test/fixtures/curated-patterns.json` against the network.

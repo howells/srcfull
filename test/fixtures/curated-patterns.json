@@ -1,0 +1,138 @@
+[
+  {
+    "pattern": "conde_nast",
+    "name": "Conde Nast media transform",
+    "input": "https://media.houseandgarden.co.uk/photos/69cf8cdbfbf85f4a4045477d/1:1/w_640,c_limit/2506_BennisonBedroom_078.jpg",
+    "expected": "https://media.houseandgarden.co.uk/photos/69cf8cdbfbf85f4a4045477d/master/w_2560,c_limit/image.jpg",
+    "sourceUrl": "https://www.houseandgarden.co.uk/",
+    "evidenceUrl": "https://www.houseandgarden.co.uk/"
+  },
+  {
+    "pattern": "cloudinary_path",
+    "name": "Cloudinary path transform",
+    "input": "https://res.cloudinary.com/demo/image/upload/w_400,h_300,c_fill/sample.jpg",
+    "expected": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "sourceUrl": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "evidenceUrl": "https://cloudinary.com/documentation/image_transformations"
+  },
+  {
+    "pattern": "cloudflare_images",
+    "name": "Cloudflare /cdn-cgi/image path",
+    "input": "https://media.carsandbids.com/cdn-cgi/image/width=542,quality=70/c51905b0000b639a185eeb080dd879bf007f5604/photos/9QLdomnk-85qzXWfse2-(edit).jpg",
+    "expected": "https://media.carsandbids.com/c51905b0000b639a185eeb080dd879bf007f5604/photos/9QLdomnk-85qzXWfse2-(edit).jpg",
+    "sourceUrl": "https://media.carsandbids.com/c51905b0000b639a185eeb080dd879bf007f5604/photos/9QLdomnk-85qzXWfse2-(edit).jpg",
+    "evidenceUrl": "https://developers.cloudflare.com/images/transform-images/transform-via-url/"
+  },
+  {
+    "pattern": "fastly_io",
+    "name": "Fastly query transform",
+    "input": "https://www.fastly.io/image.jpg?width=300",
+    "expected": "https://www.fastly.io/image.jpg",
+    "sourceUrl": "https://www.fastly.io/image.jpg",
+    "evidenceUrl": "https://www.fastly.com/documentation/reference/io/"
+  },
+  {
+    "pattern": "shopify",
+    "name": "Shopify CDN size suffix",
+    "input": "https://polinas-potent-potions.myshopify.com/cdn/shop/files/science-beakers-blue-light-new_large.jpg?v=1683744744",
+    "expected": "https://polinas-potent-potions.myshopify.com/cdn/shop/files/science-beakers-blue-light-new.jpg",
+    "sourceUrl": "https://polinas-potent-potions.myshopify.com/cdn/shop/files/science-beakers-blue-light-new.jpg",
+    "evidenceUrl": "https://shopify.dev/docs/api/liquid/filters/product_img_url"
+  },
+  {
+    "pattern": "sanity",
+    "name": "Sanity query transform",
+    "input": "https://cdn.sanity.io/images/3do82whm/next/5306c1d623c7fa616697ddfa0644c8bfb3efed3d-1920x1080.jpg?w=1920&q=75&fit=clip&auto=format",
+    "expected": "https://cdn.sanity.io/images/3do82whm/next/5306c1d623c7fa616697ddfa0644c8bfb3efed3d-1920x1080.jpg",
+    "sourceUrl": "https://www.sanity.io/",
+    "evidenceUrl": "https://www.sanity.io/"
+  },
+  {
+    "pattern": "imgix",
+    "name": "imgix query transform",
+    "input": "https://assets.imgix.net/examples/pione.jpg?w=800&h=600&fit=crop&auto=format",
+    "expected": "https://assets.imgix.net/examples/pione.jpg",
+    "sourceUrl": "https://assets.imgix.net/examples/pione.jpg",
+    "evidenceUrl": "https://docs.imgix.com/apis/rendering/overview"
+  },
+  {
+    "pattern": "wordpress",
+    "name": "WordPress resized suffix",
+    "input": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1-1024x683.jpg",
+    "expected": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1.jpg",
+    "sourceUrl": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1.jpg",
+    "evidenceUrl": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1-1024x683.jpg"
+  },
+  {
+    "pattern": "wordpress",
+    "name": "WordPress scaled suffix",
+    "input": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1-scaled.jpg",
+    "expected": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1.jpg",
+    "sourceUrl": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1.jpg",
+    "evidenceUrl": "https://www.cpmconstruction.com/wp-content/uploads/2015/11/Exterior1-scaled.jpg"
+  },
+  {
+    "pattern": "squarespace",
+    "name": "Squarespace static asset format param",
+    "input": "https://static1.squarespace.com/static/5134cbefe4b0c6fb04df8065/t/69b2d4e7b86fcf5aa700ae16/1773327591839/2025-homepage-thumbnail.png?format=1500w",
+    "expected": "https://static1.squarespace.com/static/5134cbefe4b0c6fb04df8065/t/69b2d4e7b86fcf5aa700ae16/1773327591839/2025-homepage-thumbnail.png",
+    "sourceUrl": "https://www.squarespace.com/",
+    "evidenceUrl": "https://www.squarespace.com/"
+  },
+  {
+    "pattern": "contentful",
+    "name": "Contentful Images API params",
+    "input": "https://images.ctfassets.net/yadj1kx9rmg0/wtrHxeu3zEoEce2MokCSi/cf6f68efdcf625fdc060607df0f3baef/quwowooybuqbl6ntboz3.jpg?w=800&h=600&fm=webp",
+    "expected": "https://images.ctfassets.net/yadj1kx9rmg0/wtrHxeu3zEoEce2MokCSi/cf6f68efdcf625fdc060607df0f3baef/quwowooybuqbl6ntboz3.jpg",
+    "sourceUrl": "https://images.ctfassets.net/yadj1kx9rmg0/wtrHxeu3zEoEce2MokCSi/cf6f68efdcf625fdc060607df0f3baef/quwowooybuqbl6ntboz3.jpg",
+    "evidenceUrl": "https://www.contentful.com/developers/docs/references/images-api/"
+  },
+  {
+    "pattern": "prismic",
+    "name": "Prismic image params",
+    "input": "https://images.prismic.io/prismic-main/aVxjX3NYClf9ozVm_javascriptPackages.jpg?auto=format,compress",
+    "expected": "https://images.prismic.io/prismic-main/aVxjX3NYClf9ozVm_javascriptPackages.jpg",
+    "sourceUrl": "https://prismic.io/",
+    "evidenceUrl": "https://prismic.io/"
+  },
+  {
+    "pattern": "bunny_cdn",
+    "name": "Bunny width param",
+    "input": "https://billigsport24.b-cdn.net/media/ac/9f/25/1759479816/1200-x-650-Topbanner-Vinterjakker.jpg?width=3000",
+    "expected": "https://billigsport24.b-cdn.net/media/ac/9f/25/1759479816/1200-x-650-Topbanner-Vinterjakker.jpg",
+    "sourceUrl": "https://billigsport24.b-cdn.net/media/ac/9f/25/1759479816/1200-x-650-Topbanner-Vinterjakker.jpg",
+    "evidenceUrl": "https://support.bunny.net/hc/en-us/articles/360020557500-Understanding-the-Bunny-Optimizer"
+  },
+  {
+    "pattern": "generic",
+    "name": "Generic resize param",
+    "input": "https://woocommerce.com/wp-content/uploads/2026/03/woo-header-04-A@2x.jpg?resize=896,717",
+    "expected": "https://woocommerce.com/wp-content/uploads/2026/03/woo-header-04-A@2x.jpg",
+    "sourceUrl": "https://woocommerce.com/",
+    "evidenceUrl": "https://woocommerce.com/"
+  },
+  {
+    "pattern": "imagekit",
+    "name": "ImageKit tr path",
+    "input": "https://ik.imagekit.io/ikmedia/tr:w-200/docs_images/examples/example_fashion_1.jpg",
+    "expected": "https://ik.imagekit.io/ikmedia/docs_images/examples/example_fashion_1.jpg",
+    "sourceUrl": "https://ik.imagekit.io/ikmedia/docs_images/examples/example_fashion_1.jpg",
+    "evidenceUrl": "https://imagekit.io/docs/image-transformation"
+  },
+  {
+    "pattern": "storyblok",
+    "name": "Storyblok /m/ resize path",
+    "input": "https://a.storyblok.com/f/212319/3174x2381/f525b9e092/demo-sunflower.png/m/500x300/filters:quality(80):brightness(-10)",
+    "expected": "https://a.storyblok.com/f/212319/3174x2381/f525b9e092/demo-sunflower.png",
+    "sourceUrl": "https://a.storyblok.com/f/212319/3174x2381/f525b9e092/demo-sunflower.png",
+    "evidenceUrl": "https://www.storyblok.com/docs/api/image-service"
+  },
+  {
+    "pattern": "builder",
+    "name": "Builder image width param",
+    "input": "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F869bfbaec9c64415ae68235d9b7b1425?width=500",
+    "expected": "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F869bfbaec9c64415ae68235d9b7b1425",
+    "sourceUrl": "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F869bfbaec9c64415ae68235d9b7b1425",
+    "evidenceUrl": "https://site.builder.io/c/docs/image-api"
+  }
+]

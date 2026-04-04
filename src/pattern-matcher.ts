@@ -2,6 +2,7 @@ import curatedPatternsJson from "../data/patterns.json";
 
 export type CuratedPattern = {
   domain: string;
+  domains?: string[];
   description?: string;
   extractSource?: {
     pattern: string;
@@ -24,9 +25,17 @@ function tryExtractSource(
 ): string | null {
   try {
     const regex = new RegExp(extractSource.pattern);
-    return regex.test(url)
-      ? url.replace(regex, extractSource.replacement)
-      : null;
+    if (!regex.test(url)) {
+      return null;
+    }
+
+    const extracted = url.replace(regex, extractSource.replacement);
+    if (/^https?:\/\//.test(extracted)) {
+      return extracted;
+    }
+
+    const { origin } = new URL(url);
+    return new URL(extracted, `${origin}/`).toString();
   } catch {
     return null;
   }
@@ -69,28 +78,55 @@ function tryApplyCuratedPattern(
   url: string,
   pattern: CuratedPattern,
 ): string | null {
+  let current = url;
+  let changed = false;
+
   if (pattern.extractSource) {
-    const extracted = tryExtractSource(url, pattern.extractSource);
+    const extracted = tryExtractSource(current, pattern.extractSource);
     if (extracted) {
-      return extracted;
+      current = extracted;
+      changed = true;
     }
   }
 
   if (pattern.stripParams) {
-    const stripped = tryStripParams(url, pattern.stripParams);
+    const stripped = tryStripParams(current, pattern.stripParams);
     if (stripped) {
-      return stripped;
+      current = stripped;
+      changed = true;
     }
   }
 
   if (pattern.stripSuffixes) {
-    const stripped = tryStripSuffixes(url, pattern.stripSuffixes);
+    const stripped = tryStripSuffixes(current, pattern.stripSuffixes);
     if (stripped) {
-      return stripped;
+      current = stripped;
+      changed = true;
     }
   }
 
-  return null;
+  return changed ? current : null;
+}
+
+function patternMatchesUrl(url: string, pattern: CuratedPattern): boolean {
+  if (pattern.domain === "*") {
+    return true;
+  }
+
+  const domains = pattern.domains ?? [pattern.domain];
+  return domains.some((domain) => url.includes(domain));
+}
+
+export function applyCuratedPattern(
+  url: string,
+  patternName: string,
+): string | null {
+  const pattern = curatedPatterns[patternName];
+  if (!pattern || !patternMatchesUrl(url, pattern)) {
+    return null;
+  }
+
+  return tryApplyCuratedPattern(url, pattern);
 }
 
 export function matchCuratedPattern(url: string): string | null {
@@ -99,7 +135,7 @@ export function matchCuratedPattern(url: string): string | null {
       continue;
     }
 
-    if (!url.includes(pattern.domain)) {
+    if (!patternMatchesUrl(url, pattern)) {
       continue;
     }
 

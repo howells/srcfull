@@ -38,21 +38,31 @@
     ]
   },
   "fastly_io": {
-    "domain": ".io/",
-    "description": "Fastly Image Optimizer with path transforms",
-    "extractSource": {
-      "pattern": "^(https?://[^/]+/[^?]+?)(?:/(?:fit|resize|crop)-in/[^?]+)?(?:\\?.*)?$",
-      "replacement": "$1"
-    },
+    "domain": "fastly.io",
+    "description": "Fastly Image Optimizer with query parameter transforms",
+    "stripParams": [
+      "[?&]width=\\d+",
+      "[?&]height=\\d+",
+      "[?&]quality=\\d+",
+      "[?&]fit=[^&#]+",
+      "[?&]crop=[^&#]+",
+      "[?&]dpr=[\\d.]+",
+      "[?&]format=[^&#]+",
+      "[?&]bg-color=[^&#]+"
+    ],
     "confidence": "medium",
-    "examples": [
-      "https://images.example.io/image.jpg/resize-in/800x600?quality=80"
-    ]
+    "examples": ["https://www.fastly.io/image.jpg?width=300"]
   },
   "shopify": {
-    "domain": "cdn.shopify.com",
+    "domain": "/cdn/shop/",
+    "domains": ["cdn.shopify.com", "/cdn/shop/"],
     "description": "Shopify CDN",
-    "stripParams": ["v=\\d+"],
+    "stripParams": [
+      "[?&]v=[^&#]+",
+      "[?&]width=\\d+",
+      "[?&]originalWidth=\\d+",
+      "[?&]originalHeight=\\d+"
+    ],
     "stripSuffixes": [
       "_small",
       "_medium",
@@ -64,7 +74,7 @@
     ],
     "confidence": "high",
     "examples": [
-      "https://cdn.shopify.com/s/files/1/0001/2345/products/image_800x800.jpg?v=1234"
+      "https://polinas-potent-potions.myshopify.com/cdn/shop/files/science-beakers-blue-light-new_large.jpg?v=1683744744"
     ]
   },
   "sanity": {
@@ -104,20 +114,21 @@
     ]
   },
   "squarespace": {
-    "domain": "squarespace-cdn.com",
-    "description": "Squarespace CDN",
-    "extractSource": {
-      "pattern": "^(https?://[^/]+/content/[^?]+)(?:\\?.*)?$",
-      "replacement": "$1"
-    },
-    "stripParams": ["[?&]format=\\w+"],
+    "domain": "squarespace.com/static/",
+    "domains": [
+      "images.squarespace-cdn.com/content/",
+      "squarespace.com/static/"
+    ],
+    "description": "Squarespace image CDN",
+    "stripParams": ["[?&]format=\\w+", "[?&]content-type=[^&#]+"],
     "confidence": "medium",
     "examples": [
-      "https://images.squarespace-cdn.com/content/v1/abc/123/image.jpg?format=1500w"
+      "https://static1.squarespace.com/static/5134cbefe4b0c6fb04df8065/t/69b2d4e7b86fcf5aa700ae16/1773327591839/2025-homepage-thumbnail.png?format=1500w"
     ]
   },
   "contentful": {
     "domain": "images.ctfassets.net",
+    "domains": ["images.ctfassets.net", "images-www.contentful.com"],
     "description": "Contentful CDN",
     "stripParams": [
       "[?&]w=\\d+",
@@ -134,7 +145,12 @@
   "prismic": {
     "domain": "images.prismic.io",
     "description": "Prismic CDN",
-    "stripParams": ["[?&]w=\\d+", "[?&]h=\\d+", "[?&]q=\\d+", "[?&]auto=\\w+"],
+    "stripParams": [
+      "[?&]w=\\d+",
+      "[?&]h=\\d+",
+      "[?&]q=\\d+",
+      "[?&]auto=[\\w,]+"
+    ],
     "confidence": "high",
     "examples": [
       "https://images.prismic.io/project/image.jpg?w=800&h=600&auto=format"
@@ -147,6 +163,47 @@
     "confidence": "medium",
     "examples": ["https://example.b-cdn.net/image.jpg?width=800&height=600"]
   },
+  "imagekit": {
+    "domain": "ik.imagekit.io",
+    "description": "ImageKit URL transformations",
+    "extractSource": {
+      "pattern": "^(https?://ik\\.imagekit\\.io/[^/]+)/(?:tr:[^/]+/)(.+)$",
+      "replacement": "$1/$2"
+    },
+    "confidence": "high",
+    "examples": [
+      "https://ik.imagekit.io/ikmedia/tr:w-200/docs_images/examples/example_fashion_1.jpg"
+    ]
+  },
+  "storyblok": {
+    "domain": "a.storyblok.com",
+    "description": "Storyblok Image Service",
+    "extractSource": {
+      "pattern": "^(https?://a\\.storyblok\\.com/f/\\d+/\\d+x\\d+/[^/]+/[^/?]+)(?:/m/[^?]+)?(?:\\?.*)?$",
+      "replacement": "$1"
+    },
+    "confidence": "high",
+    "examples": [
+      "https://a.storyblok.com/f/212319/3174x2381/f525b9e092/demo-sunflower.png/m/500x300/filters:quality(80):brightness(-10)"
+    ]
+  },
+  "builder": {
+    "domain": "cdn.builder.io/api/v1/image/",
+    "domains": ["cdn.builder.io/api/v1/image/", "builder.io/api/v1/image/"],
+    "description": "Builder.io Image API",
+    "stripParams": [
+      "[?&]width=\\d+",
+      "[?&]height=\\d+",
+      "[?&]quality=\\d+",
+      "[?&]fit=[^&#]+",
+      "[?&]position=[^&#]+",
+      "[?&]format=[^&#]+"
+    ],
+    "confidence": "high",
+    "examples": [
+      "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F869bfbaec9c64415ae68235d9b7b1425?width=500"
+    ]
+  },
   "generic": {
     "domain": "*",
     "stripParams": [
@@ -154,7 +211,7 @@
       "[?&]h=\\d+",
       "[?&]width=\\d+",
       "[?&]height=\\d+",
-      "[?&]resize=\\d+",
+      "[?&]resize=\\d+(?:,\\d+)?",
       "[?&]size=\\d+",
       "[?&]quality=\\d+",
       "[?&]q=\\d+"

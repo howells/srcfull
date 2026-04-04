@@ -5,7 +5,11 @@ export {
   extractImageUrlsFromRaw,
 } from "./extract";
 export type { CuratedPattern } from "./pattern-matcher";
-export { applyPattern, matchCuratedPattern } from "./pattern-matcher";
+export {
+  applyCuratedPattern,
+  applyPattern,
+  matchCuratedPattern,
+} from "./pattern-matcher";
 export type { ProbeResult } from "./prober";
 export { generateProbeCandidates, probeForSource } from "./prober";
 export { createFirecrawlImageFallback } from "./providers/firecrawl";
