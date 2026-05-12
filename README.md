@@ -117,7 +117,7 @@ The JSON response from `scrape` includes `stats.returned` as well as `found`, `r
 
 ## Demo Page
 
-There is a self-contained demo page at `docs/demo/index.html`.
+There is a self-contained demo page generated at `demo/index.html`.
 
 ```bash
 pnpm demo:build

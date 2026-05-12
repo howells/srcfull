@@ -9,8 +9,8 @@ import {
   scrapePage,
 } from "../dist/index.js";
 
-const DEMO_DIR = new URL("../docs/demo/", import.meta.url);
-const OUTPUT_FILE = new URL("../docs/demo/index.html", import.meta.url);
+const DEMO_DIR = new URL("../demo/", import.meta.url);
+const OUTPUT_FILE = new URL("../demo/index.html", import.meta.url);
 const BASE_URL = "https://catalog.example.com/products/lounge-chair";
 
 const SAMPLE_HTML = `
@@ -708,7 +708,7 @@ async function main() {
   await writeFile(OUTPUT_FILE, html, "utf8");
   await rm(tempDir, { recursive: true, force: true });
 
-  process.stdout.write("Generated docs/demo/index.html\n");
+  process.stdout.write("Generated demo/index.html\n");
 }
 
 await main();
