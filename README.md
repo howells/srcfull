@@ -22,14 +22,13 @@ It handles the page-shape problems that usually make this kind of package annoyi
 ## Install
 
 ```bash
-pnpm install
-pnpm build
+pnpm add @howells/srcfull
 ```
 
 ## Library Usage
 
 ```ts
-import { scrapePage, resolveImageUrl } from "srcfull";
+import { scrapePage, resolveImageUrl } from "@howells/srcfull";
 
 const resolved = await resolveImageUrl(
   "https://cdn.example.com/image.jpg?w=400&q=80"
@@ -43,8 +42,8 @@ const page = await scrapePage("https://example.com/product-page");
 If you need rendered HTML instead of plain `fetch`, inject a custom fetcher:
 
 ```ts
-import { scrapePage } from "srcfull";
-import { createScrapingBeeHtmlFetcher } from "srcfull/providers/scrapingbee";
+import { scrapePage } from "@howells/srcfull";
+import { createScrapingBeeHtmlFetcher } from "@howells/srcfull/providers/scrapingbee";
 
 const fetchHtml = createScrapingBeeHtmlFetcher({
   apiKey: process.env.SCRAPINGBEE_API_KEY!,
@@ -56,7 +55,7 @@ const result = await scrapePage("https://example.com", { fetchHtml });
 If you want the built-in fetcher with different timeout or header behavior:
 
 ```ts
-import { createDefaultHtmlFetcher, scrapePage } from "srcfull";
+import { createDefaultHtmlFetcher, scrapePage } from "@howells/srcfull";
 
 const fetchHtml = createDefaultHtmlFetcher({
   timeoutMs: 15_000,
@@ -71,13 +70,13 @@ const result = await scrapePage("https://example.com", { fetchHtml });
 For image-only fallback:
 
 ```ts
-import { createFirecrawlImageFallback } from "srcfull/providers/firecrawl";
+import { createFirecrawlImageFallback } from "@howells/srcfull/providers/firecrawl";
 ```
 
 If you want candidate extraction without the rest of the pipeline:
 
 ```ts
-import { extractImageCandidatesFromHtml } from "srcfull";
+import { extractImageCandidatesFromHtml } from "@howells/srcfull";
 
 const candidates = extractImageCandidatesFromHtml(
   html,
@@ -92,7 +91,7 @@ import {
   createFileCache,
   createFilePatternStore,
   resolveImageUrl,
-} from "srcfull";
+} from "@howells/srcfull";
 
 const cache = createFileCache({ filePath: ".srcfull/cache.json" });
 const patternStore = createFilePatternStore({
