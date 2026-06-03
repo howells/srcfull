@@ -15,7 +15,7 @@ import type {
   ScrapePageOptions,
   ScrapePageResult,
 } from "./types";
-import { validatePublicUrl } from "./url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "./url-validator";
 import { validateImageUrl } from "./validator";
 
 const DEFAULT_MIN_SIZE = 200;
@@ -23,6 +23,7 @@ const DEFAULT_FETCH_TIMEOUT_MS = 10_000;
 const DEFAULT_USER_AGENT = "Mozilla/5.0 (compatible; Srcfull/2.0)";
 const DEFAULT_RETRY_COUNT = 1;
 const DEFAULT_RETRY_DELAY_MS = 500;
+const VALIDATION_POOL_MULTIPLIER = 3;
 const LOGO_PATTERNS = [
   /logo/i,
   /icon/i,
@@ -62,7 +63,9 @@ export function createDefaultHtmlFetcher(
     "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
   return async (url: string): Promise<HtmlFetchResult> => {
-    const validation = validatePublicUrl(url);
+    const validation = options.validateResolvedIp
+      ? await validatePublicUrlForServer(url)
+      : validatePublicUrl(url);
     if (!validation.valid || !validation.url) {
       throw new Error(validation.error ?? "Invalid page URL");
     }
@@ -195,15 +198,67 @@ function filterMainImages(
 async function getImageSize(
   url: string,
   options: ScrapePageOptions,
+  knownSize?: number,
 ): Promise<number | null> {
+  if (knownSize !== undefined) {
+    return knownSize;
+  }
+
   const validation = options.validate
     ? await options.validate(url)
     : await validateImageUrl(url, {
         onDebug: options.onDebug,
         retryCount: options.retryCount,
         retryDelayMs: options.retryDelayMs,
+        validateResolvedIp: options.validateResolvedIp,
       });
   return validation.size ?? null;
+}
+
+function candidateHintScore(candidate: ImageCandidate): number {
+  const sourceScore =
+    candidate.source === "img"
+      ? 4
+      : candidate.source === "picture"
+        ? 3
+        : candidate.source === "background"
+          ? 2
+          : 1;
+  const area =
+    candidate.width && candidate.height
+      ? candidate.width * candidate.height
+      : 0;
+  return area + sourceScore;
+}
+
+async function rankCandidatesForResolution(
+  candidates: ImageCandidate[],
+  options: ScrapePageOptions,
+): Promise<ImageCandidate[]> {
+  const maxImages = Math.max(1, Math.floor(options.maxImages ?? 20));
+  const validationLimit = Math.min(
+    candidates.length,
+    Math.max(maxImages, maxImages * VALIDATION_POOL_MULTIPLIER),
+  );
+  const validationPool = [...candidates]
+    .sort((left, right) => candidateHintScore(right) - candidateHintScore(left))
+    .slice(0, validationLimit);
+
+  const withSizes = await Promise.all(
+    validationPool.map(async (candidate) => ({
+      ...candidate,
+      size: (await getImageSize(candidate.url, options)) ?? undefined,
+    })),
+  );
+
+  withSizes.sort((left, right) => {
+    const sizeDifference = (right.size ?? 0) - (left.size ?? 0);
+    return (
+      sizeDifference || candidateHintScore(right) - candidateHintScore(left)
+    );
+  });
+
+  return withSizes.slice(0, maxImages);
 }
 
 export async function scrapePage(
@@ -211,7 +266,9 @@ export async function scrapePage(
   options: ScrapePageOptions = {},
 ): Promise<ScrapePageResult> {
   const start = Date.now();
-  const validation = validatePublicUrl(url);
+  const validation = options.validateResolvedIp
+    ? await validatePublicUrlForServer(url)
+    : validatePublicUrl(url);
 
   if (!validation.valid) {
     throw new Error(validation.error);
@@ -223,6 +280,7 @@ export async function scrapePage(
       onDebug: options.onDebug,
       retryCount: options.retryCount,
       retryDelayMs: options.retryDelayMs,
+      validateResolvedIp: options.validateResolvedIp,
     });
   const htmlResult = await fetchHtml(url);
   const sourceDomain = new URL(url).hostname.replace(/^www\./, "");
@@ -230,10 +288,8 @@ export async function scrapePage(
   let candidates = filterMainImages(
     await extractImageCandidates(htmlResult.html, {
       includeRaw: true,
-      sortBySize: true,
       baseUrl: url,
       sourceDomain,
-      validate: options.validate,
     }),
     options.minSize ?? DEFAULT_MIN_SIZE,
   );
@@ -261,6 +317,7 @@ export async function scrapePage(
     },
   });
 
+  const toResolve = await rankCandidatesForResolution(candidates, options);
   const resolve =
     options.resolve ??
     ((imageUrl: string) =>
@@ -268,8 +325,9 @@ export async function scrapePage(
         onDebug: options.onDebug,
         retryCount: options.retryCount,
         retryDelayMs: options.retryDelayMs,
+        originalSize: toResolve.find((entry) => entry.url === imageUrl)?.size,
+        validateResolvedIp: options.validateResolvedIp,
       }));
-  const toResolve = candidates.slice(0, options.maxImages ?? 20);
   const limit = createLimiter(options.resolveConcurrency ?? 5);
 
   let resolved = 0;
@@ -288,8 +346,15 @@ export async function scrapePage(
             return {
               original: result.original,
               resolved: result.resolved,
-              originalSize: null,
-              resolvedSize: await getImageSize(result.resolved, options),
+              originalSize: candidate.size ?? null,
+              resolvedSize: await getImageSize(
+                result.resolved,
+                options,
+                result.resolvedSize ??
+                  (result.resolved === candidate.url
+                    ? candidate.size
+                    : undefined),
+              ),
               sizeIncrease: result.sizeIncrease ?? null,
               alt: candidate.alt ?? null,
               method: result.method,

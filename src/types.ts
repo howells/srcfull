@@ -5,6 +5,7 @@ export type ImageCandidate = {
   source: ImageSource;
   width?: number;
   height?: number;
+  size?: number;
   srcset?: string[];
   alt?: string | null;
 };
@@ -66,6 +67,7 @@ export type ResolveResult = {
   resolved: string;
   method: "cached" | "pattern" | "learned" | "probed" | "fallback";
   confidence?: number;
+  resolvedSize?: number;
   sizeIncrease?: string;
 };
 
@@ -73,6 +75,8 @@ export type ResolveImageOptions = {
   cache?: ResolutionCache;
   patternStore?: PatternStore;
   validate?: (url: string) => Promise<ValidationResult>;
+  originalSize?: number;
+  validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
 } & RetryOptions;
 
@@ -82,10 +86,12 @@ export type DefaultHtmlFetcherOptions = {
   headers?: Record<string, string>;
   accept?: string;
   allowNonHtml?: boolean;
+  validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
 } & RetryOptions;
 
 export type ValidateImageUrlOptions = {
+  validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
 } & RetryOptions;
 
@@ -138,6 +144,7 @@ export type ScrapePageOptions = {
   maxImages?: number;
   minSize?: number;
   resolveConcurrency?: number;
+  validateResolvedIp?: boolean;
   fetchHtml?: HtmlFetcher;
   imageFallback?: ImageFallback;
   resolve?: (url: string) => Promise<ResolveResult>;
@@ -159,5 +166,6 @@ export type FirecrawlImageFallbackOptions = {
   apiKey: string;
   apiUrl?: string;
   timeoutMs?: number;
+  validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
 } & RetryOptions;

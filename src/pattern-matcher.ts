@@ -108,13 +108,40 @@ function tryApplyCuratedPattern(
   return changed ? current : null;
 }
 
-function patternMatchesUrl(url: string, pattern: CuratedPattern): boolean {
+function tokenMatchesUrl(url: URL, token: string): boolean {
+  const normalized = token.toLowerCase();
+  const href = url.href.toLowerCase();
+  const hostname = url.hostname.toLowerCase();
+
+  if (normalized.includes("/")) {
+    return href.includes(normalized);
+  }
+
+  if (normalized.startsWith(".")) {
+    return hostname.endsWith(normalized);
+  }
+
+  if (normalized.endsWith(".")) {
+    return hostname.startsWith(normalized);
+  }
+
+  return hostname === normalized || hostname.endsWith(`.${normalized}`);
+}
+
+function patternMatchesUrl(rawUrl: string, pattern: CuratedPattern): boolean {
   if (pattern.domain === "*") {
     return true;
   }
 
+  let url: URL;
+  try {
+    url = new URL(rawUrl);
+  } catch {
+    return false;
+  }
+
   const domains = pattern.domains ?? [pattern.domain];
-  return domains.some((domain) => url.includes(domain));
+  return domains.some((domain) => tokenMatchesUrl(url, domain));
 }
 
 export function applyCuratedPattern(

@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import { parseArgs } from "node:util";
 import packageJson from "../package.json";
+import { createBrowserbaseFetchHtmlFetcher } from "./providers/browserbase";
 import { createFirecrawlImageFallback } from "./providers/firecrawl";
+import { createKernelHtmlFetcher } from "./providers/kernel";
 import { createScrapingBeeHtmlFetcher } from "./providers/scrapingbee";
 import { resolveImageUrl } from "./resolve";
 import { scrapePage } from "./scrape";
@@ -12,7 +14,7 @@ function printUsage(): void {
   process.stdout.write(`Commands:\n`);
   process.stdout.write(`  srcfull resolve <image-url> [--verbose]\n`);
   process.stdout.write(
-    `  srcfull scrape <page-url> [--max-images=20] [--min-size=200] [--resolve-concurrency=5] [--fetcher=default|scrapingbee] [--fallback=none|firecrawl] [--verbose]\n`,
+    `  srcfull scrape <page-url> [--max-images=20] [--min-size=200] [--resolve-concurrency=5] [--fetcher=default|scrapingbee|browserbase|kernel] [--fallback=none|firecrawl] [--verbose]\n`,
   );
   process.stdout.write(`  srcfull help\n`);
   process.stdout.write(`  srcfull --version\n`);
@@ -148,7 +150,29 @@ async function main() {
               })(),
             onDebug,
           })
-        : undefined;
+        : fetcher === "browserbase"
+          ? createBrowserbaseFetchHtmlFetcher({
+              apiKey:
+                process.env.BROWSERBASE_API_KEY ??
+                (() => {
+                  throw new Error(
+                    "BROWSERBASE_API_KEY is required for --fetcher=browserbase",
+                  );
+                })(),
+              onDebug,
+            })
+          : fetcher === "kernel"
+            ? createKernelHtmlFetcher({
+                apiKey:
+                  process.env.KERNEL_API_KEY ??
+                  (() => {
+                    throw new Error(
+                      "KERNEL_API_KEY is required for --fetcher=kernel",
+                    );
+                  })(),
+                onDebug,
+              })
+            : undefined;
 
     const imageFallback =
       fallback === "firecrawl"
@@ -164,7 +188,12 @@ async function main() {
           })
         : undefined;
 
-    if (fetcher !== "default" && fetcher !== "scrapingbee") {
+    if (
+      fetcher !== "default" &&
+      fetcher !== "scrapingbee" &&
+      fetcher !== "browserbase" &&
+      fetcher !== "kernel"
+    ) {
       throw new Error(`Unknown fetcher: ${fetcher}`);
     }
 

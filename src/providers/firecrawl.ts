@@ -1,7 +1,10 @@
 import { emitDebug } from "../debug";
 import { isRetryableRequestError, shouldRetryStatus, sleep } from "../retry";
 import type { FirecrawlImageFallbackOptions, ImageFallback } from "../types";
-import { validatePublicUrl } from "../url-validator";
+import {
+  validatePublicUrl,
+  validatePublicUrlForServer,
+} from "../url-validator";
 
 const DEFAULT_API_URL = "https://api.firecrawl.dev/v2/scrape";
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -60,7 +63,9 @@ export function createFirecrawlImageFallback(
   );
 
   return async (url) => {
-    const validation = validatePublicUrl(url);
+    const validation = options.validateResolvedIp
+      ? await validatePublicUrlForServer(url)
+      : validatePublicUrl(url);
     if (!validation.valid || !validation.url) {
       throw new Error(validation.error ?? "Invalid page URL");
     }

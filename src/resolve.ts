@@ -62,6 +62,7 @@ export async function resolveImageUrl(
         onDebug: options.onDebug,
         retryCount: options.retryCount,
         retryDelayMs: options.retryDelayMs,
+        validateResolvedIp: options.validateResolvedIp,
       }));
   const original = imageUrl;
 
@@ -88,8 +89,8 @@ export async function resolveImageUrl(
     // Cache failures should not block resolution.
   }
 
-  const originalValidation = await validate(imageUrl);
-  const originalSize = originalValidation.size ?? 0;
+  const originalSize =
+    options.originalSize ?? (await validate(imageUrl)).size ?? 0;
 
   const curated = matchCuratedPattern(imageUrl);
   if (curated) {
@@ -109,6 +110,7 @@ export async function resolveImageUrl(
         resolved: curated,
         method: "pattern",
         confidence: 0.95,
+        resolvedSize: validation.size,
         sizeIncrease: calculateSizeIncrease(originalSize, validation.size),
       };
     }
@@ -179,6 +181,7 @@ export async function resolveImageUrl(
           resolved,
           method: "learned",
           confidence: pattern.confidence,
+          resolvedSize: validation.size,
           sizeIncrease: calculateSizeIncrease(originalSize, validation.size),
         };
       }
@@ -206,6 +209,7 @@ export async function resolveImageUrl(
         resolved: probeResult.url,
         method: "probed",
         confidence: 0.5,
+        resolvedSize: probeResult.size,
         sizeIncrease: calculateSizeIncrease(originalSize, probeResult.size),
       };
     }
@@ -224,5 +228,10 @@ export async function resolveImageUrl(
     message: `Falling back to original URL for ${imageUrl}`,
     url: imageUrl,
   });
-  return { original, resolved: imageUrl, method: "fallback" };
+  return {
+    original,
+    resolved: imageUrl,
+    method: "fallback",
+    resolvedSize: originalSize || undefined,
+  };
 }

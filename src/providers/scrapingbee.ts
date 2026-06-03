@@ -2,7 +2,10 @@ import { ScrapingBeeClient } from "scrapingbee";
 import { emitDebug } from "../debug";
 import { sleep } from "../retry";
 import type { DebugLogger, HtmlFetcher } from "../types";
-import { validatePublicUrl } from "../url-validator";
+import {
+  validatePublicUrl,
+  validatePublicUrlForServer,
+} from "../url-validator";
 
 export type ScrapingBeeFetcherOptions = {
   apiKey: string;
@@ -12,6 +15,7 @@ export type ScrapingBeeFetcherOptions = {
   timeoutMs?: number;
   retryCount?: number;
   retryDelayMs?: number;
+  validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
 };
 
@@ -93,7 +97,9 @@ export function createScrapingBeeHtmlFetcher(
   );
 
   return async (url) => {
-    const validation = validatePublicUrl(url);
+    const validation = options.validateResolvedIp
+      ? await validatePublicUrlForServer(url)
+      : validatePublicUrl(url);
     if (!validation.valid || !validation.url) {
       throw new Error(validation.error ?? "Invalid page URL");
     }

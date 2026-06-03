@@ -7,7 +7,7 @@ import {
   sleep,
 } from "./retry";
 import type { ValidateImageUrlOptions, ValidationResult } from "./types";
-import { validatePublicUrl } from "./url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "./url-validator";
 
 const REQUEST_TIMEOUT_MS = 5_000;
 const USER_AGENT = "Mozilla/5.0 (compatible; Srcfull/2.0)";
@@ -106,7 +106,9 @@ export async function validateImageUrl(
   url: string,
   options: ValidateImageUrlOptions = {},
 ): Promise<ValidationResult> {
-  const publicUrl = validatePublicUrl(url);
+  const publicUrl = options.validateResolvedIp
+    ? await validatePublicUrlForServer(url)
+    : validatePublicUrl(url);
   const safeUrl = publicUrl.url?.href;
   if (!publicUrl.valid || !safeUrl) {
     emitDebug(options.onDebug, {

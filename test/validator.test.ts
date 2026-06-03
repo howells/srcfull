@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { validatePublicUrlForServer } from "../src/url-validator";
 import { validateImageUrl } from "../src/validator";
 
 describe("validateImageUrl", () => {
@@ -100,5 +101,33 @@ describe("validateImageUrl", () => {
         status: 503,
       }),
     );
+  });
+});
+
+describe("validatePublicUrlForServer", () => {
+  it("rejects public hostnames that resolve to private IP addresses", async () => {
+    const result = await validatePublicUrlForServer(
+      "https://example.com/image.jpg",
+      {
+        resolveHostname: async () => ["10.0.0.5"],
+      },
+    );
+
+    expect(result).toEqual({
+      valid: false,
+      error: "Hostname resolves to a private IP address",
+    });
+  });
+
+  it("accepts public hostnames that resolve to public IP addresses", async () => {
+    const result = await validatePublicUrlForServer(
+      "https://example.com/image.jpg",
+      {
+        resolveHostname: async () => ["93.184.216.34"],
+      },
+    );
+
+    expect(result.valid).toBe(true);
+    expect(result.url?.href).toBe("https://example.com/image.jpg");
   });
 });

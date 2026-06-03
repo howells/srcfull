@@ -52,13 +52,18 @@ export function createFileCache(options: FileCacheOptions): ResolutionCache {
   }
 
   function queueWrite(mutator: (state: CacheFileState) => void): Promise<void> {
-    pending = pending.then(async () => {
+    const task = pending.then(async () => {
       const state = await statePromise;
       mutator(state);
       await writeJsonFile(filePath, state);
     });
 
-    return pending;
+    pending = task.then(
+      () => undefined,
+      () => undefined,
+    );
+
+    return task;
   }
 
   return {

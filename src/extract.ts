@@ -312,10 +312,16 @@ export async function extractImageCandidates(
   );
 
   const withSizes = await Promise.all(
-    httpCandidates.map(async (candidate) => ({
-      candidate,
-      size: (await validate(candidate.url)).size ?? 0,
-    })),
+    httpCandidates.map(async (candidate) => {
+      const size = (await validate(candidate.url)).size ?? 0;
+      return {
+        candidate: {
+          ...candidate,
+          size: size || undefined,
+        },
+        size,
+      };
+    }),
   );
 
   withSizes.sort((left, right) => right.size - left.size);

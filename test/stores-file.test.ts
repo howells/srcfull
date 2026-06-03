@@ -1,4 +1,4 @@
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -51,6 +51,30 @@ describe("createFileCache", () => {
 
     const reloadedCache = createFileCache({ filePath, maxAgeMs: 100 });
     expect(await reloadedCache.get("https://example.com/1.jpg")).toBeNull();
+  });
+
+  it("recovers after a transient write failure", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "srcfull-cache-recover-"));
+    const blockedDirectory = join(directory, "blocked");
+    const filePath = join(blockedDirectory, "cache.json");
+
+    await writeFile(blockedDirectory, "not a directory", "utf8");
+    const cache = createFileCache({ filePath });
+
+    await expect(
+      cache.set("https://example.com/1.jpg", "https://cdn.example.com/1.jpg"),
+    ).rejects.toThrow();
+
+    await rm(blockedDirectory);
+    await mkdir(blockedDirectory);
+    await cache.set(
+      "https://example.com/2.jpg",
+      "https://cdn.example.com/2.jpg",
+    );
+
+    expect(await cache.get("https://example.com/2.jpg")).toBe(
+      "https://cdn.example.com/2.jpg",
+    );
   });
 });
 

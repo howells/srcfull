@@ -204,6 +204,31 @@
       "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F869bfbaec9c64415ae68235d9b7b1425?width=500"
     ]
   },
+  "speedsize": {
+    "domain": ".speedsize.com",
+    "domains": ["aicdn.speedsize.com", "sfycdn.speedsize.com"],
+    "description": "SpeedSize optimized image proxy; unwrap to the source image hosted by the original site.",
+    "extractSource": {
+      "pattern": "^https?://(?:aicdn|sfycdn)\\.speedsize\\.com/[^/]+/(?:https?:\\/\\/)?((?:www\\.)?[^/?#]+/.+)$",
+      "replacement": "https://$1"
+    },
+    "stripParams": [
+      "[?&]w=\\d+",
+      "[?&]h=\\d+",
+      "[?&]width=\\d+",
+      "[?&]height=\\d+",
+      "[?&]quality=\\d+",
+      "[?&]q=\\d+",
+      "[?&]format=[^&#]+",
+      "[?&]fmt=[^&#]+",
+      "[?&]fit=[^&#]+",
+      "[?&]resize=[^&#]+"
+    ],
+    "confidence": "high",
+    "examples": [
+      "https://aicdn.speedsize.com/e0ef94ef-bbea-450b-a400-575c3145c135/www.tilebar.com/media/catalog/product/sample.jpg?w=800&q=80"
+    ]
+  },
   "generic": {
     "domain": "*",
     "stripParams": [
@@ -214,7 +239,8 @@
       "[?&]resize=\\d+(?:,\\d+)?",
       "[?&]size=\\d+",
       "[?&]quality=\\d+",
-      "[?&]q=\\d+"
+      "[?&]q=\\d+",
+      "[?&]\\d+="
     ],
     "confidence": "low",
     "description": "Common resizing parameters to try stripping"

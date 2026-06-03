@@ -12,7 +12,14 @@ export {
 } from "./pattern-matcher";
 export type { ProbeResult } from "./prober";
 export { generateProbeCandidates, probeForSource } from "./prober";
+export type { BrowserbaseFetchHtmlFetcherOptions } from "./providers/browserbase";
+export { createBrowserbaseFetchHtmlFetcher } from "./providers/browserbase";
 export { createFirecrawlImageFallback } from "./providers/firecrawl";
+export type {
+  KernelHtmlFetcherOptions,
+  KernelViewport,
+} from "./providers/kernel";
+export { createKernelHtmlFetcher } from "./providers/kernel";
 export type { ScrapingBeeFetcherOptions } from "./providers/scrapingbee";
 export { createScrapingBeeHtmlFetcher } from "./providers/scrapingbee";
 export { resolveImageUrl } from "./resolve";
@@ -49,6 +56,9 @@ export type {
   ValidateImageUrlOptions,
   ValidationResult,
 } from "./types";
-export type { PublicUrlValidation } from "./url-validator";
-export { validatePublicUrl } from "./url-validator";
+export type {
+  PublicUrlValidation,
+  PublicUrlValidationOptions,
+} from "./url-validator";
+export { validatePublicUrl, validatePublicUrlForServer } from "./url-validator";
 export { validateImageUrl } from "./validator";

@@ -84,6 +84,29 @@ describe("resolveImageUrl", () => {
     expect(patternStore.incrementSuccess).toHaveBeenCalledWith(123);
   });
 
+  it("uses a known original size instead of revalidating the original URL", async () => {
+    const validate = vi.fn(async (url: string) => ({
+      valid: true,
+      size: url.includes("master") ? 400 : 100,
+    }));
+
+    const result = await resolveImageUrl(
+      "https://media.houseandgarden.co.uk/photos/63e509b43404638ef031982b/1:1/w_400/thumb.jpg",
+      {
+        cache,
+        patternStore,
+        originalSize: 200,
+        validate,
+      },
+    );
+
+    expect(result.method).toBe("pattern");
+    expect(result.resolvedSize).toBe(400);
+    expect(result.sizeIncrease).toBe("2.0x");
+    expect(validate).toHaveBeenCalledTimes(1);
+    expect(validate).toHaveBeenCalledWith(result.resolved);
+  });
+
   it("falls back to probing when no pattern matches", async () => {
     const validate = vi.fn(async (url: string) => ({
       valid: true,

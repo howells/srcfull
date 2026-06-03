@@ -1,6 +1,6 @@
 {
   "name": "@howells/srcfull",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -13,23 +13,38 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./providers/scrapingbee": {
       "types": "./dist/providers/scrapingbee.d.ts",
-      "import": "./dist/providers/scrapingbee.js"
+      "import": "./dist/providers/scrapingbee.js",
+      "default": "./dist/providers/scrapingbee.js"
     },
     "./providers/firecrawl": {
       "types": "./dist/providers/firecrawl.d.ts",
-      "import": "./dist/providers/firecrawl.js"
+      "import": "./dist/providers/firecrawl.js",
+      "default": "./dist/providers/firecrawl.js"
+    },
+    "./providers/browserbase": {
+      "types": "./dist/providers/browserbase.d.ts",
+      "import": "./dist/providers/browserbase.js",
+      "default": "./dist/providers/browserbase.js"
+    },
+    "./providers/kernel": {
+      "types": "./dist/providers/kernel.d.ts",
+      "import": "./dist/providers/kernel.js",
+      "default": "./dist/providers/kernel.js"
     },
     "./stores/memory": {
       "types": "./dist/stores/memory.d.ts",
-      "import": "./dist/stores/memory.js"
+      "import": "./dist/stores/memory.js",
+      "default": "./dist/stores/memory.js"
     },
     "./stores/file": {
       "types": "./dist/stores/file.d.ts",
-      "import": "./dist/stores/file.js"
+      "import": "./dist/stores/file.js",
+      "default": "./dist/stores/file.js"
     }
   },
   "files": [

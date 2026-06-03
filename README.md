@@ -8,7 +8,7 @@ It is designed as a standalone library and CLI for image extraction and source r
 - filter obvious junk like logos and icons
 - resolve CDN/transformed URLs back to larger originals
 - probe likely source variants when no curated pattern exists
-- optionally plug in HTML fetchers like ScrapingBee and fallback image providers like Firecrawl
+- optionally plug in HTML fetchers like ScrapingBee, Browserbase, and Kernel, plus fallback image providers like Firecrawl
 
 It handles the page-shape problems that usually make this kind of package annoying in practice:
 
@@ -47,6 +47,34 @@ import { createScrapingBeeHtmlFetcher } from "@howells/srcfull/providers/scrapin
 
 const fetchHtml = createScrapingBeeHtmlFetcher({
   apiKey: process.env.SCRAPINGBEE_API_KEY!,
+});
+
+const result = await scrapePage("https://example.com", { fetchHtml });
+```
+
+For hosted browser rendering without adding Playwright to your app, use Kernel:
+
+```ts
+import { scrapePage } from "@howells/srcfull";
+import { createKernelHtmlFetcher } from "@howells/srcfull/providers/kernel";
+
+const fetchHtml = createKernelHtmlFetcher({
+  apiKey: process.env.KERNEL_API_KEY!,
+  stealth: true,
+});
+
+const result = await scrapePage("https://example.com", { fetchHtml });
+```
+
+For fast raw HTML through Browserbase's Fetch API:
+
+```ts
+import { scrapePage } from "@howells/srcfull";
+import { createBrowserbaseFetchHtmlFetcher } from "@howells/srcfull/providers/browserbase";
+
+const fetchHtml = createBrowserbaseFetchHtmlFetcher({
+  apiKey: process.env.BROWSERBASE_API_KEY!,
+  proxies: true,
 });
 
 const result = await scrapePage("https://example.com", { fetchHtml });
@@ -110,6 +138,7 @@ const result = await resolveImageUrl("https://cdn.example.com/photo.jpg?w=400", 
 srcfull resolve 'https://cdn.example.com/photo.jpg?w=300'
 srcfull scrape 'https://example.com/listing' --max-images=12
 srcfull scrape 'https://example.com/listing' --max-images=12 --min-size=300 --resolve-concurrency=8
+srcfull scrape 'https://example.com/listing' --fetcher=kernel
 srcfull --version
 ```
 
