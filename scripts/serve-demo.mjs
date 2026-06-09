@@ -22,12 +22,8 @@ function safePath(urlPath) {
 }
 
 const server = createServer(async (request, response) => {
-  const requestUrl = new URL(
-    request.url ?? "/",
-    `http://${request.headers.host}`,
-  );
-  const pathname =
-    requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+  const requestUrl = new URL(request.url ?? "/", `http://${request.headers.host}`);
+  const pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
   const filePath = safePath(pathname);
 
   if (!filePath) {
@@ -39,8 +35,7 @@ const server = createServer(async (request, response) => {
   try {
     const content = await readFile(filePath);
     response.writeHead(200, {
-      "Content-Type":
-        contentTypes.get(extname(filePath)) ?? "application/octet-stream",
+      "Content-Type": contentTypes.get(extname(filePath)) ?? "application/octet-stream",
     });
     response.end(content);
   } catch {

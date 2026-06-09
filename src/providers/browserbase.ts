@@ -1,12 +1,9 @@
 import { emitDebug } from "../debug";
 import { isRetryableRequestError, shouldRetryStatus, sleep } from "../retry";
 import type { DebugLogger, HtmlFetcher } from "../types";
-import {
-  validatePublicUrl,
-  validatePublicUrlForServer,
-} from "../url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "../url-validator";
 
-export type BrowserbaseFetchHtmlFetcherOptions = {
+export interface BrowserbaseFetchHtmlFetcherOptions {
   apiKey: string;
   apiUrl?: string;
   allowRedirects?: boolean;
@@ -18,9 +15,9 @@ export type BrowserbaseFetchHtmlFetcherOptions = {
   retryDelayMs?: number;
   validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
-};
+}
 
-type BrowserbaseFetchResponse = {
+interface BrowserbaseFetchResponse {
   statusCode?: number;
   headers?: Record<string, string>;
   content?: string;
@@ -28,7 +25,7 @@ type BrowserbaseFetchResponse = {
   encoding?: string;
   error?: string;
   message?: string;
-};
+}
 
 const DEFAULT_API_URL = "https://api.browserbase.com/v1/fetch";
 const DEFAULT_TIMEOUT_MS = 15_000;
@@ -50,12 +47,8 @@ function createAbortController(timeoutMs: number) {
   return { controller, timeoutId };
 }
 
-async function readBrowserbaseResponse(
-  response: Response,
-): Promise<BrowserbaseFetchResponse> {
-  const data = (await response
-    .json()
-    .catch(() => null)) as BrowserbaseFetchResponse | null;
+async function readBrowserbaseResponse(response: Response): Promise<BrowserbaseFetchResponse> {
+  const data = (await response.json().catch(() => null)) as BrowserbaseFetchResponse | null;
 
   if (!data || typeof data !== "object") {
     throw new Error(`Browserbase returned ${response.status}`);
@@ -69,18 +62,9 @@ export function createBrowserbaseFetchHtmlFetcher(
 ): HtmlFetcher {
   const apiKey = normalizeApiKey(options.apiKey);
   const apiUrl = options.apiUrl?.trim() || DEFAULT_API_URL;
-  const timeoutMs = Math.max(
-    1,
-    Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS),
-  );
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+  const timeoutMs = Math.max(1, Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS));
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
 
   return async (url) => {
     const validation = options.validateResolvedIp
@@ -97,11 +81,6 @@ export function createBrowserbaseFetchHtmlFetcher(
 
       try {
         const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-BB-API-Key": apiKey,
-          },
           body: JSON.stringify({
             url: safeUrl,
             ...(options.allowRedirects === undefined
@@ -110,10 +89,13 @@ export function createBrowserbaseFetchHtmlFetcher(
             ...(options.allowInsecureSsl === undefined
               ? {}
               : { allowInsecureSsl: options.allowInsecureSsl }),
-            ...(options.proxies === undefined
-              ? {}
-              : { proxies: options.proxies }),
+            ...(options.proxies === undefined ? {} : { proxies: options.proxies }),
           }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-BB-API-Key": apiKey,
+          },
+          method: "POST",
           signal: controller.signal,
         });
 
@@ -125,22 +107,18 @@ export function createBrowserbaseFetchHtmlFetcher(
           (shouldRetryStatus(response.status) || shouldRetryStatus(statusCode))
         ) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Browserbase returned ${statusCode} for ${safeUrl}`,
-            url: safeUrl,
-            status: statusCode,
             attempt,
+            message: `Browserbase returned ${statusCode} for ${safeUrl}`,
+            status: statusCode,
+            type: "fetch:retry",
+            url: safeUrl,
           });
           await sleep(retryDelayMs * attempt);
           continue;
         }
 
         if (!response.ok) {
-          throw new Error(
-            data.message ||
-              data.error ||
-              `Browserbase returned ${response.status}`,
-          );
+          throw new Error(data.message || data.error || `Browserbase returned ${response.status}`);
         }
 
         if (statusCode >= 400) {
@@ -165,27 +143,27 @@ export function createBrowserbaseFetchHtmlFetcher(
         }
 
         if (typeof data.content !== "string") {
-          throw new Error("Browserbase returned an empty response");
+          throw new TypeError("Browserbase returned an empty response");
         }
 
         emitDebug(options.onDebug, {
-          type: "fetch:success",
-          message: `Browserbase fetched ${safeUrl}`,
-          url: safeUrl,
           attempt,
+          message: `Browserbase fetched ${safeUrl}`,
           metadata: {
-            status: statusCode,
             contentType,
             proxies: options.proxies ?? false,
+            status: statusCode,
           },
+          type: "fetch:success",
+          url: safeUrl,
         });
         return {
           html: data.content,
           metadata: {
-            fetcher: "browserbase",
-            status: statusCode,
             contentType,
+            fetcher: "browserbase",
             proxies: options.proxies ?? false,
+            status: statusCode,
             timeoutMs,
           },
         };
@@ -193,26 +171,26 @@ export function createBrowserbaseFetchHtmlFetcher(
         if (error instanceof Error && error.name === "AbortError") {
           if (attempt <= retryCount) {
             emitDebug(options.onDebug, {
-              type: "fetch:retry",
-              message: `Browserbase timed out for ${safeUrl}`,
-              url: safeUrl,
               attempt,
               error: error.message,
+              message: `Browserbase timed out for ${safeUrl}`,
+              type: "fetch:retry",
+              url: safeUrl,
             });
             await sleep(retryDelayMs * attempt);
             continue;
           }
 
-          throw new Error(`Browserbase timed out after ${timeoutMs}ms`);
+          throw new Error(`Browserbase timed out after ${timeoutMs}ms`, { cause: error });
         }
 
         if (attempt <= retryCount && isRetryableRequestError(error)) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Browserbase request failed for ${safeUrl}`,
-            url: safeUrl,
             attempt,
             error: error instanceof Error ? error.message : String(error),
+            message: `Browserbase request failed for ${safeUrl}`,
+            type: "fetch:retry",
+            url: safeUrl,
           });
           await sleep(retryDelayMs * attempt);
           continue;

@@ -2,12 +2,7 @@ import { createLimiter } from "./concurrency";
 import { emitDebug } from "./debug";
 import { extractImageCandidates } from "./extract";
 import { resolveImageUrl } from "./resolve";
-import {
-  isRetryableRequestError,
-  RetryableStatusError,
-  shouldRetryStatus,
-  sleep,
-} from "./retry";
+import { isRetryableRequestError, RetryableStatusError, shouldRetryStatus, sleep } from "./retry";
 import type {
   DefaultHtmlFetcherOptions,
   HtmlFetchResult,
@@ -42,25 +37,13 @@ function createAbortController(timeoutMs: number) {
   return { controller, timeoutId };
 }
 
-export function createDefaultHtmlFetcher(
-  options: DefaultHtmlFetcherOptions = {},
-) {
-  const timeoutMs = Math.max(
-    1,
-    Math.floor(options.timeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS),
-  );
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+export function createDefaultHtmlFetcher(options: DefaultHtmlFetcherOptions = {}) {
+  const timeoutMs = Math.max(1, Math.floor(options.timeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS));
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
   const userAgent = options.userAgent?.trim() || DEFAULT_USER_AGENT;
   const accept =
-    options.accept?.trim() ||
-    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+    options.accept?.trim() || "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
   return async (url: string): Promise<HtmlFetchResult> => {
     const validation = options.validateResolvedIp
@@ -78,18 +61,18 @@ export function createDefaultHtmlFetcher(
           headers: {
             Accept: accept,
             "User-Agent": userAgent,
-            ...(options.headers ?? {}),
+            ...options.headers,
           },
           signal: controller.signal,
         });
 
         if (attempt <= retryCount && shouldRetryStatus(response.status)) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Page fetch returned ${response.status} for ${validation.url.href}`,
-            url: validation.url.href,
-            status: response.status,
             attempt,
+            message: `Page fetch returned ${response.status} for ${validation.url.href}`,
+            status: response.status,
+            type: "fetch:retry",
+            url: validation.url.href,
           });
           await sleep(retryDelayMs * attempt);
           continue;
@@ -109,47 +92,47 @@ export function createDefaultHtmlFetcher(
         }
 
         emitDebug(options.onDebug, {
-          type: "fetch:success",
-          message: `Fetched page HTML for ${validation.url.href}`,
-          url: validation.url.href,
           attempt,
+          message: `Fetched page HTML for ${validation.url.href}`,
           metadata: {
             contentType,
             status: response.status,
           },
+          type: "fetch:success",
+          url: validation.url.href,
         });
         return {
           html: await response.text(),
           metadata: {
+            contentType,
             fetcher: "default",
             status: response.status,
-            contentType,
           },
         };
       } catch (error) {
         if (error instanceof Error && error.name === "AbortError") {
           if (attempt <= retryCount) {
             emitDebug(options.onDebug, {
-              type: "fetch:retry",
-              message: `Page fetch timed out for ${validation.url.href}`,
-              url: validation.url.href,
               attempt,
               error: error.message,
+              message: `Page fetch timed out for ${validation.url.href}`,
+              type: "fetch:retry",
+              url: validation.url.href,
             });
             await sleep(retryDelayMs * attempt);
             continue;
           }
 
-          throw new Error(`Timed out fetching page after ${timeoutMs}ms`);
+          throw new Error(`Timed out fetching page after ${timeoutMs}ms`, { cause: error });
         }
 
         if (attempt <= retryCount && isRetryableRequestError(error)) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Page fetch failed for ${validation.url.href}`,
-            url: validation.url.href,
             attempt,
             error: error instanceof Error ? error.message : String(error),
+            message: `Page fetch failed for ${validation.url.href}`,
+            type: "fetch:retry",
+            url: validation.url.href,
           });
           await sleep(retryDelayMs * attempt);
           continue;
@@ -161,19 +144,13 @@ export function createDefaultHtmlFetcher(
       }
     }
 
-    throw new RetryableStatusError(
-      503,
-      `Unable to fetch ${validation.url.href}`,
-    );
+    throw new RetryableStatusError(503, `Unable to fetch ${validation.url.href}`);
   };
 }
 
 export const defaultHtmlFetcher = createDefaultHtmlFetcher();
 
-function filterMainImages(
-  candidates: ImageCandidate[],
-  minSize: number,
-): ImageCandidate[] {
+function filterMainImages(candidates: ImageCandidate[], minSize: number): ImageCandidate[] {
   return candidates.filter((candidate) => {
     if (candidate.url.startsWith("data:")) {
       return false;
@@ -224,10 +201,7 @@ function candidateHintScore(candidate: ImageCandidate): number {
         : candidate.source === "background"
           ? 2
           : 1;
-  const area =
-    candidate.width && candidate.height
-      ? candidate.width * candidate.height
-      : 0;
+  const area = candidate.width && candidate.height ? candidate.width * candidate.height : 0;
   return area + sourceScore;
 }
 
@@ -253,9 +227,7 @@ async function rankCandidatesForResolution(
 
   withSizes.sort((left, right) => {
     const sizeDifference = (right.size ?? 0) - (left.size ?? 0);
-    return (
-      sizeDifference || candidateHintScore(right) - candidateHintScore(left)
-    );
+    return sizeDifference || candidateHintScore(right) - candidateHintScore(left);
   });
 
   return withSizes.slice(0, maxImages);
@@ -287,8 +259,8 @@ export async function scrapePage(
 
   let candidates = filterMainImages(
     await extractImageCandidates(htmlResult.html, {
-      includeRaw: true,
       baseUrl: url,
+      includeRaw: true,
       sourceDomain,
     }),
     options.minSize ?? DEFAULT_MIN_SIZE,
@@ -297,10 +269,7 @@ export async function scrapePage(
   let fallbackMetadata: Record<string, unknown> | undefined;
   if (candidates.length === 0 && options.imageFallback) {
     const fallback = await options.imageFallback(url);
-    candidates = filterMainImages(
-      fallback.images,
-      options.minSize ?? DEFAULT_MIN_SIZE,
-    );
+    candidates = filterMainImages(fallback.images, options.minSize ?? DEFAULT_MIN_SIZE);
     fallbackMetadata = fallback.metadata;
   }
 
@@ -309,12 +278,12 @@ export async function scrapePage(
   }
 
   emitDebug(options.onDebug, {
-    type: "scrape:candidates",
     message: `Collected ${candidates.length} candidates for ${url}`,
-    url,
     metadata: {
       sourceDomain,
     },
+    type: "scrape:candidates",
+    url,
   });
 
   const toResolve = await rankCandidatesForResolution(candidates, options);
@@ -323,9 +292,9 @@ export async function scrapePage(
     ((imageUrl: string) =>
       resolveImageUrl(imageUrl, {
         onDebug: options.onDebug,
+        originalSize: toResolve.find((entry) => entry.url === imageUrl)?.size,
         retryCount: options.retryCount,
         retryDelayMs: options.retryDelayMs,
-        originalSize: toResolve.find((entry) => entry.url === imageUrl)?.size,
         validateResolvedIp: options.validateResolvedIp,
       }));
   const limit = createLimiter(options.resolveConcurrency ?? 5);
@@ -344,28 +313,26 @@ export async function scrapePage(
             }
 
             return {
+              alt: candidate.alt ?? null,
+              method: result.method,
               original: result.original,
-              resolved: result.resolved,
               originalSize: candidate.size ?? null,
+              resolved: result.resolved,
               resolvedSize: await getImageSize(
                 result.resolved,
                 options,
                 result.resolvedSize ??
-                  (result.resolved === candidate.url
-                    ? candidate.size
-                    : undefined),
+                  (result.resolved === candidate.url ? candidate.size : undefined),
               ),
               sizeIncrease: result.sizeIncrease ?? null,
-              alt: candidate.alt ?? null,
-              method: result.method,
             };
           } catch (error) {
             failed += 1;
             emitDebug(options.onDebug, {
-              type: "scrape:resolve_failed",
-              message: `Failed to resolve ${candidate.url}`,
-              url: candidate.url,
               error: error instanceof Error ? error.message : String(error),
+              message: `Failed to resolve ${candidate.url}`,
+              type: "scrape:resolve_failed",
+              url: candidate.url,
             });
             return null;
           }
@@ -374,23 +341,21 @@ export async function scrapePage(
     )
   ).filter((image): image is NonNullable<typeof image> => image !== null);
 
-  images.sort(
-    (left, right) => (right.resolvedSize ?? 0) - (left.resolvedSize ?? 0),
-  );
+  images.sort((left, right) => (right.resolvedSize ?? 0) - (left.resolvedSize ?? 0));
 
   return {
-    url,
     images,
-    stats: {
-      found: candidates.length,
-      resolved,
-      failed,
-      returned: images.length,
-      durationMs: Date.now() - start,
-    },
     metadata: {
       ...(htmlResult.metadata ?? {}),
       ...(fallbackMetadata ?? {}),
     },
+    stats: {
+      durationMs: Date.now() - start,
+      failed,
+      found: candidates.length,
+      resolved,
+      returned: images.length,
+    },
+    url,
   };
 }

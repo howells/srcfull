@@ -4,27 +4,23 @@ import { resolveImageUrl } from "../src/resolve";
 
 describe("resolveImageUrl", () => {
   const cache = {
-    get: vi.fn<(url: string) => Promise<string | null>>(
-      async (_url: string) => null,
-    ),
-    set: vi.fn(async () => undefined),
+    get: vi.fn<(url: string) => Promise<string | null>>(async (_url: string) => null),
+    set: vi.fn(async () => {}),
   };
 
   const patternStore = {
     findByDomain: vi.fn<(domain: string) => Promise<LearnedPattern[]>>(
       async (_domain: string) => [],
     ),
-    save: vi.fn(
-      async (_domain: string, matchRegex: string, transform: string) => ({
-        id: 1,
-        domain: "example.com",
-        matchRegex,
-        transform,
-        confidence: 0.5,
-      }),
-    ),
-    incrementSuccess: vi.fn(async () => undefined),
-    incrementFailure: vi.fn(async () => undefined),
+    incrementFailure: vi.fn(async () => {}),
+    incrementSuccess: vi.fn(async () => {}),
+    save: vi.fn(async (_domain: string, matchRegex: string, transform: string) => ({
+      id: 1,
+      domain: "example.com",
+      matchRegex,
+      transform,
+      confidence: 0.5,
+    })),
   };
 
   beforeEach(() => {
@@ -37,14 +33,14 @@ describe("resolveImageUrl", () => {
 
     const result = await resolveImageUrl("https://original.com/image.jpg", {
       cache,
+      onDebug,
       patternStore,
       validate: vi.fn(async () => ({ valid: true, size: 100 })),
-      onDebug,
     });
 
     expect(result).toMatchObject({
-      resolved: "https://cached.com/image.jpg",
       method: "cached",
+      resolved: "https://cached.com/image.jpg",
     });
     expect(onDebug).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -55,17 +51,17 @@ describe("resolveImageUrl", () => {
 
   it("uses learned patterns when provided", async () => {
     const validate = vi.fn(async (url: string) => ({
-      valid: true,
       size: url.includes("source") ? 200 : 100,
+      valid: true,
     }));
 
     patternStore.findByDomain.mockResolvedValueOnce([
       {
-        id: 123,
+        confidence: 0.8,
         domain: "example.com",
+        id: 123,
         matchRegex: "^(https://example.com)/(.*)$",
         transform: "https://source.example.com/$2",
-        confidence: 0.8,
       },
     ]);
 
@@ -76,9 +72,9 @@ describe("resolveImageUrl", () => {
     });
 
     expect(result).toMatchObject({
-      resolved: "https://source.example.com/image.jpg",
-      method: "learned",
       confidence: 0.8,
+      method: "learned",
+      resolved: "https://source.example.com/image.jpg",
       sizeIncrease: "2.0x",
     });
     expect(patternStore.incrementSuccess).toHaveBeenCalledWith(123);
@@ -86,16 +82,16 @@ describe("resolveImageUrl", () => {
 
   it("uses a known original size instead of revalidating the original URL", async () => {
     const validate = vi.fn(async (url: string) => ({
-      valid: true,
       size: url.includes("master") ? 400 : 100,
+      valid: true,
     }));
 
     const result = await resolveImageUrl(
       "https://media.houseandgarden.co.uk/photos/63e509b43404638ef031982b/1:1/w_400/thumb.jpg",
       {
         cache,
-        patternStore,
         originalSize: 200,
+        patternStore,
         validate,
       },
     );
@@ -109,25 +105,22 @@ describe("resolveImageUrl", () => {
 
   it("falls back to probing when no pattern matches", async () => {
     const validate = vi.fn(async (url: string) => ({
-      valid: true,
       size: url.includes("w=2560") ? 250 : 100,
+      valid: true,
     }));
 
-    const result = await resolveImageUrl(
-      "https://example.com/image.jpg?w=400",
-      {
-        cache,
-        patternStore,
-        validate,
-      },
-    );
+    const result = await resolveImageUrl("https://example.com/image.jpg?w=400", {
+      cache,
+      patternStore,
+      validate,
+    });
 
     expect(result.method).toBe("probed");
     expect(result.resolved).toContain("w=2560");
   });
 
   it("falls back to the original URL when nothing improves it", async () => {
-    const validate = vi.fn(async () => ({ valid: true, size: 100 }));
+    const validate = vi.fn(async () => ({ size: 100, valid: true }));
 
     const result = await resolveImageUrl("https://example.com/image.jpg", {
       cache,
@@ -136,8 +129,8 @@ describe("resolveImageUrl", () => {
     });
 
     expect(result).toMatchObject({
-      resolved: "https://example.com/image.jpg",
       method: "fallback",
+      resolved: "https://example.com/image.jpg",
     });
   });
 });

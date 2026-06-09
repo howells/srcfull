@@ -8,23 +8,23 @@ import type {
   ResolutionCache,
 } from "../types";
 
-type CacheEntry = {
+interface CacheEntry {
   resolvedUrl: string;
   patternId?: string | number;
   updatedAt: number;
-};
+}
 
-type CacheFileState = {
+interface CacheFileState {
   entries: Record<string, CacheEntry>;
-};
+}
 
-type PatternFileState = {
+interface PatternFileState {
   patterns: LearnedPattern[];
-};
+}
 
 async function readJsonFile<T>(filePath: string, fallback: T): Promise<T> {
   try {
-    const content = await readFile(filePath, "utf8");
+    const content = await readFile(filePath, "utf-8");
     return JSON.parse(content) as T;
   } catch {
     return fallback;
@@ -33,16 +33,14 @@ async function readJsonFile<T>(filePath: string, fallback: T): Promise<T> {
 
 async function writeJsonFile(filePath: string, value: unknown): Promise<void> {
   await mkdir(dirname(filePath), { recursive: true });
-  await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
 }
 
 export function createFileCache(options: FileCacheOptions): ResolutionCache {
-  const filePath = options.filePath;
-  const maxEntries = Math.max(1, Math.floor(options.maxEntries ?? 1_000));
+  const { filePath } = options;
+  const maxEntries = Math.max(1, Math.floor(options.maxEntries ?? 1000));
   const maxAgeMs =
-    options.maxAgeMs === undefined
-      ? undefined
-      : Math.max(0, Math.floor(options.maxAgeMs));
+    options.maxAgeMs === undefined ? undefined : Math.max(0, Math.floor(options.maxAgeMs));
   const statePromise = readJsonFile<CacheFileState>(filePath, { entries: {} });
   let pending = Promise.resolve();
 
@@ -59,8 +57,8 @@ export function createFileCache(options: FileCacheOptions): ResolutionCache {
     });
 
     pending = task.then(
-      () => undefined,
-      () => undefined,
+      () => {},
+      () => {},
     );
 
     return task;
@@ -76,7 +74,7 @@ export function createFileCache(options: FileCacheOptions): ResolutionCache {
 
       if (maxAgeMs !== undefined && Date.now() - entry.updatedAt > maxAgeMs) {
         delete state.entries[originalUrl];
-        await queueWrite(() => undefined);
+        await queueWrite(() => {});
         return null;
       }
 
@@ -85,8 +83,8 @@ export function createFileCache(options: FileCacheOptions): ResolutionCache {
     async set(originalUrl, resolvedUrl, patternId) {
       await queueWrite((state) => {
         state.entries[originalUrl] = {
-          resolvedUrl,
           patternId,
+          resolvedUrl,
           updatedAt: Date.now(),
         };
 
@@ -106,10 +104,8 @@ export function createFileCache(options: FileCacheOptions): ResolutionCache {
   };
 }
 
-export function createFilePatternStore(
-  options: FilePatternStoreOptions,
-): PatternStore {
-  const filePath = options.filePath;
+export function createFilePatternStore(options: FilePatternStoreOptions): PatternStore {
+  const { filePath } = options;
   const statePromise = readJsonFile<PatternFileState>(filePath, {
     patterns: [],
   });
@@ -129,8 +125,8 @@ export function createFilePatternStore(
     });
 
     pending = task.then(
-      () => undefined,
-      () => undefined,
+      () => {},
+      () => {},
     );
 
     return task;
@@ -143,33 +139,12 @@ export function createFilePatternStore(
         .filter((pattern) => pattern.domain === domain)
         .sort((left, right) => right.confidence - left.confidence);
     },
-    async save(domain, matchRegex, transform) {
-      return queueWrite((state) => {
-        const existing = state.patterns.find(
-          (pattern) =>
-            pattern.domain === domain && pattern.matchRegex === matchRegex,
-        );
-
-        if (existing) {
-          existing.transform = transform;
-          existing.confidence = Math.min(existing.confidence + 0.1, 0.99);
-          return existing;
+    async incrementFailure(patternId) {
+      await queueWrite((state) => {
+        const pattern = state.patterns.find((entry) => entry.id === patternId);
+        if (pattern) {
+          pattern.confidence = Math.max(pattern.confidence - 0.2, 0);
         }
-
-        const numericIds = state.patterns
-          .map((pattern) =>
-            typeof pattern.id === "number" ? pattern.id : Number.NaN,
-          )
-          .filter((value) => Number.isFinite(value));
-        const created: LearnedPattern = {
-          id: numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1,
-          domain,
-          matchRegex,
-          transform,
-          confidence: 0.5,
-        };
-        state.patterns.push(created);
-        return created;
       });
     },
     async incrementSuccess(patternId) {
@@ -180,12 +155,30 @@ export function createFilePatternStore(
         }
       });
     },
-    async incrementFailure(patternId) {
-      await queueWrite((state) => {
-        const pattern = state.patterns.find((entry) => entry.id === patternId);
-        if (pattern) {
-          pattern.confidence = Math.max(pattern.confidence - 0.2, 0);
+    async save(domain, matchRegex, transform) {
+      return queueWrite((state) => {
+        const existing = state.patterns.find(
+          (pattern) => pattern.domain === domain && pattern.matchRegex === matchRegex,
+        );
+
+        if (existing) {
+          existing.transform = transform;
+          existing.confidence = Math.min(existing.confidence + 0.1, 0.99);
+          return existing;
         }
+
+        const numericIds = state.patterns
+          .map((pattern) => (typeof pattern.id === "number" ? pattern.id : Number.NaN))
+          .filter((value) => Number.isFinite(value));
+        const created: LearnedPattern = {
+          id: numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1,
+          domain,
+          matchRegex,
+          transform,
+          confidence: 0.5,
+        };
+        state.patterns.push(created);
+        return created;
       });
     },
   };

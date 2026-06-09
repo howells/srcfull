@@ -62,15 +62,9 @@ const META_IMAGE_SELECTORS = [
   'meta[itemprop="image"]',
 ];
 
-const LINK_IMAGE_SELECTORS = [
-  'link[rel="image_src"]',
-  'link[rel="preload"][as="image"]',
-];
+const LINK_IMAGE_SELECTORS = ['link[rel="image_src"]', 'link[rel="preload"][as="image"]'];
 
-function normalizeCandidateUrl(
-  rawUrl: string | undefined,
-  baseUrl?: string,
-): string | null {
+function normalizeCandidateUrl(rawUrl: string | undefined, baseUrl?: string): string | null {
   if (!rawUrl) {
     return null;
   }
@@ -123,10 +117,7 @@ function extractCssUrls(style: string | undefined): string[] {
   ).filter(Boolean);
 }
 
-function pushCandidate(
-  candidates: ImageCandidate[],
-  candidate: ImageCandidate | null,
-): void {
+function pushCandidate(candidates: ImageCandidate[], candidate: ImageCandidate | null): void {
   if (!candidate) {
     return;
   }
@@ -149,15 +140,12 @@ function createCandidate(
 
   return {
     ...extra,
-    url: normalizedUrl,
     source,
+    url: normalizedUrl,
   };
 }
 
-export function extractImageUrlsFromRaw(
-  html: string,
-  sourceDomain?: string,
-): string[] {
+export function extractImageUrlsFromRaw(html: string, sourceDomain?: string): string[] {
   const matches = html.match(IMAGE_URL_REGEX) || [];
   const seen = new Set<string>();
   const filtered: string[] = [];
@@ -184,10 +172,7 @@ export function extractImageUrlsFromRaw(
   return filtered;
 }
 
-export function extractImageCandidatesFromHtml(
-  html: string,
-  baseUrl?: string,
-): ImageCandidate[] {
+export function extractImageCandidatesFromHtml(html: string, baseUrl?: string): ImageCandidate[] {
   const $ = load(html);
   const candidates: ImageCandidate[] = [];
 
@@ -206,22 +191,22 @@ export function extractImageCandidatesFromHtml(
       pushCandidate(
         candidates,
         createCandidate(node.attr(attribute), "img", baseUrl, {
-          width,
-          height,
           alt,
+          height,
           srcset: srcsetCandidates.length > 0 ? srcsetCandidates : undefined,
+          width,
         }),
       );
     }
 
     for (const srcsetUrl of srcsetCandidates) {
       pushCandidate(candidates, {
-        url: srcsetUrl,
-        source: "img",
-        width,
-        height,
         alt,
+        height,
+        source: "img",
         srcset: srcsetCandidates,
+        url: srcsetUrl,
+        width,
       });
     }
   });
@@ -235,9 +220,9 @@ export function extractImageCandidatesFromHtml(
 
     for (const url of urls) {
       pushCandidate(candidates, {
-        url,
         source: "picture",
         srcset: urls,
+        url,
       });
     }
   });
@@ -250,19 +235,13 @@ export function extractImageCandidatesFromHtml(
 
   for (const selector of META_IMAGE_SELECTORS) {
     $(selector).each((_, element) => {
-      pushCandidate(
-        candidates,
-        createCandidate($(element).attr("content"), "raw", baseUrl),
-      );
+      pushCandidate(candidates, createCandidate($(element).attr("content"), "raw", baseUrl));
     });
   }
 
   for (const selector of LINK_IMAGE_SELECTORS) {
     $(selector).each((_, element) => {
-      pushCandidate(
-        candidates,
-        createCandidate($(element).attr("href"), "raw", baseUrl),
-      );
+      pushCandidate(candidates, createCandidate($(element).attr("href"), "raw", baseUrl));
     });
   }
 
@@ -281,9 +260,7 @@ export async function extractImageCandidates(
   } = options;
 
   const candidates = [...extractImageCandidatesFromHtml(html, options.baseUrl)];
-  const seenUrls = new Set(
-    candidates.map((candidate) => candidate.url.split("?")[0]),
-  );
+  const seenUrls = new Set(candidates.map((candidate) => candidate.url.split("?")[0]));
 
   if (includeRaw) {
     for (const url of extractImageUrlsFromRaw(html, sourceDomain)) {
@@ -293,8 +270,8 @@ export async function extractImageCandidates(
       }
 
       candidates.push({
-        url,
         source: "raw",
+        url,
       });
       seenUrls.add(baseUrl);
     }
@@ -304,12 +281,8 @@ export async function extractImageCandidates(
     return candidates;
   }
 
-  const httpCandidates = candidates.filter((candidate) =>
-    candidate.url.startsWith("http"),
-  );
-  const otherCandidates = candidates.filter(
-    (candidate) => !candidate.url.startsWith("http"),
-  );
+  const httpCandidates = candidates.filter((candidate) => candidate.url.startsWith("http"));
+  const otherCandidates = candidates.filter((candidate) => !candidate.url.startsWith("http"));
 
   const withSizes = await Promise.all(
     httpCandidates.map(async (candidate) => {

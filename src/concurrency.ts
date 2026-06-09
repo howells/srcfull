@@ -1,8 +1,8 @@
-type QueueItem<T> = {
+interface QueueItem<T> {
   fn: () => Promise<T>;
   resolve: (value: T) => void;
   reject: (error: unknown) => void;
-};
+}
 
 export function createLimiter(concurrency: number) {
   const safeConcurrency = Math.max(1, Math.floor(concurrency) || 1);
@@ -32,7 +32,7 @@ export function createLimiter(concurrency: number) {
 
   return function limit<T>(fn: () => Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      queue.push({ fn, resolve, reject } as QueueItem<unknown>);
+      queue.push({ fn, reject, resolve } as QueueItem<unknown>);
       drain();
     });
   };

@@ -18,10 +18,10 @@ describe("createDefaultHtmlFetcher", () => {
   it("rejects non-html responses by default", async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       new Response("{}", {
-        status: 200,
         headers: {
           "content-type": "application/json",
         },
+        status: 200,
       }),
     );
 
@@ -37,18 +37,18 @@ describe("createDefaultHtmlFetcher", () => {
     vi.mocked(fetch)
       .mockResolvedValueOnce(
         new Response("", {
-          status: 503,
           headers: {
             "content-type": "text/html; charset=utf-8",
           },
+          status: 503,
         }),
       )
       .mockResolvedValueOnce(
         new Response("<html>ok</html>", {
-          status: 200,
           headers: {
             "content-type": "text/html; charset=utf-8",
           },
+          status: 200,
         }),
       );
 
@@ -63,8 +63,8 @@ describe("createDefaultHtmlFetcher", () => {
     expect(vi.mocked(fetch)).toHaveBeenCalledTimes(2);
     expect(onDebug).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: "fetch:retry",
         status: 503,
+        type: "fetch:retry",
       }),
     );
   });
@@ -89,9 +89,7 @@ describe("provider guards", () => {
   });
 
   it("rejects blank Firecrawl API keys at creation time", () => {
-    expect(() => createFirecrawlImageFallback("   ")).toThrow(
-      "Firecrawl API key is required",
-    );
+    expect(() => createFirecrawlImageFallback("   ")).toThrow("Firecrawl API key is required");
   });
 
   it("rejects blank Browserbase API keys at creation time", () => {
@@ -122,19 +120,19 @@ describe("provider guards", () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       new Response(
         JSON.stringify({
-          statusCode: 200,
-          headers: {
-            "content-type": "text/html; charset=utf-8",
-          },
           content: "<html>browserbase</html>",
           contentType: "text/html; charset=utf-8",
           encoding: "utf-8",
+          headers: {
+            "content-type": "text/html; charset=utf-8",
+          },
+          statusCode: 200,
         }),
         {
-          status: 200,
           headers: {
             "content-type": "application/json",
           },
+          status: 200,
         },
       ),
     );
@@ -150,14 +148,14 @@ describe("provider guards", () => {
     expect(result.html).toContain("browserbase");
     expect(request?.[0]).toBe("https://api.browserbase.com/v1/fetch");
     expect(request?.[1]).toMatchObject({
-      method: "POST",
       headers: {
         "X-BB-API-Key": "browserbase-key",
       },
+      method: "POST",
     });
     expect(JSON.parse(String(request?.[1]?.body))).toMatchObject({
-      url: "https://example.com/page",
       proxies: true,
+      url: "https://example.com/page",
     });
   });
 
@@ -177,33 +175,33 @@ describe("provider guards", () => {
       .mockResolvedValueOnce(
         new Response(
           JSON.stringify({
-            session_id: "browser-123",
             browser_live_view_url: "https://kernel.example/live",
+            session_id: "browser-123",
           }),
           {
-            status: 200,
             headers: {
               "content-type": "application/json",
             },
+            status: 200,
           },
         ),
       )
       .mockResolvedValueOnce(
         new Response(
           JSON.stringify({
-            success: true,
             result: {
-              html: "<html>kernel</html>",
-              status: 200,
               contentType: "text/html; charset=utf-8",
               finalUrl: "https://example.com/page",
+              html: "<html>kernel</html>",
+              status: 200,
             },
+            success: true,
           }),
           {
-            status: 200,
             headers: {
               "content-type": "application/json",
             },
+            status: 200,
           },
         ),
       )
@@ -216,7 +214,7 @@ describe("provider guards", () => {
     });
 
     const result = await fetchHtml("https://example.com/page");
-    const calls = vi.mocked(fetch).mock.calls;
+    const { calls } = vi.mocked(fetch).mock;
 
     expect(result.html).toContain("kernel");
     expect(calls[0]?.[0]).toBe("https://api.onkernel.com/browsers");
@@ -224,9 +222,7 @@ describe("provider guards", () => {
       headless: true,
       stealth: true,
     });
-    expect(calls[1]?.[0]).toBe(
-      "https://api.onkernel.com/browsers/browser-123/playwright/execute",
-    );
+    expect(calls[1]?.[0]).toBe("https://api.onkernel.com/browsers/browser-123/playwright/execute");
     expect(JSON.parse(String(calls[1]?.[1]?.body)).code).toContain("page.goto");
     expect(calls[2]?.[0]).toBe("https://api.onkernel.com/browsers/browser-123");
     expect(calls[2]?.[1]).toMatchObject({

@@ -16,11 +16,11 @@ describe("extractImageCandidatesFromHtml", () => {
 
     expect(result).toHaveLength(2);
     expect(result[0]).toMatchObject({
-      url: "https://example.com/image1.jpg",
-      source: "img",
-      width: 800,
-      height: 600,
       alt: "Test image",
+      height: 600,
+      source: "img",
+      url: "https://example.com/image1.jpg",
+      width: 800,
     });
   });
 
@@ -35,14 +35,14 @@ describe("extractImageCandidatesFromHtml", () => {
 
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://example.com/image-wide.jpg",
         source: "picture",
+        url: "https://example.com/image-wide.jpg",
       }),
     );
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://example.com/image-narrow.jpg",
         source: "picture",
+        url: "https://example.com/image-narrow.jpg",
       }),
     );
   });
@@ -57,14 +57,14 @@ describe("extractImageCandidatesFromHtml", () => {
 
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://example.com/bg1.jpg",
         source: "background",
+        url: "https://example.com/bg1.jpg",
       }),
     );
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://example.com/bg2.jpg",
         source: "background",
+        url: "https://example.com/bg2.jpg",
       }),
     );
   });
@@ -76,34 +76,31 @@ describe("extractImageCandidatesFromHtml", () => {
       <link rel="preload" as="image" href="//cdn.example.com/hero.jpg" />
     `;
 
-    const result = extractImageCandidatesFromHtml(
-      html,
-      "https://shop.example.com/products/chair",
-    );
+    const result = extractImageCandidatesFromHtml(html, "https://shop.example.com/products/chair");
 
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://shop.example.com/images/product.jpg",
-        source: "img",
         alt: "Product",
-      }),
-    );
-    expect(result).toContainEqual(
-      expect.objectContaining({
-        url: "https://shop.example.com/images/product@2x.jpg",
         source: "img",
+        url: "https://shop.example.com/images/product.jpg",
       }),
     );
     expect(result).toContainEqual(
       expect.objectContaining({
+        source: "img",
+        url: "https://shop.example.com/images/product@2x.jpg",
+      }),
+    );
+    expect(result).toContainEqual(
+      expect.objectContaining({
+        source: "raw",
         url: "https://shop.example.com/social/share.jpg",
-        source: "raw",
       }),
     );
     expect(result).toContainEqual(
       expect.objectContaining({
-        url: "https://cdn.example.com/hero.jpg",
         source: "raw",
+        url: "https://cdn.example.com/hero.jpg",
       }),
     );
   });
@@ -113,10 +110,7 @@ describe("extractImageCandidatesFromHtml", () => {
       <img src="/images/hero.avif#preview" />
     `;
 
-    const result = extractImageCandidatesFromHtml(
-      html,
-      "https://example.com/article",
-    );
+    const result = extractImageCandidatesFromHtml(html, "https://example.com/article");
 
     expect(result).toContainEqual(
       expect.objectContaining({
@@ -154,7 +148,7 @@ describe("extractImageCandidates", () => {
       </div>
     `;
 
-    const validate = vi.fn(async () => ({ valid: true, size: 100 }));
+    const validate = vi.fn(async () => ({ size: 100, valid: true }));
     const result = await extractImageCandidates(html, {
       includeRaw: true,
       sourceDomain: "example.com",
@@ -163,8 +157,7 @@ describe("extractImageCandidates", () => {
 
     expect(
       result.some(
-        (candidate) =>
-          candidate.url === "https://cdn.shopify.com/s/files/hidden-image.jpg",
+        (candidate) => candidate.url === "https://cdn.shopify.com/s/files/hidden-image.jpg",
       ),
     ).toBe(true);
   });
@@ -176,8 +169,8 @@ describe("extractImageCandidates", () => {
     `;
 
     const validate = vi.fn(async (url: string) => ({
-      valid: true,
       size: url.includes("large") ? 200 : 100,
+      valid: true,
     }));
 
     const result = await extractImageCandidates(html, {

@@ -84,11 +84,7 @@ function stripSizeSuffixCandidates(urlObj: URL): string[] {
     if (!match) {
       continue;
     }
-    candidates.push(
-      urlObj.origin +
-        urlObj.pathname.replace(pattern, match[1]) +
-        urlObj.search,
-    );
+    candidates.push(urlObj.origin + urlObj.pathname.replace(pattern, match[1]) + urlObj.search);
   }
 
   return candidates;
@@ -151,7 +147,5 @@ export async function probeForSource(
     }
   }
 
-  return bestUrl === originalUrl
-    ? null
-    : { url: bestUrl, size: bestSize, method: "probed" };
+  return bestUrl === originalUrl ? null : { method: "probed", size: bestSize, url: bestUrl };
 }

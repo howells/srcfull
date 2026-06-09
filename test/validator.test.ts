@@ -26,37 +26,37 @@ describe("validateImageUrl", () => {
     fetchMock
       .mockResolvedValueOnce(
         new Response(null, {
-          status: 405,
           headers: {
             "content-type": "text/plain",
           },
+          status: 405,
         }),
       )
       .mockResolvedValueOnce(
         new Response(null, {
-          status: 206,
           headers: {
-            "content-type": "image/jpeg",
             "content-range": "bytes 0-0/2048",
+            "content-type": "image/jpeg",
           },
+          status: 206,
         }),
       );
 
     const result = await validateImageUrl("https://cdn.example.com/photo.jpg");
 
     expect(result).toEqual({
-      valid: true,
       contentType: "image/jpeg",
       size: 2048,
+      valid: true,
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
       "https://cdn.example.com/photo.jpg",
       expect.objectContaining({
-        method: "GET",
         headers: expect.objectContaining({
           Range: "bytes=0-0",
         }),
+        method: "GET",
       }),
     );
   });
@@ -68,19 +68,19 @@ describe("validateImageUrl", () => {
     fetchMock
       .mockResolvedValueOnce(
         new Response(null, {
-          status: 503,
           headers: {
             "content-type": "text/plain",
           },
+          status: 503,
         }),
       )
       .mockResolvedValueOnce(
         new Response(null, {
-          status: 200,
           headers: {
-            "content-type": "image/jpeg",
             "content-length": "4096",
+            "content-type": "image/jpeg",
           },
+          status: 200,
         }),
       );
 
@@ -90,15 +90,15 @@ describe("validateImageUrl", () => {
     });
 
     expect(result).toEqual({
-      valid: true,
       contentType: "image/jpeg",
       size: 4096,
+      valid: true,
     });
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(onDebug).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: "validate:retry",
         status: 503,
+        type: "validate:retry",
       }),
     );
   });
@@ -106,26 +106,20 @@ describe("validateImageUrl", () => {
 
 describe("validatePublicUrlForServer", () => {
   it("rejects public hostnames that resolve to private IP addresses", async () => {
-    const result = await validatePublicUrlForServer(
-      "https://example.com/image.jpg",
-      {
-        resolveHostname: async () => ["10.0.0.5"],
-      },
-    );
+    const result = await validatePublicUrlForServer("https://example.com/image.jpg", {
+      resolveHostname: async () => ["10.0.0.5"],
+    });
 
     expect(result).toEqual({
-      valid: false,
       error: "Hostname resolves to a private IP address",
+      valid: false,
     });
   });
 
   it("accepts public hostnames that resolve to public IP addresses", async () => {
-    const result = await validatePublicUrlForServer(
-      "https://example.com/image.jpg",
-      {
-        resolveHostname: async () => ["93.184.216.34"],
-      },
-    );
+    const result = await validatePublicUrlForServer("https://example.com/image.jpg", {
+      resolveHostname: async () => ["93.184.216.34"],
+    });
 
     expect(result.valid).toBe(true);
     expect(result.url?.href).toBe("https://example.com/image.jpg");

@@ -25,15 +25,15 @@ const BLOCKED_HOSTNAMES = new Set([
 
 const BLOCKED_HOSTNAME_SUFFIXES = [".local", ".internal", ".localhost"];
 
-export type PublicUrlValidationOptions = {
+export interface PublicUrlValidationOptions {
   resolveHostname?: (hostname: string) => Promise<string[]>;
-};
+}
 
-export type PublicUrlValidation = {
+export interface PublicUrlValidation {
   valid: boolean;
   error?: string;
   url?: URL;
-};
+}
 
 function normalizeHostname(hostname: string): string {
   return hostname.toLowerCase().replace(/^\[(.*)\]$/, "$1");
@@ -68,27 +68,27 @@ export function validatePublicUrl(urlString: string): PublicUrlValidation {
   try {
     url = new URL(urlString);
   } catch {
-    return { valid: false, error: "Invalid URL format" };
+    return { error: "Invalid URL format", valid: false };
   }
 
   if (!(url.protocol === "http:" || url.protocol === "https:")) {
-    return { valid: false, error: "Only HTTP and HTTPS URLs are allowed" };
+    return { error: "Only HTTP and HTTPS URLs are allowed", valid: false };
   }
 
   const hostname = normalizeHostname(url.hostname);
   if (BLOCKED_HOSTNAMES.has(hostname)) {
-    return { valid: false, error: "This hostname is not allowed" };
+    return { error: "This hostname is not allowed", valid: false };
   }
 
   if (BLOCKED_HOSTNAME_SUFFIXES.some((suffix) => hostname.endsWith(suffix))) {
-    return { valid: false, error: "Private hostnames are not allowed" };
+    return { error: "Private hostnames are not allowed", valid: false };
   }
 
   if (isPrivateAddress(hostname)) {
-    return { valid: false, error: "Private IP addresses are not allowed" };
+    return { error: "Private IP addresses are not allowed", valid: false };
   }
 
-  return { valid: true, url };
+  return { url, valid: true };
 }
 
 export async function validatePublicUrlForServer(
@@ -109,13 +109,13 @@ export async function validatePublicUrlForServer(
   try {
     addresses = await (options.resolveHostname ?? resolveHostname)(hostname);
   } catch {
-    return { valid: false, error: "Hostname could not be resolved" };
+    return { error: "Hostname could not be resolved", valid: false };
   }
 
   if (addresses.some(isPrivateAddress)) {
     return {
-      valid: false,
       error: "Hostname resolves to a private IP address",
+      valid: false,
     };
   }
 

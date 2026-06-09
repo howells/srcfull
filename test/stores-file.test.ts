@@ -14,18 +14,9 @@ describe("createFileCache", () => {
     const filePath = join(directory, "cache.json");
 
     const cache = createFileCache({ filePath, maxEntries: 2 });
-    await cache.set(
-      "https://example.com/1.jpg",
-      "https://cdn.example.com/1.jpg",
-    );
-    await cache.set(
-      "https://example.com/2.jpg",
-      "https://cdn.example.com/2.jpg",
-    );
-    await cache.set(
-      "https://example.com/3.jpg",
-      "https://cdn.example.com/3.jpg",
-    );
+    await cache.set("https://example.com/1.jpg", "https://cdn.example.com/1.jpg");
+    await cache.set("https://example.com/2.jpg", "https://cdn.example.com/2.jpg");
+    await cache.set("https://example.com/3.jpg", "https://cdn.example.com/3.jpg");
 
     const reloadedCache = createFileCache({ filePath, maxEntries: 2 });
     expect(await reloadedCache.get("https://example.com/1.jpg")).toBeNull();
@@ -42,10 +33,7 @@ describe("createFileCache", () => {
     const filePath = join(directory, "cache.json");
 
     const cache = createFileCache({ filePath, maxAgeMs: 100 });
-    await cache.set(
-      "https://example.com/1.jpg",
-      "https://cdn.example.com/1.jpg",
-    );
+    await cache.set("https://example.com/1.jpg", "https://cdn.example.com/1.jpg");
 
     vi.setSystemTime(new Date("2026-04-04T12:00:01Z"));
 
@@ -58,7 +46,7 @@ describe("createFileCache", () => {
     const blockedDirectory = join(directory, "blocked");
     const filePath = join(blockedDirectory, "cache.json");
 
-    await writeFile(blockedDirectory, "not a directory", "utf8");
+    await writeFile(blockedDirectory, "not a directory", "utf-8");
     const cache = createFileCache({ filePath });
 
     await expect(
@@ -67,14 +55,9 @@ describe("createFileCache", () => {
 
     await rm(blockedDirectory);
     await mkdir(blockedDirectory);
-    await cache.set(
-      "https://example.com/2.jpg",
-      "https://cdn.example.com/2.jpg",
-    );
+    await cache.set("https://example.com/2.jpg", "https://cdn.example.com/2.jpg");
 
-    expect(await cache.get("https://example.com/2.jpg")).toBe(
-      "https://cdn.example.com/2.jpg",
-    );
+    expect(await cache.get("https://example.com/2.jpg")).toBe("https://cdn.example.com/2.jpg");
   });
 });
 
@@ -98,8 +81,8 @@ describe("createFilePatternStore", () => {
     expect(patterns[0]?.transform).toBe("https://cdn.example.com/$1");
     expect(patterns[0]?.confidence).toBeGreaterThan(0.5);
 
-    const rawFile = JSON.parse(await readFile(filePath, "utf8")) as {
-      patterns: Array<{ domain: string }>;
+    const rawFile = JSON.parse(await readFile(filePath, "utf-8")) as {
+      patterns: { domain: string }[];
     };
     expect(rawFile.patterns[0]?.domain).toBe("example.com");
   });

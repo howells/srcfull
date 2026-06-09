@@ -1,6 +1,6 @@
 import curatedPatternsJson from "../data/patterns.json";
 
-export type CuratedPattern = {
+export interface CuratedPattern {
   domain: string;
   domains?: string[];
   description?: string;
@@ -11,7 +11,7 @@ export type CuratedPattern = {
   stripParams?: string[];
   stripSuffixes?: string[];
   confidence: "high" | "medium" | "low";
-};
+}
 
 const curatedPatterns = curatedPatternsJson as Record<string, CuratedPattern>;
 
@@ -46,7 +46,7 @@ function tryStripParams(url: string, stripParams: string[]): string | null {
 
   for (const param of stripParams) {
     try {
-      cleanUrl = cleanUrl.replace(new RegExp(param, "g"), "");
+      cleanUrl = cleanUrl.replaceAll(new RegExp(param, "g"), "");
     } catch {
       // Ignore invalid regex patterns in curated data.
     }
@@ -74,10 +74,7 @@ function tryStripSuffixes(url: string, stripSuffixes: string[]): string | null {
   return cleanUrl === url ? null : cleanUrl;
 }
 
-function tryApplyCuratedPattern(
-  url: string,
-  pattern: CuratedPattern,
-): string | null {
+function tryApplyCuratedPattern(url: string, pattern: CuratedPattern): string | null {
   let current = url;
   let changed = false;
 
@@ -144,10 +141,7 @@ function patternMatchesUrl(rawUrl: string, pattern: CuratedPattern): boolean {
   return domains.some((domain) => tokenMatchesUrl(url, domain));
 }
 
-export function applyCuratedPattern(
-  url: string,
-  patternName: string,
-): string | null {
+export function applyCuratedPattern(url: string, patternName: string): string | null {
   const pattern = curatedPatterns[patternName];
   if (!pattern || !patternMatchesUrl(url, pattern)) {
     return null;

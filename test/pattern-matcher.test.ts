@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  applyCuratedPattern,
-  applyPattern,
-  matchCuratedPattern,
-} from "../src/pattern-matcher";
+import { applyCuratedPattern, applyPattern, matchCuratedPattern } from "../src/pattern-matcher";
 
 describe("matchCuratedPattern", () => {
   it("matches Conde Nast URLs and transforms to high-quality", () => {
@@ -21,9 +17,7 @@ describe("matchCuratedPattern", () => {
 
   it("does not match host-like pattern domains inside unrelated hostnames", () => {
     expect(
-      matchCuratedPattern(
-        "https://res.cloudinary.com.evil.test/demo/image/upload/w_400/file.jpg",
-      ),
+      matchCuratedPattern("https://res.cloudinary.com.evil.test/demo/image/upload/w_400/file.jpg"),
     ).toBeNull();
   });
 
@@ -32,17 +26,12 @@ describe("matchCuratedPattern", () => {
       matchCuratedPattern(
         "https://aicdn.speedsize.com/e0ef94ef-bbea-450b-a400-575c3145c135/www.tilebar.com/media/catalog/product/lines-black-tile.jpg?w=800&q=80&format=webp",
       ),
-    ).toBe(
-      "https://www.tilebar.com/media/catalog/product/lines-black-tile.jpg",
-    );
+    ).toBe("https://www.tilebar.com/media/catalog/product/lines-black-tile.jpg");
   });
 
   it("strips empty numeric cachebuster query params with the generic pattern", () => {
     expect(
-      applyCuratedPattern(
-        "https://www.tilebar.com/media/wysiwyg/Vinyl.png?1=",
-        "generic",
-      ),
+      applyCuratedPattern("https://www.tilebar.com/media/wysiwyg/Vinyl.png?1=", "generic"),
     ).toBe("https://www.tilebar.com/media/wysiwyg/Vinyl.png");
   });
 });

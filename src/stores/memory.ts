@@ -13,9 +13,7 @@ export function createMemoryCache(): ResolutionCache {
   };
 }
 
-export function createMemoryPatternStore(
-  initialPatterns: LearnedPattern[] = [],
-): PatternStore {
+export function createMemoryPatternStore(initialPatterns: LearnedPattern[] = []): PatternStore {
   let nextId = 1;
   const patterns = initialPatterns.map((pattern) => ({
     ...pattern,
@@ -28,10 +26,21 @@ export function createMemoryPatternStore(
         .filter((pattern) => pattern.domain === domain)
         .sort((left, right) => right.confidence - left.confidence);
     },
+    async incrementFailure(patternId) {
+      const pattern = patterns.find((entry) => entry.id === patternId);
+      if (pattern) {
+        pattern.confidence = Math.max(pattern.confidence - 0.2, 0);
+      }
+    },
+    async incrementSuccess(patternId) {
+      const pattern = patterns.find((entry) => entry.id === patternId);
+      if (pattern) {
+        pattern.confidence = Math.min(pattern.confidence + 0.1, 0.99);
+      }
+    },
     async save(domain, matchRegex, transform) {
       const existing = patterns.find(
-        (pattern) =>
-          pattern.domain === domain && pattern.matchRegex === matchRegex,
+        (pattern) => pattern.domain === domain && pattern.matchRegex === matchRegex,
       );
 
       if (existing) {
@@ -49,18 +58,6 @@ export function createMemoryPatternStore(
       };
       patterns.push(created);
       return created;
-    },
-    async incrementSuccess(patternId) {
-      const pattern = patterns.find((entry) => entry.id === patternId);
-      if (pattern) {
-        pattern.confidence = Math.min(pattern.confidence + 0.1, 0.99);
-      }
-    },
-    async incrementFailure(patternId) {
-      const pattern = patterns.find((entry) => entry.id === patternId);
-      if (pattern) {
-        pattern.confidence = Math.max(pattern.confidence - 0.2, 0);
-      }
     },
   };
 }

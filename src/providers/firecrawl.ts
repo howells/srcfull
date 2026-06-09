@@ -1,10 +1,7 @@
 import { emitDebug } from "../debug";
 import { isRetryableRequestError, shouldRetryStatus, sleep } from "../retry";
 import type { FirecrawlImageFallbackOptions, ImageFallback } from "../types";
-import {
-  validatePublicUrl,
-  validatePublicUrlForServer,
-} from "../url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "../url-validator";
 
 const DEFAULT_API_URL = "https://api.firecrawl.dev/v2/scrape";
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -49,18 +46,9 @@ export function createFirecrawlImageFallback(
   const options = normalizeOptions(input);
   const apiKey = normalizeApiKey(options.apiKey);
   const apiUrl = options.apiUrl?.trim() || DEFAULT_API_URL;
-  const timeoutMs = Math.max(
-    1,
-    Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS),
-  );
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+  const timeoutMs = Math.max(1, Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS));
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
 
   return async (url) => {
     const validation = options.validateResolvedIp
@@ -76,17 +64,17 @@ export function createFirecrawlImageFallback(
 
       try {
         const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({
             url: validation.url.href,
             onlyMainContent: true,
             maxAge: 172800000,
             formats: ["images"],
           }),
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
           signal: controller.signal,
         });
 
@@ -98,20 +86,18 @@ export function createFirecrawlImageFallback(
 
         if (attempt <= retryCount && shouldRetryStatus(response.status)) {
           emitDebug(options.onDebug, {
-            type: "fallback:retry",
-            message: `Firecrawl returned ${response.status} for ${validation.url.href}`,
-            url: validation.url.href,
-            status: response.status,
             attempt,
+            message: `Firecrawl returned ${response.status} for ${validation.url.href}`,
+            status: response.status,
+            type: "fallback:retry",
+            url: validation.url.href,
           });
           await sleep(retryDelayMs * attempt);
           continue;
         }
 
         if (!response.ok) {
-          throw new Error(
-            data?.error || `Firecrawl returned ${response.status}`,
-          );
+          throw new Error(data?.error || `Firecrawl returned ${response.status}`);
         }
 
         const images = data?.data?.images;
@@ -122,20 +108,20 @@ export function createFirecrawlImageFallback(
         const filteredImages = images.filter(shouldKeepImage);
 
         emitDebug(options.onDebug, {
-          type: "fallback:success",
-          message: `Firecrawl returned ${filteredImages.length} images for ${validation.url.href}`,
-          url: validation.url.href,
           attempt,
+          message: `Firecrawl returned ${filteredImages.length} images for ${validation.url.href}`,
+          type: "fallback:success",
+          url: validation.url.href,
         });
         return {
           images: filteredImages.map((imageUrl) => ({
-            url: imageUrl,
             alt: null,
             source: "raw" as const,
+            url: imageUrl,
           })),
           metadata: {
-            fallback: "firecrawl",
             candidateCount: filteredImages.length,
+            fallback: "firecrawl",
             timeoutMs,
           },
         };
@@ -143,26 +129,26 @@ export function createFirecrawlImageFallback(
         if (error instanceof Error && error.name === "AbortError") {
           if (attempt <= retryCount) {
             emitDebug(options.onDebug, {
-              type: "fallback:retry",
-              message: `Firecrawl timed out for ${validation.url.href}`,
-              url: validation.url.href,
               attempt,
               error: error.message,
+              message: `Firecrawl timed out for ${validation.url.href}`,
+              type: "fallback:retry",
+              url: validation.url.href,
             });
             await sleep(retryDelayMs * attempt);
             continue;
           }
 
-          throw new Error(`Firecrawl timed out after ${timeoutMs}ms`);
+          throw new Error(`Firecrawl timed out after ${timeoutMs}ms`, { cause: error });
         }
 
         if (attempt <= retryCount && isRetryableRequestError(error)) {
           emitDebug(options.onDebug, {
-            type: "fallback:retry",
-            message: `Firecrawl request failed for ${validation.url.href}`,
-            url: validation.url.href,
             attempt,
             error: error instanceof Error ? error.message : String(error),
+            message: `Firecrawl request failed for ${validation.url.href}`,
+            type: "fallback:retry",
+            url: validation.url.href,
           });
           await sleep(retryDelayMs * attempt);
           continue;

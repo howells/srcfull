@@ -15,8 +15,7 @@ export function shouldRetryStatus(status: number): boolean {
 export function isRetryableRequestError(error: unknown): boolean {
   return (
     error instanceof RetryableStatusError ||
-    (error instanceof Error &&
-      (error.name === "AbortError" || error.name === "TypeError"))
+    (error instanceof Error && (error.name === "AbortError" || error.name === "TypeError"))
   );
 }
 

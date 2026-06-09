@@ -24,10 +24,7 @@ function printError(message: string): void {
   process.stderr.write(`${message}\n`);
 }
 
-function parseOptionalInteger(
-  value: string | undefined,
-  optionName: string,
-): number | undefined {
+function parseOptionalInteger(value: string | undefined, optionName: string): number | undefined {
   if (value === undefined) {
     return undefined;
   }
@@ -76,14 +73,14 @@ async function main() {
     }
 
     const { values } = parseArgs({
+      allowPositionals: true,
       args: rest,
       options: {
         verbose: {
-          type: "boolean",
           short: "v",
+          type: "boolean",
         },
       },
-      allowPositionals: true,
     });
 
     const result = await resolveImageUrl(target, {
@@ -99,8 +96,15 @@ async function main() {
     }
 
     const { values } = parseArgs({
+      allowPositionals: true,
       args: rest,
       options: {
+        fallback: {
+          type: "string",
+        },
+        fetcher: {
+          type: "string",
+        },
         "max-images": {
           type: "string",
         },
@@ -110,24 +114,14 @@ async function main() {
         "resolve-concurrency": {
           type: "string",
         },
-        fetcher: {
-          type: "string",
-        },
-        fallback: {
-          type: "string",
-        },
         verbose: {
-          type: "boolean",
           short: "v",
+          type: "boolean",
         },
       },
-      allowPositionals: true,
     });
 
-    const maxImages = parseOptionalInteger(
-      values["max-images"],
-      "--max-images",
-    );
+    const maxImages = parseOptionalInteger(values["max-images"], "--max-images");
     const minSize = parseOptionalInteger(values["min-size"], "--min-size");
     const resolveConcurrency = parseOptionalInteger(
       values["resolve-concurrency"],
@@ -144,9 +138,7 @@ async function main() {
             apiKey:
               process.env.SCRAPINGBEE_API_KEY ??
               (() => {
-                throw new Error(
-                  "SCRAPINGBEE_API_KEY is required for --fetcher=scrapingbee",
-                );
+                throw new Error("SCRAPINGBEE_API_KEY is required for --fetcher=scrapingbee");
               })(),
             onDebug,
           })
@@ -155,9 +147,7 @@ async function main() {
               apiKey:
                 process.env.BROWSERBASE_API_KEY ??
                 (() => {
-                  throw new Error(
-                    "BROWSERBASE_API_KEY is required for --fetcher=browserbase",
-                  );
+                  throw new Error("BROWSERBASE_API_KEY is required for --fetcher=browserbase");
                 })(),
               onDebug,
             })
@@ -166,9 +156,7 @@ async function main() {
                 apiKey:
                   process.env.KERNEL_API_KEY ??
                   (() => {
-                    throw new Error(
-                      "KERNEL_API_KEY is required for --fetcher=kernel",
-                    );
+                    throw new Error("KERNEL_API_KEY is required for --fetcher=kernel");
                   })(),
                 onDebug,
               })
@@ -180,9 +168,7 @@ async function main() {
             apiKey:
               process.env.FIRECRAWL_API_KEY ??
               (() => {
-                throw new Error(
-                  "FIRECRAWL_API_KEY is required for --fallback=firecrawl",
-                );
+                throw new Error("FIRECRAWL_API_KEY is required for --fallback=firecrawl");
               })(),
             onDebug,
           })
@@ -202,12 +188,12 @@ async function main() {
     }
 
     const result = await scrapePage(target, {
-      maxImages,
-      minSize,
-      resolveConcurrency,
       fetchHtml,
       imageFallback,
+      maxImages,
+      minSize,
       onDebug,
+      resolveConcurrency,
     });
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;

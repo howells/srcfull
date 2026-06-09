@@ -1,15 +1,10 @@
 import { httpLimiter } from "./concurrency";
 import { emitDebug } from "./debug";
-import {
-  isRetryableRequestError,
-  RetryableStatusError,
-  shouldRetryStatus,
-  sleep,
-} from "./retry";
+import { isRetryableRequestError, RetryableStatusError, shouldRetryStatus, sleep } from "./retry";
 import type { ValidateImageUrlOptions, ValidationResult } from "./types";
 import { validatePublicUrl, validatePublicUrlForServer } from "./url-validator";
 
-const REQUEST_TIMEOUT_MS = 5_000;
+const REQUEST_TIMEOUT_MS = 5000;
 const USER_AGENT = "Mozilla/5.0 (compatible; Srcfull/2.0)";
 const DEFAULT_RETRY_COUNT = 1;
 const DEFAULT_RETRY_DELAY_MS = 500;
@@ -42,14 +37,8 @@ async function requestImage(
   method: "HEAD" | "GET",
   options: ValidateImageUrlOptions,
 ): Promise<Response> {
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
 
   for (let attempt = 1; attempt <= retryCount + 1; attempt += 1) {
     const controller = new AbortController();
@@ -57,23 +46,23 @@ async function requestImage(
 
     try {
       const response = await fetch(url, {
-        method,
         headers: {
           Accept: "image/*",
           "User-Agent": USER_AGENT,
           ...(method === "GET" ? { Range: "bytes=0-0" } : {}),
         },
+        method,
         signal: controller.signal,
       });
 
       if (attempt <= retryCount && shouldRetryStatus(response.status)) {
         emitDebug(options.onDebug, {
-          type: "validate:retry",
+          attempt,
           message: `${method} returned ${response.status} for ${url}`,
-          url,
           method,
           status: response.status,
-          attempt,
+          type: "validate:retry",
+          url,
         });
         await sleep(retryDelayMs * attempt);
         continue;
@@ -86,12 +75,12 @@ async function requestImage(
       }
 
       emitDebug(options.onDebug, {
-        type: "validate:retry",
-        message: `${method} failed for ${url}`,
-        url,
-        method,
         attempt,
         error: error instanceof Error ? error.message : String(error),
+        message: `${method} failed for ${url}`,
+        method,
+        type: "validate:retry",
+        url,
       });
       await sleep(retryDelayMs * attempt);
     } finally {
@@ -112,8 +101,8 @@ export async function validateImageUrl(
   const safeUrl = publicUrl.url?.href;
   if (!publicUrl.valid || !safeUrl) {
     emitDebug(options.onDebug, {
-      type: "validate:rejected",
       message: publicUrl.error ?? `Rejected ${url}`,
+      type: "validate:rejected",
       url,
     });
     return { valid: false };
@@ -125,11 +114,11 @@ export async function validateImageUrl(
         const response = await requestImage(safeUrl, method, options);
         if (!response.ok) {
           emitDebug(options.onDebug, {
-            type: "validate:status",
             message: `${method} returned ${response.status} for ${safeUrl}`,
-            url: safeUrl,
             method,
             status: response.status,
+            type: "validate:status",
+            url: safeUrl,
           });
           continue;
         }
@@ -137,46 +126,46 @@ export async function validateImageUrl(
         const contentType = response.headers.get("content-type") ?? "";
         if (!contentType.startsWith("image/")) {
           emitDebug(options.onDebug, {
-            type: "validate:content_type",
             message: `${method} returned non-image content for ${safeUrl}`,
-            url: safeUrl,
-            method,
             metadata: {
               contentType,
             },
+            method,
+            type: "validate:content_type",
+            url: safeUrl,
           });
           continue;
         }
 
         emitDebug(options.onDebug, {
-          type: "validate:success",
           message: `${method} validated ${safeUrl}`,
-          url: safeUrl,
-          method,
           metadata: {
             contentType,
             size: parseSize(response),
           },
+          method,
+          type: "validate:success",
+          url: safeUrl,
         });
         return {
-          valid: true,
           contentType,
           size: parseSize(response),
+          valid: true,
         };
       }
 
       emitDebug(options.onDebug, {
-        type: "validate:failed",
         message: `Validation failed for ${safeUrl}`,
+        type: "validate:failed",
         url: safeUrl,
       });
       return { valid: false };
     } catch (error) {
       emitDebug(options.onDebug, {
-        type: "validate:error",
-        message: `Validation threw for ${safeUrl}`,
-        url: safeUrl,
         error: error instanceof Error ? error.message : String(error),
+        message: `Validation threw for ${safeUrl}`,
+        type: "validate:error",
+        url: safeUrl,
       });
       return { valid: false };
     }

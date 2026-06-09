@@ -2,12 +2,9 @@ import { ScrapingBeeClient } from "scrapingbee";
 import { emitDebug } from "../debug";
 import { sleep } from "../retry";
 import type { DebugLogger, HtmlFetcher } from "../types";
-import {
-  validatePublicUrl,
-  validatePublicUrlForServer,
-} from "../url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "../url-validator";
 
-export type ScrapingBeeFetcherOptions = {
+export interface ScrapingBeeFetcherOptions {
   apiKey: string;
   renderJs?: boolean;
   waitMs?: number;
@@ -17,7 +14,7 @@ export type ScrapingBeeFetcherOptions = {
   retryDelayMs?: number;
   validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
-};
+}
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_RETRY_COUNT = 1;
@@ -32,11 +29,7 @@ function normalizeApiKey(apiKey: string): string {
   return normalized;
 }
 
-function withTimeout<T>(
-  operation: Promise<T>,
-  timeoutMs: number,
-  message: string,
-): Promise<T> {
+function withTimeout<T>(operation: Promise<T>, timeoutMs: number, message: string): Promise<T> {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   const timeoutPromise = new Promise<never>((_, reject) => {
@@ -58,13 +51,13 @@ async function scrapeWithParams(
   extraParams: Record<string, unknown> = {},
 ) {
   const response = await client.get({
-    url,
     params: {
+      block_resources: false,
       render_js: renderJs,
       wait: waitMs,
-      block_resources: false,
       ...extraParams,
     },
+    url,
   });
 
   const html = response.data.toString();
@@ -75,26 +68,15 @@ async function scrapeWithParams(
   return html;
 }
 
-export function createScrapingBeeHtmlFetcher(
-  options: ScrapingBeeFetcherOptions,
-): HtmlFetcher {
+export function createScrapingBeeHtmlFetcher(options: ScrapingBeeFetcherOptions): HtmlFetcher {
   const apiKey = normalizeApiKey(options.apiKey);
   const client = new ScrapingBeeClient(apiKey);
   const renderJs = options.renderJs ?? true;
-  const waitMs = Math.max(0, Math.floor(options.waitMs ?? 5_000));
+  const waitMs = Math.max(0, Math.floor(options.waitMs ?? 5000));
   const fallbackToStealth = options.fallbackToStealth ?? true;
-  const timeoutMs = Math.max(
-    1,
-    Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS),
-  );
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+  const timeoutMs = Math.max(1, Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS));
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
 
   return async (url) => {
     const validation = options.validateResolvedIp
@@ -120,21 +102,21 @@ export function createScrapingBeeHtmlFetcher(
           );
 
           emitDebug(options.onDebug, {
-            type: "fetch:success",
-            message: `ScrapingBee fetched ${safeUrl}`,
-            url: safeUrl,
             attempt,
+            message: `ScrapingBee fetched ${safeUrl}`,
             metadata: {
               usedStealthProxy,
             },
+            type: "fetch:success",
+            url: safeUrl,
           });
           return {
             html,
             metadata: {
-              fetcher: "scrapingbee",
               domain,
-              usedStealthProxy,
+              fetcher: "scrapingbee",
               timeoutMs,
+              usedStealthProxy,
             },
           };
         } catch (error) {
@@ -143,14 +125,14 @@ export function createScrapingBeeHtmlFetcher(
           }
 
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `ScrapingBee request failed for ${safeUrl}`,
-            url: safeUrl,
             attempt,
             error: error instanceof Error ? error.message : String(error),
+            message: `ScrapingBee request failed for ${safeUrl}`,
             metadata: {
               usedStealthProxy,
             },
+            type: "fetch:retry",
+            url: safeUrl,
           });
           await sleep(retryDelayMs * attempt);
         }
@@ -167,10 +149,10 @@ export function createScrapingBeeHtmlFetcher(
       }
 
       emitDebug(options.onDebug, {
-        type: "fetch:fallback",
-        message: `Retrying ${safeUrl} with ScrapingBee stealth proxy`,
-        url: safeUrl,
         error: error instanceof Error ? error.message : String(error),
+        message: `Retrying ${safeUrl} with ScrapingBee stealth proxy`,
+        type: "fetch:fallback",
+        url: safeUrl,
       });
       return runAttempt(true, {
         stealth_proxy: true,

@@ -1,18 +1,15 @@
 import { emitDebug } from "../debug";
 import { isRetryableRequestError, shouldRetryStatus, sleep } from "../retry";
 import type { DebugLogger, HtmlFetcher } from "../types";
-import {
-  validatePublicUrl,
-  validatePublicUrlForServer,
-} from "../url-validator";
+import { validatePublicUrl, validatePublicUrlForServer } from "../url-validator";
 
-export type KernelViewport = {
+export interface KernelViewport {
   width: number;
   height: number;
   refreshRate?: number;
-};
+}
 
-export type KernelHtmlFetcherOptions = {
+export interface KernelHtmlFetcherOptions {
   apiKey: string;
   apiUrl?: string;
   headless?: boolean;
@@ -31,26 +28,26 @@ export type KernelHtmlFetcherOptions = {
   retryDelayMs?: number;
   validateResolvedIp?: boolean;
   onDebug?: DebugLogger;
-};
+}
 
-type KernelBrowserSession = {
+interface KernelBrowserSession {
   session_id?: string;
   browser_live_view_url?: string;
-};
+}
 
-type KernelExecuteResponse = {
+interface KernelExecuteResponse {
   success?: boolean;
   result?: unknown;
   error?: string;
   stderr?: string;
-};
+}
 
-type KernelHtmlResult = {
+interface KernelHtmlResult {
   html?: string;
   status?: number | null;
   contentType?: string;
   finalUrl?: string;
-};
+}
 
 const DEFAULT_API_URL = "https://api.onkernel.com";
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -83,18 +80,13 @@ function kernelHeaders(apiKey: string): HeadersInit {
   };
 }
 
-async function parseJsonResponse<T>(
-  response: Response,
-  service: string,
-): Promise<T> {
+async function parseJsonResponse<T>(response: Response, service: string): Promise<T> {
   const data = (await response.json().catch(() => null)) as
     | (T & { message?: string; error?: string })
     | null;
 
   if (!response.ok) {
-    throw new Error(
-      data?.message || data?.error || `${service} returned ${response.status}`,
-    );
+    throw new Error(data?.message || data?.error || `${service} returned ${response.status}`);
   }
 
   if (!data || typeof data !== "object") {
@@ -133,24 +125,13 @@ function isKernelHtmlResult(value: unknown): value is KernelHtmlResult {
   return Boolean(value && typeof value === "object" && "html" in value);
 }
 
-export function createKernelHtmlFetcher(
-  options: KernelHtmlFetcherOptions,
-): HtmlFetcher {
+export function createKernelHtmlFetcher(options: KernelHtmlFetcherOptions): HtmlFetcher {
   const apiKey = normalizeApiKey(options.apiKey);
   const apiUrl = options.apiUrl?.trim() || DEFAULT_API_URL;
-  const timeoutMs = Math.max(
-    1,
-    Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS),
-  );
+  const timeoutMs = Math.max(1, Math.floor(options.timeoutMs ?? DEFAULT_TIMEOUT_MS));
   const waitMs = Math.max(0, Math.floor(options.waitMs ?? 0));
-  const retryCount = Math.max(
-    0,
-    Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT),
-  );
-  const retryDelayMs = Math.max(
-    0,
-    Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS),
-  );
+  const retryCount = Math.max(0, Math.floor(options.retryCount ?? DEFAULT_RETRY_COUNT));
+  const retryDelayMs = Math.max(0, Math.floor(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS));
   const executionTimeoutSec = Math.max(
     1,
     Math.min(300, Math.ceil(options.executionTimeoutSec ?? timeoutMs / 1000)),
@@ -178,17 +159,13 @@ export function createKernelHtmlFetcher(
         const { controller: createController, timeoutId: createTimeoutId } =
           createAbortController(timeoutMs);
         const createResponse = await fetch(joinUrl(apiUrl, "/browsers"), {
-          method: "POST",
-          headers: kernelHeaders(apiKey),
           body: JSON.stringify({
             headless: options.headless ?? true,
             stealth: options.stealth ?? false,
             timeout_seconds: browserTimeoutSec,
             ...(options.proxyId ? { proxy_id: options.proxyId } : {}),
             ...(options.profile ? { profile: options.profile } : {}),
-            ...(options.persistence
-              ? { persistence: options.persistence }
-              : {}),
+            ...(options.persistence ? { persistence: options.persistence } : {}),
             ...(options.viewport
               ? {
                   viewport: {
@@ -201,14 +178,13 @@ export function createKernelHtmlFetcher(
                 }
               : {}),
           }),
+          headers: kernelHeaders(apiKey),
+          method: "POST",
           signal: createController.signal,
         }).finally(() => {
           clearTimeout(createTimeoutId);
         });
-        const session = await parseJsonResponse<KernelBrowserSession>(
-          createResponse,
-          "Kernel",
-        );
+        const session = await parseJsonResponse<KernelBrowserSession>(createResponse, "Kernel");
 
         if (!session.session_id) {
           throw new Error("Kernel did not return a browser session ID");
@@ -218,13 +194,8 @@ export function createKernelHtmlFetcher(
         const { controller: executeController, timeoutId: executeTimeoutId } =
           createAbortController(timeoutMs + waitMs);
         const executeResponse = await fetch(
-          joinUrl(
-            apiUrl,
-            `/browsers/${encodeURIComponent(sessionId)}/playwright/execute`,
-          ),
+          joinUrl(apiUrl, `/browsers/${encodeURIComponent(sessionId)}/playwright/execute`),
           {
-            method: "POST",
-            headers: kernelHeaders(apiKey),
             body: JSON.stringify({
               code: createPlaywrightCode(safeUrl, {
                 waitUntil,
@@ -233,37 +204,32 @@ export function createKernelHtmlFetcher(
               }),
               timeout_sec: executionTimeoutSec,
             }),
+            headers: kernelHeaders(apiKey),
+            method: "POST",
             signal: executeController.signal,
           },
         ).finally(() => {
           clearTimeout(executeTimeoutId);
         });
-        const executed = await parseJsonResponse<KernelExecuteResponse>(
-          executeResponse,
-          "Kernel",
-        );
+        const executed = await parseJsonResponse<KernelExecuteResponse>(executeResponse, "Kernel");
 
         if (!executed.success) {
-          throw new Error(
-            executed.error ||
-              executed.stderr ||
-              "Kernel browser execution failed",
-          );
+          throw new Error(executed.error || executed.stderr || "Kernel browser execution failed");
         }
 
         if (!isKernelHtmlResult(executed.result)) {
           throw new Error("Kernel did not return rendered HTML");
         }
 
-        const result = executed.result;
+        const { result } = executed;
         const status = result.status ?? undefined;
         if (status && attempt <= retryCount && shouldRetryStatus(status)) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Kernel target returned ${status} for ${safeUrl}`,
-            url: safeUrl,
-            status,
             attempt,
+            message: `Kernel target returned ${status} for ${safeUrl}`,
+            status,
+            type: "fetch:retry",
+            url: safeUrl,
           });
           await sleep(retryDelayMs * attempt);
           continue;
@@ -287,26 +253,26 @@ export function createKernelHtmlFetcher(
         }
 
         emitDebug(options.onDebug, {
-          type: "fetch:success",
-          message: `Kernel rendered ${safeUrl}`,
-          url: safeUrl,
           attempt,
+          message: `Kernel rendered ${safeUrl}`,
           metadata: {
-            status,
             contentType,
-            sessionId,
             liveViewUrl: session.browser_live_view_url,
+            sessionId,
+            status,
           },
+          type: "fetch:success",
+          url: safeUrl,
         });
         return {
           html: result.html,
           metadata: {
-            fetcher: "kernel",
-            status,
             contentType,
+            fetcher: "kernel",
             finalUrl: result.finalUrl,
-            sessionId,
             liveViewUrl: session.browser_live_view_url,
+            sessionId,
+            status,
             timeoutMs,
           },
         };
@@ -314,26 +280,26 @@ export function createKernelHtmlFetcher(
         if (error instanceof Error && error.name === "AbortError") {
           if (attempt <= retryCount) {
             emitDebug(options.onDebug, {
-              type: "fetch:retry",
-              message: `Kernel timed out for ${safeUrl}`,
-              url: safeUrl,
               attempt,
               error: error.message,
+              message: `Kernel timed out for ${safeUrl}`,
+              type: "fetch:retry",
+              url: safeUrl,
             });
             await sleep(retryDelayMs * attempt);
             continue;
           }
 
-          throw new Error(`Kernel timed out after ${timeoutMs}ms`);
+          throw new Error(`Kernel timed out after ${timeoutMs}ms`, { cause: error });
         }
 
         if (attempt <= retryCount && isRetryableRequestError(error)) {
           emitDebug(options.onDebug, {
-            type: "fetch:retry",
-            message: `Kernel request failed for ${safeUrl}`,
-            url: safeUrl,
             attempt,
             error: error instanceof Error ? error.message : String(error),
+            message: `Kernel request failed for ${safeUrl}`,
+            type: "fetch:retry",
+            url: safeUrl,
           });
           await sleep(retryDelayMs * attempt);
           continue;
@@ -343,20 +309,17 @@ export function createKernelHtmlFetcher(
       } finally {
         if (sessionId) {
           const { controller, timeoutId } = createAbortController(timeoutMs);
-          await fetch(
-            joinUrl(apiUrl, `/browsers/${encodeURIComponent(sessionId)}`),
-            {
-              method: "DELETE",
-              headers: kernelHeaders(apiKey),
-              signal: controller.signal,
-            },
-          )
+          await fetch(joinUrl(apiUrl, `/browsers/${encodeURIComponent(sessionId)}`), {
+            headers: kernelHeaders(apiKey),
+            method: "DELETE",
+            signal: controller.signal,
+          })
             .catch((error) => {
               emitDebug(options.onDebug, {
-                type: "fetch:cleanup_failed",
-                message: `Failed to delete Kernel browser ${sessionId}`,
-                url: safeUrl,
                 error: error instanceof Error ? error.message : String(error),
+                message: `Failed to delete Kernel browser ${sessionId}`,
+                type: "fetch:cleanup_failed",
+                url: safeUrl,
               });
             })
             .finally(() => {

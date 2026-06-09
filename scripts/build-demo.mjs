@@ -33,7 +33,7 @@ const SAMPLE_HTML = `
 
 const SIZE_LOOKUP = new Map([
   [`${BASE_URL}`, 0],
-  ["https://catalog.example.com/assets/logo.png", 8_000],
+  ["https://catalog.example.com/assets/logo.png", 8000],
   ["https://catalog.example.com/images/lounge-chair.jpg?w=640", 190_000],
   ["https://catalog.example.com/images/lounge-chair.jpg?w=1600", 940_000],
   ["https://catalog.example.com/images/lounge-chair-detail.avif", 710_000],
@@ -48,24 +48,24 @@ function createValidateStub() {
   return async (url) => {
     if (url.includes("logo")) {
       return {
-        valid: true,
-        size: SIZE_LOOKUP.get(url) ?? 8_000,
         contentType: "image/png",
+        size: SIZE_LOOKUP.get(url) ?? 8_000,
+        valid: true,
       };
     }
 
     if (SIZE_LOOKUP.has(url)) {
       return {
-        valid: true,
-        size: SIZE_LOOKUP.get(url),
         contentType: url.endsWith(".avif") ? "image/avif" : "image/jpeg",
+        size: SIZE_LOOKUP.get(url),
+        valid: true,
       };
     }
 
     return {
-      valid: true,
-      size: 120_000,
       contentType: "image/jpeg",
+      size: 120_000,
+      valid: true,
     };
   };
 }
@@ -97,7 +97,7 @@ function renderCandidateRows(candidates) {
   return candidates
     .map((c) => {
       const isLogo = c.url.includes("logo");
-      const dims = c.width && c.height ? `${c.width}\u00d7${c.height}` : "";
+      const dims = c.width && c.height ? `${c.width}\u00D7${c.height}` : "";
       return `<tr${isLogo ? ' class="filtered"' : ""}>
         <td><code>${esc(shortUrl(c.url))}</code></td>
         <td><span class="badge badge-${esc(c.source)}">${esc(c.source)}</span></td>
@@ -132,7 +132,7 @@ function renderHtml({
   cacheSnapshot,
   patternSnapshot,
 }) {
-  const stats = scrapeResult.stats;
+  const { stats } = scrapeResult;
   const cacheEntryCount =
     cacheSnapshot?.entries && typeof cacheSnapshot.entries === "object"
       ? Object.keys(cacheSnapshot.entries).length
@@ -602,11 +602,11 @@ function renderHtml({
       </div>
       <div class="cols">
         <details open>
-          <summary>Cache \u00b7 ${cacheEntryCount} entries</summary>
+          <summary>Cache \u00B7 ${cacheEntryCount} entries</summary>
           <pre><code>${json(cacheSnapshot)}</code></pre>
         </details>
         <details open>
-          <summary>Patterns \u00b7 ${patternCount} learned</summary>
+          <summary>Patterns \u00B7 ${patternCount} learned</summary>
           <pre><code>${json(patternSnapshot)}</code></pre>
         </details>
       </div>
@@ -676,37 +676,37 @@ async function main() {
   });
 
   const scrapeResult = await scrapePage(BASE_URL, {
-    maxImages: 4,
     fetchHtml: async () => ({
       html: SAMPLE_HTML,
       metadata: {
         source: "demo-fixture",
       },
     }),
-    validate,
+    maxImages: 4,
     resolve: (imageUrl) =>
       resolveImageUrl(imageUrl, {
         cache,
         patternStore,
         validate,
       }),
+    validate,
   });
 
-  const cacheSnapshot = JSON.parse(await readFile(cacheFile, "utf8"));
-  const patternSnapshot = JSON.parse(await readFile(patternFile, "utf8"));
+  const cacheSnapshot = JSON.parse(await readFile(cacheFile, "utf-8"));
+  const patternSnapshot = JSON.parse(await readFile(patternFile, "utf-8"));
 
   const html = renderHtml({
+    cacheSnapshot,
     candidates,
+    patternSnapshot,
     resolvedOnce,
     resolvedTwice,
     scrapeResult,
-    cacheSnapshot,
-    patternSnapshot,
   });
 
   await mkdir(DEMO_DIR, { recursive: true });
-  await writeFile(OUTPUT_FILE, html, "utf8");
-  await rm(tempDir, { recursive: true, force: true });
+  await writeFile(OUTPUT_FILE, html, "utf-8");
+  await rm(tempDir, { force: true, recursive: true });
 
   process.stdout.write("Generated demo/index.html\n");
 }

@@ -1,6 +1,6 @@
 export type ImageSource = "img" | "picture" | "background" | "raw";
 
-export type ImageCandidate = {
+export interface ImageCandidate {
   url: string;
   source: ImageSource;
   width?: number;
@@ -8,15 +8,15 @@ export type ImageCandidate = {
   size?: number;
   srcset?: string[];
   alt?: string | null;
-};
+}
 
-export type ValidationResult = {
+export interface ValidationResult {
   valid: boolean;
   contentType?: string;
   size?: number;
-};
+}
 
-export type DebugEvent = {
+export interface DebugEvent {
   type: string;
   message: string;
   url?: string;
@@ -25,51 +25,43 @@ export type DebugEvent = {
   attempt?: number;
   error?: string;
   metadata?: Record<string, unknown>;
-};
+}
 
 export type DebugLogger = (event: DebugEvent) => void;
 
-export type RetryOptions = {
+export interface RetryOptions {
   retryCount?: number;
   retryDelayMs?: number;
-};
+}
 
-export type LearnedPattern = {
+export interface LearnedPattern {
   id?: number | string;
   domain: string;
   matchRegex: string;
   transform: string;
   confidence: number;
-};
+}
 
-export type ResolutionCache = {
+export interface ResolutionCache {
   get(originalUrl: string): Promise<string | null>;
-  set(
-    originalUrl: string,
-    resolvedUrl: string,
-    patternId?: string | number,
-  ): Promise<void>;
-};
+  set(originalUrl: string, resolvedUrl: string, patternId?: string | number): Promise<void>;
+}
 
-export type PatternStore = {
+export interface PatternStore {
   findByDomain(domain: string): Promise<LearnedPattern[]>;
-  save(
-    domain: string,
-    matchRegex: string,
-    transform: string,
-  ): Promise<LearnedPattern>;
+  save(domain: string, matchRegex: string, transform: string): Promise<LearnedPattern>;
   incrementSuccess(patternId: string | number): Promise<void>;
   incrementFailure?(patternId: string | number): Promise<void>;
-};
+}
 
-export type ResolveResult = {
+export interface ResolveResult {
   original: string;
   resolved: string;
   method: "cached" | "pattern" | "learned" | "probed" | "fallback";
   confidence?: number;
   resolvedSize?: number;
   sizeIncrease?: string;
-};
+}
 
 export type ResolveImageOptions = {
   cache?: ResolutionCache;
@@ -95,29 +87,29 @@ export type ValidateImageUrlOptions = {
   onDebug?: DebugLogger;
 } & RetryOptions;
 
-export type ExtractImageOptions = {
+export interface ExtractImageOptions {
   includeRaw?: boolean;
   sourceDomain?: string;
   sortBySize?: boolean;
   baseUrl?: string;
   validate?: (url: string) => Promise<ValidationResult>;
-};
+}
 
-export type HtmlFetchResult = {
+export interface HtmlFetchResult {
   html: string;
   metadata?: Record<string, unknown>;
-};
+}
 
 export type HtmlFetcher = (url: string) => Promise<HtmlFetchResult>;
 
-export type ImageFallbackResult = {
+export interface ImageFallbackResult {
   images: ImageCandidate[];
   metadata?: Record<string, unknown>;
-};
+}
 
 export type ImageFallback = (url: string) => Promise<ImageFallbackResult>;
 
-export type ScrapedImage = {
+export interface ScrapedImage {
   original: string;
   resolved: string;
   originalSize: number | null;
@@ -125,9 +117,9 @@ export type ScrapedImage = {
   sizeIncrease: string | null;
   alt: string | null;
   method: ResolveResult["method"];
-};
+}
 
-export type ScrapePageResult = {
+export interface ScrapePageResult {
   url: string;
   images: ScrapedImage[];
   stats: {
@@ -138,7 +130,7 @@ export type ScrapePageResult = {
     durationMs: number;
   };
   metadata?: Record<string, unknown>;
-};
+}
 
 export type ScrapePageOptions = {
   maxImages?: number;
@@ -152,15 +144,15 @@ export type ScrapePageOptions = {
   onDebug?: DebugLogger;
 } & RetryOptions;
 
-export type FileCacheOptions = {
+export interface FileCacheOptions {
   filePath: string;
   maxEntries?: number;
   maxAgeMs?: number;
-};
+}
 
-export type FilePatternStoreOptions = {
+export interface FilePatternStoreOptions {
   filePath: string;
-};
+}
 
 export type FirecrawlImageFallbackOptions = {
   apiKey: string;
