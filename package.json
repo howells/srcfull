@@ -1,12 +1,12 @@
 {
   "name": "@howells/srcfull",
   "version": "2.1.1",
+  "description": "Image extraction and source-resolution toolkit for high-quality web images.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/howells/srcfull.git"
   },
-  "description": "Image extraction and source-resolution toolkit for high-quality web images.",
-  "license": "MIT",
   "bin": {
     "srcfull": "./dist/cli.js"
   },
